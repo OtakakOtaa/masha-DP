@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4a90e5f2094149b9888073217588ce, type: 3}
+  m_Name: CustomersConfiguration
+  m_EditorClassIdentifier: 
+  _orders:
+  - _weight: 0
+    _message:
+    - 
+    - 
+    _reward: 0
+    _item: 
+  _customerVisuals:
+  - _weight: 0
+    _sprite: {fileID: 21300000, guid: 3d0d9b899cdce9a48bf8c98cc8c81e83, type: 3}
+  _customerInfos:
+  - _weight: 0
+    _name: 

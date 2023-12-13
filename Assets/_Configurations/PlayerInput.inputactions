@@ -1,0 +1,34 @@
+{
+    "name": "InputSettings",
+    "maps": [
+        {
+            "name": "gameplay",
+            "id": "8f332831-4c64-4aa1-8775-80c8a5bf6170",
+            "actions": [
+                {
+                    "name": "DRAG",
+                    "type": "Value",
+                    "id": "a20a888c-f556-4a73-bbca-de57c3252e26",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3f7b13e3-bfea-4b80-a924-1f2289dd0ce8",
+                    "path": "<Mouse>/position",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DRAG",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
