@@ -1,25 +1,24 @@
 using System;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _CodeBase.Customers._Data
 {
     [Serializable] public sealed class Order : PollEntity
     {
-        [TabGroup("message")]
-        [ListDrawerSettings(ShowPaging = true, Expanded = true)]
         [TextArea]
-        [SerializeField] private List<string> _message;
+        [SerializeField] private string _message;
+        [TextArea]
+        [SerializeField] private string _concreteMessage;
         
-        [TabGroup("core")]
         [SerializeField] private int _reward;
-        
-        [TabGroup("core")]
         [SerializeField] private string _item;
+        [SerializeField] private float _timeToReady;
         
-        public List<string> Message => _message;
+        
+        public string ConcreteMessage => _concreteMessage;
+        public string Message => _message;
         public int Reward => _reward;
         public string Item => _item;
+        public float TimeToReady => _timeToReady;
     }
 }

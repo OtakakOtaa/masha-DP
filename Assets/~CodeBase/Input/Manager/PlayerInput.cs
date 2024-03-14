@@ -35,6 +35,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""be7c5860-1aea-4e54-9969-b4b8dd5ae4ed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hold"",
+                    ""type"": ""Value"",
+                    ""id"": ""d23d6d51-a979-428c-b139-b65b5c1b57b0"",
+                    ""expectedControlType"": ""Integer"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -42,10 +60,43 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""3f7b13e3-bfea-4b80-a924-1f2289dd0ce8"",
                     ""path"": ""<Mouse>/position"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DRAG"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4451fb87-a35e-4075-82cd-d8903cdce091"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DRAG"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82c1f066-a6d6-4b2d-a8c8-19a18ab27a26"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b905483-b4af-4af6-aa14-b8c7c0804b78"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -57,6 +108,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // gameplay
         m_gameplay = asset.FindActionMap("gameplay", throwIfNotFound: true);
         m_gameplay_DRAG = m_gameplay.FindAction("DRAG", throwIfNotFound: true);
+        m_gameplay_Click = m_gameplay.FindAction("Click", throwIfNotFound: true);
+        m_gameplay_Hold = m_gameplay.FindAction("Hold", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -119,11 +172,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_gameplay_DRAG;
+    private readonly InputAction m_gameplay_Click;
+    private readonly InputAction m_gameplay_Hold;
     public struct GameplayActions
     {
         private @PlayerInput m_Wrapper;
         public GameplayActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @DRAG => m_Wrapper.m_gameplay_DRAG;
+        public InputAction @Click => m_Wrapper.m_gameplay_Click;
+        public InputAction @Hold => m_Wrapper.m_gameplay_Hold;
         public InputActionMap Get() { return m_Wrapper.m_gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -136,6 +193,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @DRAG.started += instance.OnDRAG;
             @DRAG.performed += instance.OnDRAG;
             @DRAG.canceled += instance.OnDRAG;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
+            @Hold.started += instance.OnHold;
+            @Hold.performed += instance.OnHold;
+            @Hold.canceled += instance.OnHold;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -143,6 +206,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @DRAG.started -= instance.OnDRAG;
             @DRAG.performed -= instance.OnDRAG;
             @DRAG.canceled -= instance.OnDRAG;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
+            @Hold.started -= instance.OnHold;
+            @Hold.performed -= instance.OnHold;
+            @Hold.canceled -= instance.OnHold;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -163,5 +232,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface IGameplayActions
     {
         void OnDRAG(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
+        void OnHold(InputAction.CallbackContext context);
     }
 }

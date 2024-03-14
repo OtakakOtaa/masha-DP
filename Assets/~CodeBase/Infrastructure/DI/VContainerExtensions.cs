@@ -6,7 +6,6 @@ using Sirenix.Utilities;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using Object = System.Object;
 
 namespace _CodeBase.Infrastructure.DI
 {
@@ -19,7 +18,7 @@ namespace _CodeBase.Infrastructure.DI
             if (typeof(TResult).IsSubclassOf(typeof(MonoBehaviour)))
             {
                 var mono = UnityEngine.Object.FindObjectOfType(typeof(TResult)) as TResult;
-                Inject(mono, scope);
+                scope.Container.Inject(mono);
                 return mono;
             }
             

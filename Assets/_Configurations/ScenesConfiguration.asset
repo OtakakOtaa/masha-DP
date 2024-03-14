@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameSceneBinders:
   - _scene: 3
-    _originPath: GAME_HALL
+    _originPath: GameHall_SCENE
   - _scene: 1
-    _originPath: MainMenuScene
+    _originPath: MainMenu_SCENE
   - _scene: 4
-    _originPath: GAME_GARDEN
+    _originPath: GameGarden_SCENE
   - _scene: 5
-    _originPath: GAME_LABORATORY
+    _originPath: GameLaboratory_SCENE
   - _scene: 2
-    _originPath: GAME
+    _originPath: GAME_SCENE
