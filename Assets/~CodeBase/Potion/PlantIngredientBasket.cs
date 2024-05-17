@@ -3,11 +3,13 @@ using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
 using UnityEngine;
+using VContainer;
 
 namespace _CodeBase.Potion
 {
     public sealed class PlantIngredientBasket : InteractiveObject
     {
+        [Inject] private GameplayService _gameplayService;
         [SerializeField] private PlantConfig _plantConfig;
         [SerializeField] private SpriteRenderer _targetObjSpriteRenderer;
 
@@ -22,8 +24,8 @@ namespace _CodeBase.Potion
         {
             if (!_activateflag)
             {
-                if (!GameplayService.Instance.gameplayState.Data.CheckPlantContains(_plantConfig.PlantType)) return;
-                GameplayService.Instance.gameplayState.Data.TryRemovePlant(_plantConfig.PlantType);
+                if (!_gameplayService.Data.CheckPlantContains(_plantConfig.PlantType)) return;
+                _gameplayService.Data.TryRemovePlant(_plantConfig.PlantType);
                 _activateflag = true;
             }            
             

@@ -607,6 +607,7 @@ MonoBehaviour:
   _entryAnimYFrequency: 4
   _entryAnimYAmplitude: 0.05
   _spanBetweenCustomers: 1
+  _bubblePassTime: 1
 --- !u!1 &963245388
 GameObject:
   m_ObjectHideFlags: 0

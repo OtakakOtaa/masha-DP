@@ -9,11 +9,13 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
+using VContainer;
 
 namespace _CodeBase.Hall
 {
     public sealed class GameplayHallState : GameplaySceneState
     {
+        [Inject] private GameplayService _gameplayService;
         [SerializeField] private CustomerFetcher _customerFetcher;
         [SerializeField] private DialogueBubble _dialogueBubble;
 
@@ -69,8 +71,7 @@ namespace _CodeBase.Hall
                     }).Forget();
                 }
                 
-                GameplayService.Instance.gameplayState.UpdateCustomerInfo(customerLoyalty);
-                
+                _gameplayService.UpdateCustomerInfo(customerLoyalty);
             }
         }
 
@@ -93,9 +94,7 @@ namespace _CodeBase.Hall
             await UniTask.WaitUntil(() => _dialogueBubble.BubbleOpenedFlag is false, cancellationToken: token);
 
             _customerReceivedTimePoint = Time.time;
-            _customerLeaveTimePoint = Time.time + _activeCustomer.Order.TimeToReady -
-                                      (float)GameplayService.Instance.gameplayState.GameTimer.Value.TotalSeconds *
-                                      0.001f;
+            _customerLeaveTimePoint = Time.time + _activeCustomer.Order.TimeToReady - (float)_gameplayService.GameTimer.Value.TotalSeconds * 0.001f;
             
             _customerExpectationFlag = true;
         }
@@ -121,8 +120,7 @@ namespace _CodeBase.Hall
                     setter: value =>
                     {
                         var pos = Vector3.Lerp(start, end, value);
-                        var yPos = (float)Math.Sin(Math.PI * _entryAnimYFrequency * duration / 4 * 2 * (value - 0.5)) *
-                                   _entryAnimYAmplitude;
+                        var yPos = (float)Math.Sin(Math.PI * _entryAnimYFrequency * duration / 4 * 2 * (value - 0.5)) * _entryAnimYAmplitude;
                         _activeCustomer.transform.position = new Vector3(pos.x, pos.y + yPos, pos.z);
                     },
                     duration: duration,

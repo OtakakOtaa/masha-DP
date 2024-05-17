@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 56716543}
   - component: {fileID: 56716544}
+  - component: {fileID: 56716545}
   m_Layer: 0
   m_Name: SERVICES
   m_TagString: Untagged
@@ -169,6 +170,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneMapObjHolder: {fileID: 250029779}
+--- !u!114 &56716545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56716541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b2c62ac3bcd44fb9e09835581422057, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: _CodeBase.DiScopes.GameplayDiScope
+  autoRun: 1
+  autoInjectGameObjects:
+  - {fileID: 465769349}
+  - {fileID: 810186215}
+  - {fileID: 67156709}
 --- !u!1 &67156709
 GameObject:
   m_ObjectHideFlags: 0

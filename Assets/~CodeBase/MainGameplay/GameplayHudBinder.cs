@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace _CodeBase.MainGameplay
 {
-    public sealed class GameHudBinder : MonoBehaviour
+    public sealed class GameplayHudBinder : MonoBehaviour
     {
         [SerializeField] private Button _locationBtn1;
         [SerializeField] private Image _locationBtn1Image;
@@ -32,7 +32,7 @@ namespace _CodeBase.MainGameplay
 
 
         private readonly CompositeDisposable _compositeDisposable = new();
-        private GameplayState _gameplayState;
+        private GameplayService _gameplayService;
 
         
         private void OnDestroy()
@@ -40,15 +40,15 @@ namespace _CodeBase.MainGameplay
             _compositeDisposable.Dispose();
         }
 
-        public void Bind(GameplayState gameplayState)
+        public void Bind(GameplayService gameplayService)
         {
             _locationBtn1Image.sprite = _potionIcon;
             _locationBtn2Image.sprite = _gardenIcon;
             
-            _gameplayState = gameplayState;
+            _gameplayService = gameplayService;
 
-            _gameplayState.StatsChangedEvent
-                .Subscribe(_ => UpdateCoins(_gameplayState.Data.Coins))
+            _gameplayService.StatsChangedEvent
+                .Subscribe(_ => UpdateCoins(_gameplayService.Data.Coins))
                 .AddTo(_compositeDisposable);
             
             _locationBtn1.OnClickAsObservable()
@@ -64,7 +64,7 @@ namespace _CodeBase.MainGameplay
                 .AddTo(_compositeDisposable);
 
             Observable.EveryUpdate()
-                .Subscribe(_ => UpdateTime(_gameplayState.GameTimer.Value))
+                .Subscribe(_ => UpdateTime(_gameplayService.GameTimer.Value))
                 .AddTo(_compositeDisposable);
             
             
@@ -79,7 +79,7 @@ namespace _CodeBase.MainGameplay
         {
             _locationBtn1Image.sprite = _hallIcon;
             _locationBtn2Image.sprite = _potionIcon;
-            _gameplayState.GoToGardenLac().Forget();
+            _gameplayService.GoToGardenLac().Forget();
         }
 
         [Button]
@@ -87,7 +87,7 @@ namespace _CodeBase.MainGameplay
         {
             _locationBtn1Image.sprite = _gardenIcon;
             _locationBtn2Image.sprite = _hallIcon;
-            _gameplayState.GoToPotionLac().Forget();
+            _gameplayService.GoToPotionLac().Forget();
         }
 
         [Button]
@@ -95,12 +95,12 @@ namespace _CodeBase.MainGameplay
         {
             _locationBtn1Image.sprite = _potionIcon;
             _locationBtn2Image.sprite = _gardenIcon;
-            _gameplayState.GoToHallLac().Forget();
+            _gameplayService.GoToHallLac().Forget();
         }
         
         [Button]
         public void GoToMainMenu()
-            => _gameplayState.GoToMainMenu().Forget();
+            => _gameplayService.GoToMainMenu().Forget();
 
         [Button]
         public void UpdateCoins(int amount)
@@ -120,7 +120,7 @@ namespace _CodeBase.MainGameplay
         
         private void HandleLocBtn1Press()
         {
-            switch (_gameplayState.CurrentGameScene)
+            switch (_gameplayService.CurrentGameScene)
             {
                 case GameScene.Hall:
                     GoToLaboratory();
@@ -137,7 +137,7 @@ namespace _CodeBase.MainGameplay
 
         private void HandleLocBtn2Press()
         {
-            switch (_gameplayState.CurrentGameScene)
+            switch (_gameplayService.CurrentGameScene)
             {
                 case GameScene.Hall:
                     GoToGarden();

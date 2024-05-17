@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using _CodeBase.Infrastructure;
 using _CodeBase.Infrastructure.GameStructs.FSM;
 using _CodeBase.Infrastructure.GameStructs.FSM.States;
-using _CodeBase.MainGameplay;
 using _CodeBase.MainMenu;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -23,7 +21,7 @@ namespace _CodeBase
 
         
         [Inject] private readonly GlobalStateMachine _gameStateMachine;
-        [Inject] private readonly GameplayService _gameplayService;
+        
         private readonly HashSet<GameScene> _currentActiveAdditiveScenes = new();
         
         public IEnumerable<GameScene> CurrentActiveAdditiveScenes => _currentActiveAdditiveScenes;
@@ -81,6 +79,5 @@ namespace _CodeBase
         
 
         public GlobalStateMachine GameStateMachine => _gameStateMachine;
-        public GameplayService GameplayService => _gameplayService;
     }
 }

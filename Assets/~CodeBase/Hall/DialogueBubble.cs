@@ -1,7 +1,5 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using _CodeBase.Customers._Data;
 using Cysharp.Threading.Tasks;
 using TMPro;

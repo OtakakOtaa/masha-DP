@@ -22,7 +22,6 @@ namespace _CodeBase.DiScopes
         {
             ConfigureGeneralSystems(builder);
             builder.RegisterInstance(_gameService);
-            builder.Register<GameplayService>(Lifetime.Singleton);
             builder.RegisterInstance(_inputManager);
             
             ConfigureGameStateMachine(builder);
@@ -39,7 +38,7 @@ namespace _CodeBase.DiScopes
             {
                 typeof(GameService),
                 typeof(MainMenuGameState),
-                typeof(GameplayState),
+                typeof(GameplayService),
                 typeof(GameplayHallState),
                 typeof(GameplayGardenState),
                 typeof(GameplayPotionState)

@@ -32,7 +32,7 @@ namespace _CodeBase.MainMenu
         public async UniTaskVoid StartGame()
         {
             await _gameService.TryLoadScene(GameScene.Gameplay);
-            _gameService.GameStateMachine.Enter<GameplayState>();
+            _gameService.GameStateMachine.Enter<GameplayService>();
         }
     }
 }

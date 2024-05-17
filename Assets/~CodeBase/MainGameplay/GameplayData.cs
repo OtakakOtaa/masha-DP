@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _CodeBase.Garden;
+using UniRx;
 using UnityEngine;
 
 namespace _CodeBase.MainGameplay
@@ -12,28 +13,44 @@ namespace _CodeBase.MainGameplay
 
         private readonly Dictionary<PlantType, int> _availablePlants = new();
 
-        public int Coins
+        public readonly ReactiveCommand<int> CoinsChanged = new();
+        public readonly ReactiveCommand<int> ServedCustomersAmountChanged = new();
+        public readonly ReactiveCommand<(PlantType type, int amount)> PlantWasAdded = new();
+        public readonly ReactiveCommand<(PlantType type, int amount)> PlantWasRemoved = new();
+
+
+        public int Coins => _coins;
+        public int ServedCustomersAmount => _servedCustomersAmount;
+        
+        
+        
+        public void ChangeCoinBalance(int finalValue)
         {
-            get => _coins;
-            set => _coins = value;
+            if (finalValue < 0) throw new Exception($"{typeof(GameplayData).FullName} : {nameof(ChangeCoinBalance)} try set as 0 or less");
+
+            _coins = finalValue;
+            CoinsChanged.Execute(finalValue);
         }
 
-        public int ServedCustomersAmount
+        public void IncreaseServedCustomers()
         {
-            get => _servedCustomersAmount;
-            set => _servedCustomersAmount = value;
+            ServedCustomersAmountChanged.Execute(++_servedCustomersAmount);
         }
-
+        
         public void AddPlant(PlantType plantType)
         {
             _availablePlants[plantType] = _availablePlants.TryGetValue(plantType, out var plant) ? plant + 1 : 1;
+            PlantWasAdded.Execute((plantType, amount: 1));
         }
 
-        public void TryRemovePlant(PlantType plantType)
+        public bool TryRemovePlant(PlantType plantType)
         {
-            if (!_availablePlants.ContainsKey(plantType) || _availablePlants[plantType] == 0) return;
+            if (!_availablePlants.ContainsKey(plantType) || _availablePlants[plantType] == 0) return false;
 
             _availablePlants[plantType] -= 1;
+
+            PlantWasRemoved.Execute((plantType, amount: 1));
+            return true;
         }
 
         public bool CheckPlantContains(PlantType plantType)

@@ -1148,7 +1148,8 @@ MonoBehaviour:
     TypeName: _CodeBase.DiScopes.GlobalDiScope
   autoRun: 1
   autoInjectGameObjects: []
-  _gameHudBinder: {fileID: 1154740444}
+  _gameplayHudBinder: {fileID: 1154740444}
+  _gameplayService: {fileID: 1249500342}
 --- !u!1 &1527099073
 GameObject:
   m_ObjectHideFlags: 0

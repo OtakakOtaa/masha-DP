@@ -4,12 +4,14 @@ using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
 using UniRx;
 using UnityEngine;
+using VContainer;
 
 namespace _CodeBase.Garden
 {
     [RequireComponent(typeof(Collider))]
     public sealed class GardenBed : InteractiveObject
     {
+        [Inject] private GameplayService _gameplayService;
         [SerializeField] private GardenBedUI _ui;
         [SerializeField] private PlantConfig _plantConfig;
         [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -69,7 +71,7 @@ namespace _CodeBase.Garden
             if (isHarvesting)
             {
                 _gardenBedData.hasPlant = false;
-                GameplayService.Instance.gameplayState.AddGrownPlant(_plantConfig.PlantType);
+                _gameplayService.Data.AddPlant(_plantConfig.PlantType);
                 ApplyNoPlantState();
                 return;
             }
