@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: ScenesConfiguration
   m_EditorClassIdentifier: 
   _gameSceneBinders:
-  - _scene: 3
-    _originPath: GameHall_SCENE
-  - _scene: 1
-    _originPath: MainMenu_SCENE
-  - _scene: 4
-    _originPath: GameGarden_SCENE
-  - _scene: 5
-    _originPath: GameLaboratory_SCENE
-  - _scene: 2
-    _originPath: GAME_SCENE
+  - scene: 3
+    originPath: '[SCENE] HOLE'
+  - scene: 1
+    originPath: '[SCENE] MainMenu'
+  - scene: 4
+    originPath: '[SCENE] Garden'
+  - scene: 5
+    originPath: '[SCENE] POTION'
+  - scene: 2
+    originPath: '[SCENE] gameplay'

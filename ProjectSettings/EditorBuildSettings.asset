@@ -6,21 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Scenes/BOOTSTRAP_SCENE.unity
+    path: Assets/__Scenes__/[SCENE] BOOTSTRAP.unity
     guid: 7dfab096c29700545b147cd21aab1cb1
   - enabled: 1
-    path: Assets/_Scenes/MainMenu_SCENE.unity
+    path: Assets/__Scenes__/[SCENE] MainMenu.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/_Scenes/GAME/GAME_SCENE.unity
+    path: Assets/__Scenes__/[SCENE] gameplay.unity
     guid: 6238affeaa01fa54c9d60aa683b1ce47
   - enabled: 1
-    path: Assets/_Scenes/GAME/GameHall_SCENE.unity
+    path: Assets/__Scenes__/[SCENE] HOLE.unity
     guid: 2133dbdad0f8ba9479a2a413a7aee62a
   - enabled: 1
-    path: Assets/_Scenes/GAME/GameGarden_SCENE.unity
+    path: Assets/__Scenes__/[SCENE] Garden.unity
     guid: a7584296ce967e64b9e51fc9ee3550ee
   - enabled: 1
-    path: Assets/_Scenes/GAME/GameLaboratory_SCENE.unity
+    path: Assets/__Scenes__/[SCENE] POTION.unity
     guid: 255e03e647548e34186038f9499625b3
   m_configObjects: {}

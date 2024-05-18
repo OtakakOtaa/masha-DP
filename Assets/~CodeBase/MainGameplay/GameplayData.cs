@@ -11,12 +11,12 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private int _coins;
         [SerializeField] private int _servedCustomersAmount;
 
-        private readonly Dictionary<PlantType, int> _availablePlants = new();
+        private readonly Dictionary<string, int> _availablePlants = new();
 
         public readonly ReactiveCommand<int> CoinsChanged = new();
         public readonly ReactiveCommand<int> ServedCustomersAmountChanged = new();
-        public readonly ReactiveCommand<(PlantType type, int amount)> PlantWasAdded = new();
-        public readonly ReactiveCommand<(PlantType type, int amount)> PlantWasRemoved = new();
+        public readonly ReactiveCommand<(string type, int amount)> PlantWasAdded = new();
+        public readonly ReactiveCommand<(string type, int amount)> PlantWasRemoved = new();
 
 
         public int Coins => _coins;
@@ -37,13 +37,13 @@ namespace _CodeBase.MainGameplay
             ServedCustomersAmountChanged.Execute(++_servedCustomersAmount);
         }
         
-        public void AddPlant(PlantType plantType)
+        public void AddPlant(string plantType)
         {
             _availablePlants[plantType] = _availablePlants.TryGetValue(plantType, out var plant) ? plant + 1 : 1;
             PlantWasAdded.Execute((plantType, amount: 1));
         }
 
-        public bool TryRemovePlant(PlantType plantType)
+        public bool TryRemovePlant(string plantType)
         {
             if (!_availablePlants.ContainsKey(plantType) || _availablePlants[plantType] == 0) return false;
 
@@ -53,7 +53,7 @@ namespace _CodeBase.MainGameplay
             return true;
         }
 
-        public bool CheckPlantContains(PlantType plantType)
+        public bool CheckPlantContains(string plantType)
         {
             return _availablePlants.ContainsKey(plantType) && _availablePlants[plantType] > 0;
         }

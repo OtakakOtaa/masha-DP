@@ -1,5 +1,4 @@
 using UnityEngine;
-using Random = System.Random;
 
 namespace _CodeBase.Customers._Data
 {
@@ -12,13 +11,12 @@ namespace _CodeBase.Customers._Data
         public CustomerInfo CustomerInfo { get; private set; }
         
         
-        public Customer Init(CustomerVisual visual, Order order, CustomerInfo cname)
+        public Customer Init(CustomerVisual visual, Order order, CustomerInfo data)
         {
-            var random = new Random();
-            _spriteRenderer.color = new Color(random.Next(0, 100) / 100f, random.Next(0, 100) / 100f, random.Next(0, 100) / 100f, 1);
             _spriteRenderer.sprite = visual.Sprite;
+            _spriteRenderer.color = visual.MainColor;
             Order = order;
-            CustomerInfo = cname;
+            CustomerInfo = data;
 
             return this;
         }

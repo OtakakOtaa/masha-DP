@@ -1,4 +1,5 @@
 ﻿using _CodeBase.Garden;
+using _CodeBase.Garden.Data;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
@@ -24,8 +25,8 @@ namespace _CodeBase.Potion
         {
             if (!_activateflag)
             {
-                if (!_gameplayService.Data.CheckPlantContains(_plantConfig.PlantType)) return;
-                _gameplayService.Data.TryRemovePlant(_plantConfig.PlantType);
+                if (!_gameplayService.Data.CheckPlantContains(_plantConfig.ID)) return;
+                _gameplayService.Data.TryRemovePlant(_plantConfig.ID);
                 _activateflag = true;
             }            
             

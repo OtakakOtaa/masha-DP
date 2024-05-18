@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using _CodeBase.Customers._Data;
 using _CodeBase.Infrastructure;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace _CodeBase.Customers
@@ -10,19 +12,42 @@ namespace _CodeBase.Customers
     public class CustomersConfiguration : ScriptableObject
     {
         [TabGroup("orders")]
-        [ListDrawerSettings(ShowPaging = true, Expanded = true)]
+        [ListDrawerSettings(ShowPaging = false, Expanded = true, ShowIndexLabels = true, ShowItemCount = true, ListElementLabelName = "_requestedItemID")]
         [SerializeField] private List<Order> _orders;
 
-        [TabGroup("sprites")]
+        [TabGroup("visual")]
         [ListDrawerSettings(ShowPaging = true, Expanded = true)]
         [SerializeField] private List<CustomerVisual> _customerVisuals;
 
-        [TabGroup("C info")]
+        [TabGroup("info")]
         [ListDrawerSettings(ShowPaging = true, Expanded = true)]
         [SerializeField] private List<CustomerInfo> _customerInfos;
 
         public IEnumerable<Order> Orders => _orders;
-        public IEnumerable<CustomerVisual> Sprites => _customerVisuals;
+        public IEnumerable<CustomerVisual> CustomerVisuals => _customerVisuals;
         public IEnumerable<CustomerInfo> CustomerInfos => _customerInfos;
+        
+        
+#if UNITY_EDITOR
+
+        [TabGroup("orders")] [Button("AutoFillIDs")]
+        private void AutoFillIDsForOrder()
+        {
+            _orders.Select((i, i1) => (i, i1)).ForEach(i => i.i.SetID_EDITOR($"[ORDER] - {i.i.RequestedItemID} #{i.i1}"));
+        }
+        
+        
+        [TabGroup("visual")] [Button("AutoFillIDs")]
+        private void AutoFillIDsForVisual()
+        {
+            _customerVisuals.Select((i, i1) => (i, i1)).ForEach(i => i.i.SetID_EDITOR($"[VISUAL] - {i.i.Sprite.name} #{i.i1}"));
+        }
+        
+        [TabGroup("info")] [Button("AutoFillIDs")]
+        private void AutoFillIDsForInfo()
+        {
+            _customerInfos.Select((i, i1) => (i, i1)).ForEach(i => i.i.SetID_EDITOR($"[INFO] - {i.i.Name} #{i.i1}"));
+        }
+#endif
     }
 }

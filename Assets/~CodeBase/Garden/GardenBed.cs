@@ -1,4 +1,5 @@
 ﻿using System;
+using _CodeBase.Garden.Data;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
@@ -71,7 +72,7 @@ namespace _CodeBase.Garden
             if (isHarvesting)
             {
                 _gardenBedData.hasPlant = false;
-                _gameplayService.Data.AddPlant(_plantConfig.PlantType);
+                _gameplayService.Data.AddPlant(_plantConfig.ID);
                 ApplyNoPlantState();
                 return;
             }

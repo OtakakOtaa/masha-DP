@@ -83,10 +83,9 @@ namespace _CodeBase.Hall
             _freeHallFlag = false;
             _customerExpectationFlag = false;
             
-            _activeCustomer = _customerFetcher.GetNextCustomer();
+            _activeCustomer = await _customerFetcher.GetNextCustomer();
 
-            await ExecuteCustomerMovementAnim(_entryPoint.position, _rackPoint.position, _customerEntryAnimDuration,
-                token);
+            await ExecuteCustomerMovementAnim(_entryPoint.position, _rackPoint.position, _customerEntryAnimDuration, token);
 
             await UniTask.WaitUntil(() => ActiveFlag, cancellationToken: token);
             await UniTask.WaitForSeconds(_bubblePassTime, cancellationToken: token);
