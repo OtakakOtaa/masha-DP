@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using _CodeBase.Infrastructure;
 using _CodeBase.Infrastructure.GameStructs.FSM;
 using _CodeBase.Infrastructure.GameStructs.FSM.States;
+using _CodeBase.Input;
 using _CodeBase.MainMenu;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -21,6 +22,8 @@ namespace _CodeBase
 
         
         [Inject] private readonly GlobalStateMachine _gameStateMachine;
+        [Inject] private readonly GameplayCursor _gameplayCursor;
+        
         
         private readonly HashSet<GameScene> _currentActiveAdditiveScenes = new();
         
@@ -31,6 +34,8 @@ namespace _CodeBase
         public void Start()
         { 
             DontDestroyOnLoad(this);
+            DontDestroyOnLoad(_gameplayCursor);
+            
             Enter();
         }
 

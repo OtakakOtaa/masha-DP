@@ -10,12 +10,11 @@ namespace _CodeBase.Potion
     {
         [SerializeField] private GameObject _ui;
 
-
-        private void Start()
+        protected override void OnAwake()
         {
             InitSupportedActionsList(InputManager.InputAction.Click);
 
-            InputManager.Instance.ClickEvent
+            _inputManager.ClickEvent
                 .Subscribe(_ =>
                 {
                     if (_ui.activeSelf) _ui.SetActive(false);
@@ -24,7 +23,7 @@ namespace _CodeBase.Potion
             
             _ui.SetActive(false);
         }
-
+        
         public override void ProcessInteractivity()
         {
             _ui.SetActive(true);

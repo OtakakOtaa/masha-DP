@@ -2,6 +2,7 @@ using _CodeBase.Garden;
 using _CodeBase.Hall;
 using _CodeBase.Infrastructure.DI;
 using _CodeBase.Infrastructure.GameStructs.FSM;
+using _CodeBase.Input;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
 using _CodeBase.MainMenu;
@@ -16,13 +17,14 @@ namespace _CodeBase.DiScopes
     {
         [SerializeField] private GameService _gameService;
         [SerializeField] private InputManager _inputManager;
-        
+        [SerializeField] private GameplayCursor _cursor;
         
         protected override void Configure(IContainerBuilder builder)
         {
             ConfigureGeneralSystems(builder);
             builder.RegisterInstance(_gameService);
             builder.RegisterInstance(_inputManager);
+            builder.RegisterInstance(_cursor);
             
             ConfigureGameStateMachine(builder);
         }

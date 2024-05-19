@@ -1,6 +1,5 @@
-﻿using System;
+﻿using _CodeBase.Input.InteractiveObjsTypes;
 using JetBrains.Annotations;
-using UniRx;
 using UnityEngine;
 
 namespace _CodeBase.Input
@@ -10,29 +9,22 @@ namespace _CodeBase.Input
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         
-        private CompositeDisposable _compositeDisposable;
-
-        [CanBeNull] public object Item { get; private set; }
-
-
-        private void OnDestroy()
-        {
-            _compositeDisposable?.Dispose();
-        }
-
+        [CanBeNull] public InteractiveObject Item { get; private set; }
+        [CanBeNull] public string ItemID { get; private set; }
         
-        public void AttachItem(object item, Sprite sprite, Action update = default)
+        
+        public bool IsHoldNow => Item != null;
+        
+        
+        public void AttachItem(InteractiveObject item, string id = null)
         {
-            GameService.GameUpdate.Subscribe(_ => update.Invoke()).AddTo(_compositeDisposable);
             Item = item;
-            _spriteRenderer.sprite = sprite;
+            ItemID = id;
         }
         
         public void DetachItem()
         {
-            _compositeDisposable?.Dispose();
             Item = null;
-            _spriteRenderer.sprite = null;
         }
     }
 }

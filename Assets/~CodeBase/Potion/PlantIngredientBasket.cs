@@ -16,11 +16,13 @@ namespace _CodeBase.Potion
 
         private bool _activateflag;
         
-        private void Start()
+        protected override void OnAwake()
         {
             InitSupportedActionsList(InputManager.InputAction.Hold);
-        }
 
+        }
+        
+        
         public override void ProcessInteractivity()
         {
             if (!_activateflag)
@@ -30,7 +32,7 @@ namespace _CodeBase.Potion
                 _activateflag = true;
             }            
             
-            var cursorPos = InputManager.Instance.MousePosInWorld;
+            var cursorPos = _inputManager.WorldPosition;
             _targetObjSpriteRenderer.transform.position = new Vector3(cursorPos.x, cursorPos.y, _targetObjSpriteRenderer.transform.position.z);
             _targetObjSpriteRenderer.sprite = _plantConfig.Sprite;
             _targetObjSpriteRenderer.gameObject.SetActive(true);
