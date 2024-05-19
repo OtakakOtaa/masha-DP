@@ -7,7 +7,7 @@ namespace _CodeBase.Input.InteractiveObjsTypes
 {
     public abstract class ObjectKeeper : InteractiveObject
     {
-        [SerializeReference] private ISomeArea _someInputsArea;
+        [SerializeField] private SomeArea _someInputsArea;
         [Inject] private GameplayCursor _gameplayCursor;
         
         protected new void Awake()

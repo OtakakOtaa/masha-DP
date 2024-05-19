@@ -18,13 +18,16 @@ namespace _CodeBase.DiScopes
         [SerializeField] private GameService _gameService;
         [SerializeField] private InputManager _inputManager;
         [SerializeField] private GameplayCursor _cursor;
+        [SerializeField] private GameConfigProvider _gameConfigProvider;
         
         protected override void Configure(IContainerBuilder builder)
         {
             ConfigureGeneralSystems(builder);
+            
             builder.RegisterInstance(_gameService);
             builder.RegisterInstance(_inputManager);
             builder.RegisterInstance(_cursor);
+            builder.RegisterInstance(_gameConfigProvider);
             
             ConfigureGameStateMachine(builder);
         }

@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 namespace _CodeBase.Infrastructure
 {
-    public class AnchoredArea : MonoBehaviour, ISomeArea
+    public class AnchoredArea : SomeArea
     {
         [FormerlySerializedAs("_surface")] [SerializeField] private Transform[] _anchors;
 
@@ -25,7 +25,7 @@ namespace _CodeBase.Infrastructure
         }
 #endif
         
-        public bool CheckPlaceIntoSurface(Vector2 point)
+        public override bool CheckPlaceIntoSurface(Vector2 point)
         {
             var pointAs3 = (Vector3)point;
             

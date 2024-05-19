@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f1bf53553f04e33b4a4d2149cf4bf81, type: 3}
+  m_Name: GameConfigProvider
+  m_EditorClassIdentifier: 
+  _potionConfigs:
+  - {fileID: 11400000, guid: d43267418f954e6409b7d148aa00d90e, type: 2}
+  - {fileID: 11400000, guid: 72fe3c233c4d3dd43a804a7f05b50d90, type: 2}
+  - {fileID: 11400000, guid: d393c8f0af331bf419b4e20408e18557, type: 2}
+  - {fileID: 11400000, guid: 1f68007fabd43084d9489ed5a8645f62, type: 2}
+  - {fileID: 11400000, guid: 7d7cb08b8942da144b1b895bdf05c95f, type: 2}
+  - {fileID: 11400000, guid: 32746674520fe1a40a3dc59e91ff7fe3, type: 2}
+  - {fileID: 11400000, guid: 20df5cdd8a1e10c469501f731591fd74, type: 2}
+  - {fileID: 11400000, guid: b8ba0d9bde70a294886f4350577187fe, type: 2}
+  - {fileID: 11400000, guid: baaa53bcc5eaf0644b886ba7baf13e10, type: 2}
+  _plantConfigs:
+  - {fileID: 11400000, guid: f6062ef9ad445674a9dfd487326cb4ac, type: 2}
+  - {fileID: 11400000, guid: da991e22658ba3146b0e3ddda0d02d84, type: 2}
+  - {fileID: 11400000, guid: f68fc0598092e2549b57a8a839ab29d6, type: 2}
+  - {fileID: 11400000, guid: 1b4cbb4d04b579f488e9b244e0400e93, type: 2}
+  - {fileID: 11400000, guid: 4c7873a41e9b5bc4e8e579e10f32fcd3, type: 2}
+  - {fileID: 11400000, guid: ae180499ce0889a46b811bdd1f2d01fe, type: 2}
+  - {fileID: 11400000, guid: 4a1049cfec1feac4c8786b8dbf4884b8, type: 2}
+  _essenceConfigs:
+  - {fileID: 11400000, guid: 20d11170f94dcad4d88d6cbd35d9d807, type: 2}
+  - {fileID: 11400000, guid: 4cf8f7482cd11cf4c8091215c3de97d9, type: 2}
+  - {fileID: 11400000, guid: 27e2bce9bae51254daaae18148568942, type: 2}
+  - {fileID: 11400000, guid: e87a7db82e16e734599edd0b95fa07d5, type: 2}
+  - {fileID: 11400000, guid: f1f98aa68c6365047a344532be5d1224, type: 2}
+  _customersConfiguration: {fileID: 11400000, guid: 72b9a0d9cefdab34e839437c32b0d224, type: 2}
+  _staticPlantsForLanding:
+  - "[Plant] {\u0437\u0432\u0435\u0440\u0430\u0431\u043E\u0439}"
+  - "[Plant] {\u043A\u0430\u043B\u0435\u043D\u0434\u0443\u043B\u0430}"
+  - "[Plant] {\u043B\u0430\u0432\u0430\u043D\u0434\u0430}"
+  - "[Plant] {\u043C\u044F\u0442\u0430}"
+  - "[Plant] {\u0440\u043E\u043C\u0430\u0448\u043A\u0430}"
+  - "[Plant] {\u0442\u0438\u043C\u044F\u043D}"
+  - "[Plant] {\u044D\u0445\u0438\u043D\u0430\u0446\u0438\u044F}"

@@ -1,30 +1,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using _CodeBase.Input.Manager;
-using JetBrains.Annotations;
 using Sirenix.Utilities;
 using UnityEngine;
 using VContainer;
 
 namespace _CodeBase.Input.InteractiveObjsTypes
 {
-    [RequireComponent(typeof(Collider))]
     public abstract class InteractiveObject : MonoBehaviour
     {
         [Inject] protected InputManager _inputManager;
 
         private Collider[] _triggers;
         private InputManager.InputAction[] _supportedActions;
-        
+        protected bool IsAwoke { get; private set; }
+
         public IEnumerable<InputManager.InputAction> SupportedActions => _supportedActions;
 
         
         protected virtual void Awake()
         {
+            if (IsAwoke) return;
+            
             gameObject.layer = C.IntractableLayer;
             _triggers = GetComponents<Collider>();
             _triggers.ForEach(t => t.isTrigger = true);
             OnAwake();
+
+            IsAwoke = true;
         }
 
         protected void InitSupportedActionsList(params InputManager.InputAction[] list)
@@ -36,6 +39,12 @@ namespace _CodeBase.Input.InteractiveObjsTypes
         public abstract void ProcessInteractivity();
 
         public virtual void ProcessEndInteractivity() { }
+        public virtual void ProcessStartInteractivity() { }
+        
+        public virtual InteractiveObject GetTargetCursorIObj()
+        {
+            return this;
+        }
 
         protected abstract void OnAwake();
     }

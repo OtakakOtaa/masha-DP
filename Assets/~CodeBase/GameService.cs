@@ -23,7 +23,7 @@ namespace _CodeBase
         
         [Inject] private readonly GlobalStateMachine _gameStateMachine;
         [Inject] private readonly GameplayCursor _gameplayCursor;
-        
+        [Inject] private readonly GameConfigProvider _gameplayConfigProvider;
         
         private readonly HashSet<GameScene> _currentActiveAdditiveScenes = new();
         

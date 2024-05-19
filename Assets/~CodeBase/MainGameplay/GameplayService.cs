@@ -20,8 +20,8 @@ namespace _CodeBase.MainGameplay
         private static readonly TimeSpan GameTime = new(0, 0, minutes: 2, 0);
         
         private GameService _gameService;
-        private GameplayHudBinder _gameplayHudBinder;
         private InputManager _inputManager;
+        private GameConfigProvider _gameConfigProvider;
 
         private readonly ReactiveCommand _statsChangedEvent = new();
         public IReactiveCommand<Unit> StatsChangedEvent => _statsChangedEvent;
@@ -31,23 +31,34 @@ namespace _CodeBase.MainGameplay
         public GameScene PreviousGameScene { get; private set; } = GameScene.None;
         public GameScene CurrentGameScene { get; private set; } = GameScene.None;
         public GameplayData Data { get; private set; } = new();
-        
+        public Camera Camera { get; private set; }
+        public GameplayUIBinder UI { get; private set; }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         [Inject]
-        public void Init(GameService gameService, GameplayHudBinder gameplayHudBinder, InputManager inputManager)
+        public void Init(GameService gameService, InputManager inputManager, GameplayUIBinder uiBinder, GameConfigProvider gameConfigProvider)
         {
+            _gameConfigProvider = gameConfigProvider;
+            UI = uiBinder;
             _inputManager = inputManager;
-            _gameplayHudBinder = gameplayHudBinder;
             _gameService = gameService;
         }
 
         public async void Enter()
         {
-            _gameplayHudBinder.Bind(this);
+            foreach (var staticPlantSeeds in _gameConfigProvider.StaticPlantsForLanding)
+            {
+                Data.AddPlantsToLandingPool(staticPlantSeeds, GameplayData.InfinityLandingValue);
+            }
+            
+            Camera = Camera.main;
+            UI.MainCanvas.sortingLayerName = "UI";
+            UI.MainCanvas.worldCamera = Camera;
+            
+            UI.HudUI.Bind(this);
             _inputManager.IntractableInputFlag = true;
-            _inputManager.SetCamera(Camera.main);
+            _inputManager.SetCamera(Camera);
             GameTimer = new Timer();
             GameTimer.Run(GameTime);
             ObserveGameEnd().Forget();
@@ -56,22 +67,25 @@ namespace _CodeBase.MainGameplay
             await GoToHallLac();
         }
         
-
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public async UniTask GoToPotionLac()
         {
+            UI.GardenUI.gameObject.SetActive(false);
             await SwitchLocation<GameplayPotionState>(GameScene.Laboratory);
         }
 
         public async UniTask GoToHallLac()
         {
+            UI.GardenUI.gameObject.SetActive(false);
             await SwitchLocation<GameplayHallState>(GameScene.Hall);
         }
 
         public async UniTask GoToGardenLac()
         {
             await SwitchLocation<GameplayGardenState>(GameScene.Garden);
+            UI.GardenUI.gameObject.SetActive(true);
         }
 
         public async UniTask GoToMainMenu()
@@ -82,7 +96,7 @@ namespace _CodeBase.MainGameplay
         
         public void UpdateCustomerInfo(float loyalty)
         {
-            _gameplayHudBinder.UpdateCustomerIndicator(loyalty);
+            UI.HudUI.UpdateCustomerIndicator(loyalty);
         }
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

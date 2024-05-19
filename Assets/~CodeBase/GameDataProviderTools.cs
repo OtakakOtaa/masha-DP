@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace _CodeBase
 {
-    public sealed partial class GameDataProvider
+    public sealed partial class GameConfigProvider
     {
 
         [Button("AutoFillData")]

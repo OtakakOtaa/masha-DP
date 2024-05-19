@@ -2,8 +2,8 @@
 
 namespace _CodeBase.Infrastructure
 {
-    public interface ISomeArea
+    public abstract class SomeArea : MonoBehaviour
     {
-        bool CheckPlaceIntoSurface(Vector2 point);
+        public abstract bool CheckPlaceIntoSurface(Vector2 point);
     }
 }

@@ -15,9 +15,11 @@ MonoBehaviour:
   _id: "[Plant] {\u043A\u0430\u043B\u0435\u043D\u0434\u0443\u043B\u0430}"
   _name: "\u043A\u0430\u043B\u0435\u043D\u0434\u0443\u043B\u0430"
   _growTime: 8
-  _sprite: {fileID: 21300000, guid: 7e99137251cca3e44ab4035153c32f4c, type: 3}
+  _sprite: {fileID: 21300000, guid: 49b182509f42ee74bafd169603e03181, type: 3}
   _platPhases:
-  - _sprite: {fileID: 21300000, guid: 85d2fa6a35afeb14e90cbf97ff3efd5e, type: 3}
+  - _sprite: {fileID: 21300000, guid: 3cf883e860211e0428d31203d7e781c2, type: 3}
     _progress: 0
-  - _sprite: {fileID: 21300000, guid: 3292b074515ae8b44bea63d5853b832b, type: 3}
+  - _sprite: {fileID: 21300000, guid: 13a5e41ec3f0c054c9ffba0d162b3add, type: 3}
+    _progress: 0.4
+  - _sprite: {fileID: 21300000, guid: 49b182509f42ee74bafd169603e03181, type: 3}
     _progress: 1

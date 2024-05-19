@@ -11,9 +11,9 @@ namespace _CodeBase.Input
         
         [CanBeNull] public InteractiveObject Item { get; private set; }
         [CanBeNull] public string ItemID { get; private set; }
-        
-        
         public bool IsHoldNow => Item != null;
+        public int TargetSpriteLayerOrder => _spriteRenderer.sortingLayerID;
+
         
         
         public void AttachItem(InteractiveObject item, string id = null)

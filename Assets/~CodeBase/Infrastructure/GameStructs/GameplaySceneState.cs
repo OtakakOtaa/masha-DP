@@ -8,13 +8,14 @@ namespace _CodeBase.Infrastructure.GameStructs
     public abstract class GameplaySceneState : MonoBehaviour, IExitableGameState
     {
         [SerializeField] protected GameObject sceneMapObjHolder;
-
+        
         private bool _firstStartFlag;
 
         protected bool ActiveFlag { get; private set; }
 
         protected readonly CancellationTokenSource stateProcess = new();
         protected event Action StateDisposeHandler;
+        
         
         public void Enter()
         {

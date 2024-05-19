@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using _CodeBase.Garden;
 using UniRx;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _CodeBase.MainGameplay
 {
     [Serializable] public sealed class GameplayData
     {
+        public const int InfinityLandingValue = -1; 
+        
         [SerializeField] private int _coins;
         [SerializeField] private int _servedCustomersAmount;
-
+        
         private readonly Dictionary<string, int> _availablePlants = new();
-
+        private readonly Dictionary<string, int> _availablePlantsPoolForLandings = new();
+        
         public readonly ReactiveCommand<int> CoinsChanged = new();
         public readonly ReactiveCommand<int> ServedCustomersAmountChanged = new();
         public readonly ReactiveCommand<(string type, int amount)> PlantWasAdded = new();
@@ -21,7 +24,28 @@ namespace _CodeBase.MainGameplay
 
         public int Coins => _coins;
         public int ServedCustomersAmount => _servedCustomersAmount;
-        
+        public IEnumerable<string> AvailablePlantsLanding => _availablePlantsPoolForLandings.Keys; 
+
+        public int GetPlantsCountForLanding(string key)
+        {
+            return _availablePlantsPoolForLandings.GetValueOrDefault(key);
+        }
+
+        public void AddPlantsToLandingPool(string key, int amount)
+        {
+            _availablePlantsPoolForLandings[key] = amount;
+        }
+
+        public bool TryRemovePlantsForLanding(string key, int amount)
+        {
+            var currentAmount = _availablePlantsPoolForLandings.GetValueOrDefault(key);
+            if (currentAmount is InfinityLandingValue) return true;
+            
+            if (currentAmount is 0 || currentAmount - amount < 0) return false;
+
+            _availablePlantsPoolForLandings[key] = currentAmount - amount;
+            return true;
+        }
         
         
         public void ChangeCoinBalance(int finalValue)

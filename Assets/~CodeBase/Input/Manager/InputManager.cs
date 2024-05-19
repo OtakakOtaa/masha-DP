@@ -30,8 +30,8 @@ namespace _CodeBase.Input.Manager
         public Vector2 ScreenMousePos { get; private set; }
         public ReactiveCommand ClickEvent { get; private set; } = new ();
         public bool IntractableInputFlag { get; set; } = false;
-        
 
+        
         private void Awake()
         {
             var compositeDisposable = new CompositeDisposable(); 
@@ -58,7 +58,8 @@ namespace _CodeBase.Input.Manager
         {
             _camera = camera;
         }
-
+        
+        
         private void UpdateInput()
         {
             if (!IntractableInputFlag) return;
@@ -66,8 +67,6 @@ namespace _CodeBase.Input.Manager
             var inHold = _playerInput.gameplay.Hold.ReadValue<float>() is 1;
             if (inHold is false && GameplayCursor.Item != null)
             {
-                GameplayCursor.Item.ProcessEndInteractivity();
-
                 var currentSceneName = SceneManager.GetActiveScene().name;
                 if (_currentScene != currentSceneName)
                 {
@@ -77,6 +76,7 @@ namespace _CodeBase.Input.Manager
 
                 var nearKeeper = _droppedItemsKeepers.FirstOrDefault(k => k.CanKeep(GameplayCursor.Item.transform.position));
                 nearKeeper?.ProcessInteractivity();
+                GameplayCursor.Item.ProcessEndInteractivity();
 
                 GameplayCursor.DetachItem();
                 return;
@@ -88,7 +88,8 @@ namespace _CodeBase.Input.Manager
                 var hasHit = Physics.Raycast(_ray, out var hit, _camera.farClipPlane, _layerMask);
                 if (hasHit && hit.collider.TryGetComponent<InteractiveObject>(out var interactiveObject) && interactiveObject.SupportedActions.Contains(InputAction.Hold))
                 {
-                    GameplayCursor.AttachItem(interactiveObject);
+                    GameplayCursor.AttachItem(interactiveObject.GetTargetCursorIObj());
+                    interactiveObject.ProcessStartInteractivity();
                 }
             }
 
@@ -106,7 +107,7 @@ namespace _CodeBase.Input.Manager
             
             _ray = new Ray(_camera.ScreenToWorldPoint(ScreenMousePos), _camera.transform.forward);
             WorldPosition = _camera.ScreenToWorldPoint(ScreenMousePos);
-            WorldPosition.Set(WorldPosition.x, WorldPosition.y, 0);
+            WorldPosition = new Vector3(WorldPosition.x, WorldPosition.y, 0);
             
             GameplayCursor.transform.position = WorldPosition;
         }

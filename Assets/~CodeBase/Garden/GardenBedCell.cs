@@ -17,7 +17,6 @@ namespace _CodeBase.Garden
         [SerializeField] private Sprite _tag;
 
 
-        private CompositeDisposable _compositeDisposable;
         private GardenBedData _gardenBedData;
         private PlantConfig _plantConfig;
         private float _growingTimeOffset;
@@ -29,16 +28,9 @@ namespace _CodeBase.Garden
 
         protected override void OnAwake()
         {
-            _compositeDisposable = new CompositeDisposable();
-
             _gardenBedData = new GardenBedData();
             InitSupportedActionsList(InputManager.InputAction.Click);
             ApplyNoPlantState();
-        }
-
-        private void OnDestroy()
-        {
-            _compositeDisposable.Dispose();
         }
         
         

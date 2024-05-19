@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _CodeBase.Garden.Data;
 using _CodeBase.Input.InteractiveObjsTypes;
+using Cysharp.Threading.Tasks;
 using Sirenix.Utilities;
 using UniRx;
 using UniRx.Triggers;
@@ -37,10 +38,11 @@ namespace _CodeBase.Garden
         [SerializeField] private Vector2 _problemTimerRange;
         [SerializeField] private int _waterRequestChance = 50;
         [SerializeField] private int _fertilizeRequestChance = 15;
-        [SerializeField] private int _bugsChance = 35;
+        [SerializeField] private int _bugsAttackChance = 35;
+        [SerializeField] private Vector2 _growingStartRandomOffsetRange;
+        
 
-
-        [Inject] private GameDataProvider _gameDataProvider;
+        [Inject] private GameConfigProvider _gameConfigProvider;
         private TimeSpan _targetProblemPoint;
         private float _startGrowTimePoint;
         private Dictionary<State, GameObject> _maps;
@@ -67,18 +69,19 @@ namespace _CodeBase.Garden
             {
                 (state: State.NeedWater, chance: _waterRequestChance / 100f),
                 (state: State.NeedFertilizers, chance: _fertilizeRequestChance / 100f),
-                (state: State.NeedBugResolver, chance: _bugsChance / 100f)
+                (state: State.NeedBugResolver, chance: _bugsAttackChance / 100f)
             }.OrderByDescending(c => c.chance).ToArray();
 
             var dis = GameService.GameUpdate.Subscribe(_ => UpdateState());
             gameObject.OnDestroyAsObservable().Subscribe(_ => dis.Dispose());
         }
 
-        public void Init()
+        public void Init(State startState)
         {
-            CurrentState = State.ReadyToUsingWithoutRestrictions;
+            CurrentState = startState;
             _maps.ForEach(m => m.Value.gameObject.SetActive(false));
             _maps[CurrentState].gameObject.SetActive(true);
+            _ui.gameObject.SetActive(false);
         }
 
         public void UpdateState()
@@ -122,18 +125,17 @@ namespace _CodeBase.Garden
         
         public override void ProcessInteractivity()
         {
-            if (CurrentState is State.ReadyToUsing or State.ReadyToUsingWithoutRestrictions)
+            var isGardenTool = _inputManager.GameplayCursor.Item!.TryGetComponent<GardenTool>(out var gardenTool);
+            
+            if (CurrentState is State.ReadyToUsing or State.ReadyToUsingWithoutRestrictions && isGardenTool is false)
             {
                 SwitchState(State.Growing);
                 return;
             }
 
-            if (CurrentState is State.NeedFertilizers or State.NeedWater or State.NeedBugResolver)
+            if (CurrentState is State.NeedFertilizers or State.NeedWater or State.NeedBugResolver && isGardenTool && gardenTool.Resolve == CurrentState)
             {
-                if (_inputManager.GameplayCursor.Item!.TryGetComponent<GardenTool>(out var tool) && tool.Resolve == CurrentState)
-                {
-                    SwitchState(State.ReadyToUsing);
-                }
+                SwitchState(State.ReadyToUsing);
                 return;
             }
         }
@@ -153,21 +155,30 @@ namespace _CodeBase.Garden
         private void SwitchState(State newState)
         {
             _ui.gameObject.SetActive(false);
-            _currentProgress = 0f;
             
-            if (CurrentState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver)
+            var nowIsProblemState = CurrentState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver; 
+            if (nowIsProblemState)
             {
                 _targetProblemPoint = TimeSpan.FromSeconds(Time.time + Random.Range(_problemTimerRange.x, _problemTimerRange.y));
             }
 
-            if (newState == State.NeedHarvest) _currentProgress = 1;
+            if (newState == State.NeedHarvest)
+            {
+                _currentProgress = 1;
+            }
             
             if (newState == State.Growing)
             {
-                _plantConfig = _gameDataProvider.GetByID<PlantConfig>(_inputManager.GameplayCursor.ItemID);
-                _cells.ForEach(c => c.ApplyGrownPlantState(_plantConfig, 0f));
+                _currentProgress = 0;
+                _plantConfig = _gameConfigProvider.GetByID<PlantConfig>(_inputManager.GameplayCursor.ItemID);
+
+                foreach (var cell in _cells)
+                {
+                    var growingTimeOffset = Random.Range(_growingStartRandomOffsetRange.x, _growingStartRandomOffsetRange.y);
+                    UniTask.Delay((int)(growingTimeOffset * 1000), cancellationToken: destroyCancellationToken)
+                        .ContinueWith(() => cell.ApplyGrownPlantState(_plantConfig, -growingTimeOffset));
+                }
                 _startGrowTimePoint = Time.time;
-                
                 _ui.gameObject.SetActive(true);
             }
 
