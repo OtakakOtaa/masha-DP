@@ -9,22 +9,26 @@ namespace _CodeBase.Input
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         
-        [CanBeNull] public InteractiveObject Item { get; private set; }
+        [CanBeNull] public InteractiveObject ProcessedItem { get; private set; }
+        [CanBeNull] public InteractiveObject HandleItem { get; private set; }
         [CanBeNull] public string ItemID { get; private set; }
-        public bool IsHoldNow => Item != null;
+        public bool IsHoldNow => ProcessedItem != null;
         public int TargetSpriteLayerOrder => _spriteRenderer.sortingLayerID;
 
         
         
-        public void AttachItem(InteractiveObject item, string id = null)
+        public void AttachItem(InteractiveObject processedItem, string id = null, InteractiveObject handleItem = null)
         {
-            Item = item;
+            HandleItem = handleItem; 
+            ProcessedItem = processedItem;
             ItemID = id;
         }
         
         public void DetachItem()
         {
-            Item = null;
+            HandleItem = null; 
+            ProcessedItem = null;
+            ItemID = null;
         }
     }
 }

@@ -15,6 +15,10 @@ namespace _CodeBase.Infrastructure.GameStructs
 
         protected readonly CancellationTokenSource stateProcess = new();
         protected event Action StateDisposeHandler;
+
+
+        public GameObject SceneMap => sceneMapObjHolder; 
+        
         
         
         public void Enter()

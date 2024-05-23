@@ -48,5 +48,7 @@ namespace _CodeBase.Garden
             transform.rotation = _originRotation;
             transform.localScale = _originScale;
         }
+
+        public override InteractiveObject GetHandleTarget() => this;
     }
 }

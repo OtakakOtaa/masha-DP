@@ -1,3 +1,4 @@
+using System;
 using _CodeBase.Infrastructure.DI;
 using _CodeBase.MainGameplay;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace _CodeBase.DiScopes
             
             Parent.Container.Resolve<DiContainer>().Scope = this;
         }
-
+        
         protected override void OnDestroy()
         {
             var container = Parent.Container.Resolve<DiContainer>();

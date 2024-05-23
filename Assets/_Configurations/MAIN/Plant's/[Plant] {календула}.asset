@@ -16,6 +16,7 @@ MonoBehaviour:
   _name: "\u043A\u0430\u043B\u0435\u043D\u0434\u0443\u043B\u0430"
   _growTime: 8
   _sprite: {fileID: 21300000, guid: 49b182509f42ee74bafd169603e03181, type: 3}
+  _seed: {fileID: 21300000, guid: ad2d3e292b6f41c49a430fc81b7d8372, type: 3}
   _platPhases:
   - _sprite: {fileID: 21300000, guid: 3cf883e860211e0428d31203d7e781c2, type: 3}
     _progress: 0

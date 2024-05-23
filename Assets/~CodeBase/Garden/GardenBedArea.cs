@@ -8,6 +8,7 @@ using Sirenix.Utilities;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 using Random = UnityEngine.Random;
 
@@ -40,7 +41,7 @@ namespace _CodeBase.Garden
         [SerializeField] private int _fertilizeRequestChance = 15;
         [SerializeField] private int _bugsAttackChance = 35;
         [SerializeField] private Vector2 _growingStartRandomOffsetRange;
-        
+        [SerializeField] private bool _needConsedStartRandomOffset = false;
 
         [Inject] private GameConfigProvider _gameConfigProvider;
         private TimeSpan _targetProblemPoint;
@@ -90,14 +91,20 @@ namespace _CodeBase.Garden
             {
                 foreach (var cell in _cells)
                 {
-                    cell.UpdateProgress();
+                    if (cell.HasPlant)
+                    {
+                        cell.UpdateProgress();
+                    }
                 }
 
                 _currentProgress = (float)((Time.time - _startGrowTimePoint) /  _plantConfig.GrowTime);
                 _ui.UpdateProgressBar(_currentProgress);
+
+                if (_cells.All(c => c.Progress >= 1f))
+                {
+                    SwitchState(State.NeedHarvest);
+                }
                 
-                if (_currentProgress < 1f) return;
-                SwitchState(State.NeedHarvest);
                 return;
             }
 
@@ -125,17 +132,19 @@ namespace _CodeBase.Garden
         
         public override void ProcessInteractivity()
         {
-            var isGardenTool = _inputManager.GameplayCursor.Item!.TryGetComponent<GardenTool>(out var gardenTool);
-            
-            if (CurrentState is State.ReadyToUsing or State.ReadyToUsingWithoutRestrictions && isGardenTool is false)
-            {
-                SwitchState(State.Growing);
-                return;
-            }
-
+            var isGardenTool = _inputManager.GameplayCursor.HandleItem.TryGetComponent(out GardenTool gardenTool);
             if (CurrentState is State.NeedFertilizers or State.NeedWater or State.NeedBugResolver && isGardenTool && gardenTool.Resolve == CurrentState)
             {
                 SwitchState(State.ReadyToUsing);
+                return;
+            }
+
+            
+            var isPantSeed = _inputManager.GameplayCursor.HandleItem.TryGetComponent<PlantDummy>(out var plantDummy);
+            if (CurrentState is State.ReadyToUsing or State.ReadyToUsingWithoutRestrictions && isGardenTool is false && isPantSeed)
+            {
+                _plantConfig = plantDummy.PlantConfig;
+                SwitchState(State.Growing);
                 return;
             }
         }
@@ -148,13 +157,18 @@ namespace _CodeBase.Garden
             foreach (var problem in _problemsPool)
             {
                 totalWeight += problem.chance;
-                if(totalWeight >= randomValue) SwitchState(problem.state);
+                if (totalWeight >= randomValue)
+                {
+                    SwitchState(problem.state);
+                    return;
+                }
             }
         }
 
         private void SwitchState(State newState)
         {
             _ui.gameObject.SetActive(false);
+            
             
             var nowIsProblemState = CurrentState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver; 
             if (nowIsProblemState)
@@ -170,13 +184,12 @@ namespace _CodeBase.Garden
             if (newState == State.Growing)
             {
                 _currentProgress = 0;
-                _plantConfig = _gameConfigProvider.GetByID<PlantConfig>(_inputManager.GameplayCursor.ItemID);
-
+                
                 foreach (var cell in _cells)
                 {
                     var growingTimeOffset = Random.Range(_growingStartRandomOffsetRange.x, _growingStartRandomOffsetRange.y);
                     UniTask.Delay((int)(growingTimeOffset * 1000), cancellationToken: destroyCancellationToken)
-                        .ContinueWith(() => cell.ApplyGrownPlantState(_plantConfig, -growingTimeOffset));
+                        .ContinueWith(() => cell.ApplyGrownPlantState(_plantConfig, _needConsedStartRandomOffset ? -growingTimeOffset : 0f));
                 }
                 _startGrowTimePoint = Time.time;
                 _ui.gameObject.SetActive(true);

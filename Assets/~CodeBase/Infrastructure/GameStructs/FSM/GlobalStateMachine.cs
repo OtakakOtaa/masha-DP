@@ -24,7 +24,7 @@ namespace _CodeBase.Infrastructure.GameStructs.FSM
             }
         }
         
-        public void Enter<TState>(bool ignoreExit = false) where TState : class, IGameState
+        public void Enter<TState>(bool ignoreExit = false, Action beforeEnterAction = default) where TState : class, IGameState
         {
             CheckStateForAvailability<TState>();
             if (ignoreExit is false)
@@ -33,6 +33,7 @@ namespace _CodeBase.Infrastructure.GameStructs.FSM
             }
             
             CurrentGameState = GetState<TState>();
+            beforeEnterAction?.Invoke();
             CurrentGameState.Enter();
         }
 

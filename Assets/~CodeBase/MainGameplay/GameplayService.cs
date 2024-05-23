@@ -2,6 +2,7 @@ using System;
 using _CodeBase.Garden;
 using _CodeBase.Hall;
 using _CodeBase.Infrastructure;
+using _CodeBase.Infrastructure.GameStructs;
 using _CodeBase.Infrastructure.GameStructs.FSM.States;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainMenu;
@@ -24,21 +25,25 @@ namespace _CodeBase.MainGameplay
         private GameConfigProvider _gameConfigProvider;
 
         private readonly ReactiveCommand _statsChangedEvent = new();
-        public IReactiveCommand<Unit> StatsChangedEvent => _statsChangedEvent;
         
+        public static GameplayService Instance { get; private set; }
 
+        public IReactiveCommand<Unit> StatsChangedEvent => _statsChangedEvent;
         public Timer GameTimer { get; private set; }
         public GameScene PreviousGameScene { get; private set; } = GameScene.None;
         public GameScene CurrentGameScene { get; private set; } = GameScene.None;
         public GameplayData Data { get; private set; } = new();
         public Camera Camera { get; private set; }
         public GameplayUIBinder UI { get; private set; }
+        public GameObject CurrentGameSceneMap { get; private set; }
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         [Inject]
         public void Init(GameService gameService, InputManager inputManager, GameplayUIBinder uiBinder, GameConfigProvider gameConfigProvider)
         {
+            Instance = this;
             _gameConfigProvider = gameConfigProvider;
             UI = uiBinder;
             _inputManager = inputManager;
@@ -99,6 +104,7 @@ namespace _CodeBase.MainGameplay
             UI.HudUI.UpdateCustomerIndicator(loyalty);
         }
         
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private async UniTask SwitchLocation<TState>(GameScene scene) where TState : class, IGameState
@@ -106,7 +112,7 @@ namespace _CodeBase.MainGameplay
             await _gameService.TryLoadScene(scene, asAdditive: true);
             PreviousGameScene = CurrentGameScene;
             CurrentGameScene = scene;
-            _gameService.GameStateMachine.Enter<TState>();
+            _gameService.GameStateMachine.Enter<TState>(beforeEnterAction: () => { CurrentGameSceneMap = (_gameService.GameStateMachine.CurrentGameState as GameplaySceneState)?.SceneMap; });
         }
 
         private async UniTaskVoid ObserveGameEnd()

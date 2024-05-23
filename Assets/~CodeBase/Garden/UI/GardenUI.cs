@@ -1,54 +1,43 @@
 ﻿using System.Collections.Generic;
 using _CodeBase.Garden.Data;
-using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
 
 namespace _CodeBase.Garden.UI
 {
     public sealed class GardenUI : MonoBehaviour 
     {
         [SerializeField] private Button _panelWithPlantBtn;
-        [SerializeField] private GameObject _plantPanel;
+        [SerializeField] private PlantPanel _plantPanel;
+        [SerializeField] private ScrollRect _scroll;
         [SerializeField] private GameObject _plantContentContainer;
         [SerializeField] private GardenPlantUIItem _gardenPlantUIItemPrefab;
+        [SerializeField] private DraggableExecutableItem _openPanelExecutableItem;
         
-        
-        [Header("Settings")] 
-        [SerializeField] private AnimationCurve _plantPanelAnimationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-        [SerializeField] private Vector3 _plantPanelAnimationOffset;
-        [SerializeField] private float _plantPanelAnimationDuration;
-        
+
         
         private readonly CompositeDisposable _subscriptions = new();
         
-        private Tween _panelAnimationHandler;
-        private Vector3 _panelStartAnimPos;
-        private Vector3 _panelEndAnimPos;
-        private Vector3 _panelOriginPos;
-        private bool _isPanelOpening;
-        private float _currentAnimProgress;
-
         private readonly List<GardenPlantUIItem> _plantItems = new();
         
         public void Init()
         {
-            _panelWithPlantBtn.OnClickAsObservable().Subscribe(_ => UpdatePanelState(!_isPanelOpening)).AddTo(_subscriptions);
-
+            _openPanelExecutableItem.OnExecuted.Subscribe(_ => OpenPanel()).AddTo(_subscriptions);
+            _plantPanel.OnClosed.Subscribe(_ => ClosePanel()).AddTo(_subscriptions);
+            
             gameObject.OnDestroyAsObservable().Subscribe(_ => _subscriptions.Dispose());
-
-            _panelOriginPos = _plantPanel.transform.position;
-            _currentAnimProgress = 1f;
         }
 
         
         public void HardResetPanelToDefault()
         {
             _panelWithPlantBtn.gameObject.SetActive(true);
-            _isPanelOpening = false;
-            _plantPanel.transform.position = PanelHidePosition;
+            _plantPanel.gameObject.SetActive(false);
+            
+            _openPanelExecutableItem.SetToDefault();
         }
 
         public void UpdatePlantsData(PlantConfig[] plantsConfigs)
@@ -70,32 +59,22 @@ namespace _CodeBase.Garden.UI
             for (var i = 0; i < plantsConfigs.Length; i++)
             {
                 _plantItems[i].gameObject.SetActive(true);
-                _plantItems[i].Init(plantsConfigs[i]);
+                _plantItems[i].Init(plantsConfigs[i], _scroll);
             }
-        } 
+        }
+
         
-        public void UpdatePanelState(bool isOpenRequired)
+        private void OpenPanel()
         {
-            _panelAnimationHandler?.Kill();
-
-            _panelEndAnimPos = isOpenRequired ? _panelOriginPos : PanelHidePosition;
-            _panelStartAnimPos = _plantPanel.transform.position;
-            _isPanelOpening = isOpenRequired;
-            
-            _panelAnimationHandler = DOTween.To(UpdatePanelAnim, startValue: 0f, endValue: 1f, _plantPanelAnimationDuration * _currentAnimProgress);
+            _openPanelExecutableItem.gameObject.SetActive(false);
+            _plantPanel.gameObject.SetActive(true);
         }
 
-        private void UpdatePanelAnim(float t)
+        private void ClosePanel()
         {
-            _currentAnimProgress = 1f - (_plantPanel.transform.position - _panelEndAnimPos).magnitude / (_panelOriginPos - PanelHidePosition).magnitude;
-            
-            t = !_isPanelOpening
-                ? 1 - _plantPanelAnimationCurve.Evaluate(1 - t)
-                : _plantPanelAnimationCurve.Evaluate(t);
-
-            _plantPanel.transform.position = Vector3.LerpUnclamped(_panelStartAnimPos, _panelEndAnimPos, t);
+            _plantPanel.gameObject.SetActive(false);
+            _openPanelExecutableItem.gameObject.SetActive(true);
+            _openPanelExecutableItem.SetToDefault();
         }
-
-        private Vector3 PanelHidePosition => _panelOriginPos + _plantPanelAnimationOffset;
     }
 }

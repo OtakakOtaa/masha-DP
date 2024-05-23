@@ -13,5 +13,6 @@ namespace _CodeBase.Infrastructure.DI
         public LifetimeScope GlobalScope { get; }
 
         public LifetimeScope Scope { get; set; }
+        
     }
 }

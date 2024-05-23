@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using _CodeBase.Infrastructure;
 using UniRx;
 using UniRx.Triggers;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace _CodeBase.Garden
@@ -25,6 +28,10 @@ namespace _CodeBase.Garden
         [SerializeField] private float _movementCurveSpeedFactor = 1;
         [SerializeField] private float _randomRotationOffsetAfterLeaveOut = 0f;
         [SerializeField] private float _rotationAlignFactor = 1f;
+        [SerializeField] private Vector2 _perspectiveScale = new Vector2(0.1f, 0.4f);
+        [SerializeField] private Transform _perspectiveScaleStart;
+        [SerializeField] private Transform _perspectiveScaleEnd;
+        
         
         
         private bool _activeFlag = false;
@@ -43,6 +50,21 @@ namespace _CodeBase.Garden
             _bugsHandler = _bugs.Select(c => (c, new BugDeltaData { direction = c.up, rotationFactor = 1f})).ToArray();
         }
 
+        
+        
+#if UNITY_EDITOR
+
+        [ExecuteAlways]
+        protected override void OnDrawGizmos()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(_perspectiveScaleStart.position, _perspectiveScaleEnd.position);
+            Gizmos.DrawSphere(_perspectiveScaleEnd.position, 0.03f);
+            base.OnDrawGizmos();
+        }
+#endif
+        
+        
         private void UpdateBugsMovement()
         {
             if(_activeFlag is false) return;
@@ -51,6 +73,11 @@ namespace _CodeBase.Garden
             {
                 var item = _bugsHandler[i];
 
+                var perspective = ((Vector2)item.bug.position - (Vector2)_perspectiveScaleEnd.position).magnitude /
+                                  ((Vector2)_perspectiveScaleEnd.position - (Vector2)_perspectiveScaleStart.position).magnitude;
+                
+                item.bug.localScale = Vector3.one * Mathf.Lerp(_perspectiveScale.x, _perspectiveScale.y, perspective);
+                
                 var isPlacedOnSurface = CheckPlaceIntoSurface(item.bug.position);
                 if (isPlacedOnSurface && item.data.returningToAreaFlag) item.data.returningToAreaFlag = false;
                 

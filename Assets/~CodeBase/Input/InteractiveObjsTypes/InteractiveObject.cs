@@ -41,10 +41,9 @@ namespace _CodeBase.Input.InteractiveObjsTypes
         public virtual void ProcessEndInteractivity() { }
         public virtual void ProcessStartInteractivity() { }
         
-        public virtual InteractiveObject GetTargetCursorIObj()
-        {
-            return this;
-        }
+        public virtual InteractiveObject GetHandleTarget() => this;
+
+        public virtual string GetTargetID() => null;
 
         protected abstract void OnAwake();
     }

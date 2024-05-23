@@ -52,6 +52,7 @@ namespace _CodeBase.Garden
         public void ApplyNoPlantState()
         {
             _spriteRenderer.sprite = _tag;
+            Progress = 0f;
             _gardenBedData.hasPlant = false;
         }
 

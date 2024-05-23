@@ -3,6 +3,7 @@ using System.Linq;
 using _CodeBase.Input.InteractiveObjsTypes;
 using UniRx;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using VContainer;
 
@@ -25,6 +26,10 @@ namespace _CodeBase.Input.Manager
         private string _currentScene;
         private IEnumerable<ObjectKeeper> _droppedItemsKeepers;
 
+
+
+        public static InputManager Instance { get; private set; }
+        
         [Inject] public GameplayCursor GameplayCursor { get; private set; }
         public Vector3 WorldPosition { get; private set; }
         public Vector2 ScreenMousePos { get; private set; }
@@ -34,6 +39,7 @@ namespace _CodeBase.Input.Manager
         
         private void Awake()
         {
+            Instance = this;
             var compositeDisposable = new CompositeDisposable(); 
             
             _playerInput = new PlayerInput();
@@ -53,19 +59,19 @@ namespace _CodeBase.Input.Manager
             Gizmos.DrawLine(_ray.origin, _ray.origin + _ray.direction);
         }
         
-        
+
         public void SetCamera(Camera camera)
         {
             _camera = camera;
         }
-        
-        
+
+
         private void UpdateInput()
         {
             if (!IntractableInputFlag) return;
-            
+
             var inHold = _playerInput.gameplay.Hold.ReadValue<float>() is 1;
-            if (inHold is false && GameplayCursor.Item != null)
+            if (inHold is false && GameplayCursor.IsHoldNow)
             {
                 var currentSceneName = SceneManager.GetActiveScene().name;
                 if (_currentScene != currentSceneName)
@@ -74,28 +80,40 @@ namespace _CodeBase.Input.Manager
                     _droppedItemsKeepers = FindObjectsByType<ObjectKeeper>(FindObjectsSortMode.None);
                 }
 
-                var nearKeeper = _droppedItemsKeepers.FirstOrDefault(k => k.CanKeep(GameplayCursor.Item.transform.position));
+                var nearKeeper = _droppedItemsKeepers.FirstOrDefault(k => k.CanKeep(GameplayCursor.HandleItem.transform.position));
                 nearKeeper?.ProcessInteractivity();
-                GameplayCursor.Item.ProcessEndInteractivity();
+                GameplayCursor.ProcessedItem.ProcessEndInteractivity();
 
                 GameplayCursor.DetachItem();
                 return;
             }
 
 
-            if (inHold && GameplayCursor.Item == null)
+            if (inHold && !GameplayCursor.IsHoldNow)
             {
-                var hasHit = Physics.Raycast(_ray, out var hit, _camera.farClipPlane, _layerMask);
-                if (hasHit && hit.collider.TryGetComponent<InteractiveObject>(out var interactiveObject) && interactiveObject.SupportedActions.Contains(InputAction.Hold))
+                if (EventSystem.current.IsPointerOverGameObject())
                 {
-                    GameplayCursor.AttachItem(interactiveObject.GetTargetCursorIObj());
-                    interactiveObject.ProcessStartInteractivity();
+                    var uiItem = EventSystem.current.currentSelectedGameObject;
+                    if (uiItem == null) return;
+                    
+                    if (uiItem.TryGetComponent<InteractiveObject>(out var uiInteractiveObject) && uiInteractiveObject.SupportedActions.Contains(InputAction.Hold))
+                    {
+                        AttachItemToCursor(uiInteractiveObject);
+                    }
+                }
+                else
+                {
+                    var hasHit = Physics.Raycast(_ray, out var hit, _camera.farClipPlane, _layerMask);
+                    if (hasHit && hit.collider.TryGetComponent<InteractiveObject>(out var interactiveObject) && interactiveObject.SupportedActions.Contains(InputAction.Hold))
+                    {
+                        AttachItemToCursor(interactiveObject);
+                    }   
                 }
             }
 
-            if (GameplayCursor.Item)
+            if (GameplayCursor.IsHoldNow)
             {
-                GameplayCursor.Item.ProcessInteractivity();
+                GameplayCursor.ProcessedItem.ProcessInteractivity();
             }
         }
 
@@ -115,14 +133,33 @@ namespace _CodeBase.Input.Manager
         private void OnClick(UnityEngine.InputSystem.InputAction.CallbackContext inputContext)
         {
             if (!IntractableInputFlag) return;
-
+            
             ClickEvent.Execute();
+
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                var uiItem = EventSystem.current.currentSelectedGameObject;
+                
+                if (uiItem != null && uiItem.TryGetComponent<InteractiveObject>(out var uiInteractiveObject) && uiInteractiveObject.SupportedActions.Contains(InputAction.Click))
+                {
+                    uiInteractiveObject.ProcessInteractivity();
+                }
+                return;
+            }
+            
             
             var hasHit = Physics.Raycast(_ray, out var hit, _camera.farClipPlane, _layerMask);
             if (hasHit && hit.collider.TryGetComponent<InteractiveObject>(out var interactiveObject) && interactiveObject.SupportedActions.Contains(InputAction.Click))
             {
                 interactiveObject.ProcessInteractivity();
             }
+        }
+        
+        
+        private void AttachItemToCursor(InteractiveObject interactiveObject)
+        {
+            GameplayCursor.AttachItem(interactiveObject, interactiveObject.GetTargetID(), interactiveObject.GetHandleTarget());
+            interactiveObject?.ProcessStartInteractivity();
         }
     }
 }

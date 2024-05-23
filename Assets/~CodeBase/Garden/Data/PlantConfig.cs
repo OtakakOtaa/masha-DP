@@ -13,6 +13,8 @@ namespace _CodeBase.Garden.Data
         [SerializeField] private string _name;
         [SerializeField] private float _growTime;
         [SerializeField] private Sprite _sprite;
+        [SerializeField] private Sprite _seed;
+        
         
         [SerializeField] private List<PlatPhase> _platPhases;
 
@@ -32,6 +34,7 @@ namespace _CodeBase.Garden.Data
         public double GrowTime => _growTime;
         public List<PlatPhase> PlatPhases => _platPhases;
         public Sprite Sprite => _sprite;
+        public Sprite Seed => _seed;
     }
 
     [Serializable] public sealed class PlatPhase

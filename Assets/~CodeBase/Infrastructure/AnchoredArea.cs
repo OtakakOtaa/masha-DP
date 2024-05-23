@@ -12,7 +12,7 @@ namespace _CodeBase.Infrastructure
 #if UNITY_EDITOR
 
         [ExecuteAlways]
-        private void OnDrawGizmos()
+        protected virtual void OnDrawGizmos()
         {
             Gizmos.color = Color.gray;
             
