@@ -30,7 +30,7 @@ namespace _CodeBase.Customers
         private async UniTask<Order> GetNextOrder()
         {
             var order = _gameConfigProvider.GetRandomBasedOnWeight<Order>();
-            if (_ordersRecordsList.Contains(order.RequestedItemID))
+            if (_ordersRecordsList.Contains(order.RequestedItemID) && _gameConfigProvider.UniqOrderCount > 1f)
             {
                 await UniTask.Yield();
                 return await GetNextOrder();
@@ -49,7 +49,7 @@ namespace _CodeBase.Customers
         private async UniTask<TType> GetNextWithSimpleIDDel<TType>(Queue<string> recordList, int maxOriginalCapacity) where TType : PollEntity
         {
             var item = _gameConfigProvider.GetRandomBasedOnWeight<TType>();
-            if (recordList.Contains(item.ID))
+            if (recordList.Contains(item.ID) && maxOriginalCapacity > 1f)
             {
                 await UniTask.Yield();
                 return await GetNextWithSimpleIDDel<TType>(recordList, maxOriginalCapacity);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _CodeBase.Garden.Data;
+using _CodeBase.Garden.UI;
 using _CodeBase.Input.InteractiveObjsTypes;
 using Cysharp.Threading.Tasks;
 using Sirenix.Utilities;
@@ -140,7 +141,7 @@ namespace _CodeBase.Garden
             }
 
             
-            var isPantSeed = _inputManager.GameplayCursor.HandleItem.TryGetComponent<PlantDummy>(out var plantDummy);
+            var isPantSeed = _inputManager.GameplayCursor.HandleItem.TryGetComponent<SeedDummy>(out var plantDummy);
             if (CurrentState is State.ReadyToUsing or State.ReadyToUsingWithoutRestrictions && isGardenTool is false && isPantSeed)
             {
                 _plantConfig = plantDummy.PlantConfig;

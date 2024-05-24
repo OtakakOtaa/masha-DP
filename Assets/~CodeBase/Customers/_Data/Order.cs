@@ -12,8 +12,10 @@ namespace _CodeBase.Customers._Data
         [ValueDropdown("@MashaEditorUtility.GetAllPotionsID()")]
         [SerializeField] private string _requestedItemID;
         [SerializeField] private int _reward = 30;
+        [SerializeField] private bool _needWaitTime = false;
         [SerializeField] private float _timeToReady = -1;
-        
+
+
         [TextArea(1, 10)]
         [SerializeField] private string _message;
         [TextArea(1,10)]
@@ -28,6 +30,7 @@ namespace _CodeBase.Customers._Data
         public override string ID => _id;
         public override string Name => _id;
         public override UniqItemsType Type => UniqItemsType.Order;
+        public bool NeedWaitTime => _needWaitTime;
 
 
 #if UNITY_EDITOR

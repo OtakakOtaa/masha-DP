@@ -468,7 +468,7 @@ Transform:
   m_GameObject: {fileID: 553518619}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.16, y: -0.7, z: 0}
+  m_LocalPosition: {x: 1.655, y: -2.499, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -684,12 +684,6 @@ MonoBehaviour:
   sceneMapObjHolder: {fileID: 1471724406}
   _customerFetcher: {fileID: 1282822854}
   _dialogueBubble: {fileID: 1698875707}
-  _rackPoint: {fileID: 2087661658}
-  _entryPoint: {fileID: 553518620}
-  _customerEntryAnimDuration: 4
-  _customerLeaveAnimDuration: 2
-  _entryAnimYFrequency: 4
-  _entryAnimYAmplitude: 0.05
   _spanBetweenCustomers: 1
   _bubblePassTime: 1
 --- !u!1 &963245388
@@ -1499,6 +1493,54 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1471724407}
     m_Modifications:
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _endAnimPos
+      value: 
+      objectReference: {fileID: 2087661658}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _startAnimPos
+      value: 
+      objectReference: {fileID: 553518620}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animationDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animEase.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animEase.m_Curve.Array.data[1].time
+      value: 0.6541506
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animEase.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animEase.m_Curve.Array.data[1].value
+      value: 1.194723
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animEase.m_Curve.Array.data[2].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animEase.m_Curve.Array.data[1].inSlope
+      value: 1.3697786
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animEase.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animEase.m_Curve.Array.data[1].outSlope
+      value: 1.3697786
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846945959610069680, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
+      propertyPath: _animEase.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
     - target: {fileID: 5968207574493449311, guid: 3675474e7d035e142a5fa6fdf01b085b, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.33333334
@@ -1827,7 +1869,7 @@ Transform:
   m_GameObject: {fileID: 2087661657}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.9100001, y: -0.17, z: 0}
+  m_LocalPosition: {x: 1.655, y: -0.21, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

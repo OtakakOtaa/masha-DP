@@ -52,10 +52,7 @@ namespace _CodeBase.MainGameplay
 
         public async void Enter()
         {
-            foreach (var staticPlantSeeds in _gameConfigProvider.StaticPlantsForLanding)
-            {
-                Data.AddPlantsToLandingPool(staticPlantSeeds, GameplayData.InfinityLandingValue);
-            }
+            FillGameplayData();
             
             Camera = Camera.main;
             UI.MainCanvas.sortingLayerName = "UI";
@@ -71,26 +68,35 @@ namespace _CodeBase.MainGameplay
 
             await GoToHallLac();
         }
-        
+
+        private void FillGameplayData()
+        {
+            foreach (var staticPlantSeeds in _gameConfigProvider.StaticPlantsForLanding)
+            {
+                Data.AddPlantsToLandingPool(staticPlantSeeds, GameplayData.InfinityLandingValue);
+            }
+            
+            foreach (var staticEssence in _gameConfigProvider.StaticEssences)
+            {
+                Data.AddEssence(staticEssence);
+            }
+        } 
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public async UniTask GoToPotionLac()
         {
-            UI.GardenUI.gameObject.SetActive(false);
             await SwitchLocation<GameplayPotionState>(GameScene.Laboratory);
         }
 
         public async UniTask GoToHallLac()
         {
-            UI.GardenUI.gameObject.SetActive(false);
             await SwitchLocation<GameplayHallState>(GameScene.Hall);
         }
 
         public async UniTask GoToGardenLac()
         {
             await SwitchLocation<GameplayGardenState>(GameScene.Garden);
-            UI.GardenUI.gameObject.SetActive(true);
         }
 
         public async UniTask GoToMainMenu()
@@ -103,12 +109,18 @@ namespace _CodeBase.MainGameplay
         {
             UI.HudUI.UpdateCustomerIndicator(loyalty);
         }
-        
+
+        public void DisableAllUI()
+        {
+            UI.PotionUI.gameObject.SetActive(false);
+            UI.GardenUI.gameObject.SetActive(false);
+        }
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private async UniTask SwitchLocation<TState>(GameScene scene) where TState : class, IGameState
         {
+            DisableAllUI();
             await _gameService.TryLoadScene(scene, asAdditive: true);
             PreviousGameScene = CurrentGameScene;
             CurrentGameScene = scene;

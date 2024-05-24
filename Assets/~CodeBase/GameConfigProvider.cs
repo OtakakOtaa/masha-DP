@@ -14,13 +14,26 @@ namespace _CodeBase
     [CreateAssetMenu(fileName = nameof(GameConfigProvider), menuName = nameof(GameConfigProvider))]
     public sealed partial class GameConfigProvider : ScriptableObject
     {
+        [TabGroup("main")]
         [SerializeField] private PotionConfig[] _potionConfigs;
+        
+        [TabGroup("main")]
         [SerializeField] private PlantConfig[] _plantConfigs;
+        
+        [TabGroup("main")]
         [SerializeField] private EssenceConfig[] _essenceConfigs;
+        
+        [TabGroup("main")]
         [SerializeField] private CustomersConfiguration _customersConfiguration;
         
+        
+        [TabGroup("PreGame Data")]
         [Space] [ValueDropdown("@MashaEditorUtility.GetAllPlantsID()")]
         [SerializeField] private string[] _staticPlantsForLanding;
+
+        [TabGroup("PreGame Data")]
+        [Space] [ValueDropdown("@MashaEditorUtility.GetAllEssenceID()")]
+        [SerializeField] private string[] _staticEssences;
         
         
         private Dictionary<string, IUniq> _browser;
@@ -28,10 +41,15 @@ namespace _CodeBase
         public int UniqOrderCount => _customersConfiguration.Orders.GroupBy(c => c.RequestedItemID).Count();
         public int UniqVisualCount => _customersConfiguration.CustomerVisuals.Count();
         public int UniqCustomerInfo => _customersConfiguration.CustomerInfos.Count();
-
+        
+        
         public string[] StaticPlantsForLanding => _staticPlantsForLanding;
+        public string[] StaticEssences => _staticEssences;
+        
+        public IEnumerable<PotionConfig> Potions => _potionConfigs;
+        
 
-
+        
         public TType GetByID<TType>(string id) where TType : IUniq
         {
             if (_browser is null) CreteBrowser();
@@ -39,10 +57,17 @@ namespace _CodeBase
             var value = _browser.GetValueOrDefault(id);
             if (value == default) return default;
             
-            return (TType)value;
+            return (value is TType uniq ? uniq : default);
         }
+        
+        public UniqItemsType TryDefineTypeByID(string id)
+        {
+            if (_browser is null) CreteBrowser();
 
-
+            var value = _browser.GetValueOrDefault(id);
+            return value?.Type ?? UniqItemsType.None;
+        }
+        
         
         public TType GetRandomBasedOnWeight<TType>() where TType : PollEntity
         {
@@ -87,12 +112,13 @@ namespace _CodeBase
 
     public enum UniqItemsType
     {
-        Potion,
-        Essence,
-        Plant,
-        CustomerVisual, 
-        CustomerInfo,
-        Order,
+        None = -1,
+        Potion = 0,
+        Essence = 1,
+        Plant = 2,
+        CustomerVisual = 3, 
+        CustomerInfo = 4,
+        Order = 5,
     }
     
     public interface IUniq

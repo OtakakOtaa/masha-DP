@@ -27,10 +27,11 @@ namespace _CodeBase.Garden
 
         protected override void OnEnter()
         {
+            _gameplayService.UI.GardenUI.gameObject.SetActive(true);
             _gameplayService.UI.GardenUI.HardResetPanelToDefault();
                 
             var seeds = _gameplayService.Data.AvailablePlantsLanding.Select(id => _gameConfigProvider.GetByID<PlantConfig>(id)).ToArray();
-            _gameplayService.UI.GardenUI.UpdatePlantsData(seeds);
+            _gameplayService.UI.GardenUI.FillData(seeds);
         }
 
         protected override void OnExit()

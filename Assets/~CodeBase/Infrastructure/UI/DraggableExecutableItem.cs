@@ -1,13 +1,13 @@
 ﻿using System;
-using UnityEngine;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
 using DG.Tweening;
 using UniRx;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace _CodeBase.Garden.UI
+namespace _CodeBase.Infrastructure.UI
 {
     [RequireComponent(typeof(Button))]
     public class DraggableExecutableItem : InteractiveObject
@@ -26,12 +26,11 @@ namespace _CodeBase.Garden.UI
         private Tweener _tween;
 
         public ReactiveCommand OnExecuted { get; private set; } = new();
-
         
         
         protected override void OnAwake()
         {
-            _rectTransform = GetComponent<RectTransform>();
+            if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
             _initialPosition = _rectTransform.anchoredPosition;
             InitSupportedActionsList(InputManager.InputAction.Hold);
         }
@@ -39,11 +38,15 @@ namespace _CodeBase.Garden.UI
 
         public void SetToDefault()
         {
+            if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
+            
             _rectTransform.anchoredPosition = _initialPosition;
         }
 
         public void SetCurrentPositionAsInit()
         {
+            if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
+
             _initialPosition = _rectTransform.anchoredPosition;
         }
         

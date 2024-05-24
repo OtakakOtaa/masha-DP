@@ -1,5 +1,7 @@
 ﻿using _CodeBase.Garden.UI;
+using _CodeBase.Potion.UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _CodeBase.MainGameplay
 {
@@ -8,10 +10,14 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private Canvas _mainCanvas;
         [SerializeField] private GameplayHudUI _hud;
         [SerializeField] private GardenUI _gardenUI;
-
+        [SerializeField] private PotionUI _potionUI;
+        
+        
         
         public GardenUI GardenUI => _gardenUI;
         public GameplayHudUI HudUI => _hud;
+        public PotionUI PotionUI => _potionUI;
+
         public Canvas MainCanvas => _mainCanvas;
     }
 }

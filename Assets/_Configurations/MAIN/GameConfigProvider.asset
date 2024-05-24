@@ -45,3 +45,7 @@ MonoBehaviour:
   - "[Plant] {\u0440\u043E\u043C\u0430\u0448\u043A\u0430}"
   - "[Plant] {\u0442\u0438\u043C\u044F\u043D}"
   - "[Plant] {\u044D\u0445\u0438\u043D\u0430\u0446\u0438\u044F}"
+  _staticEssences:
+  - '[Essense] BLUE'
+  - '[Essense] RED'
+  - '[Essense] YELLOW'

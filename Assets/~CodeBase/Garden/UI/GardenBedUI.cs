@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace _CodeBase.Garden
+namespace _CodeBase.Garden.UI
 {
     public sealed class GardenBedUI : MonoBehaviour
     {

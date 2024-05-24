@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using _CodeBase.Infrastructure;
 using UniRx;
 using UniRx.Triggers;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace _CodeBase.Garden
@@ -73,12 +70,15 @@ namespace _CodeBase.Garden
             {
                 var item = _bugsHandler[i];
 
-                var perspective = ((Vector2)item.bug.position - (Vector2)_perspectiveScaleEnd.position).magnitude /
-                                  ((Vector2)_perspectiveScaleEnd.position - (Vector2)_perspectiveScaleStart.position).magnitude;
+
+                var position = item.bug.position;
+                var topPerspectivePoint = new Vector2(position.x - ((position.x - _perspectiveScaleEnd.position.x) - (position.x - _perspectiveScaleStart.position.x)), _perspectiveScaleEnd.position.y);
+                
+                var perspective = ((Vector2)position - topPerspectivePoint).magnitude / ((Vector2)_perspectiveScaleEnd.position - (Vector2)_perspectiveScaleStart.position).magnitude;
                 
                 item.bug.localScale = Vector3.one * Mathf.Lerp(_perspectiveScale.x, _perspectiveScale.y, perspective);
                 
-                var isPlacedOnSurface = CheckPlaceIntoSurface(item.bug.position);
+                var isPlacedOnSurface = CheckPlaceIntoSurface(position);
                 if (isPlacedOnSurface && item.data.returningToAreaFlag) item.data.returningToAreaFlag = false;
                 
                 item.data.rotationFactor += Time.deltaTime;

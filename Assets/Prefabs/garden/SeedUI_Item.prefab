@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 1345348947003301475}
   - component: {fileID: 433292127901438650}
   m_Layer: 5
-  m_Name: PlantUI_Item
+  m_Name: SeedUI_Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -317,8 +317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _title: {fileID: 1692842731594151690}
   _mainImage: {fileID: 6967854600249176692}
-  _plantDummyPrefab: {fileID: 4518614525930734970, guid: dda83642e31bb184195e3019805c3c9f, type: 3}
-  _intractableZone: {fileID: 433292127901438650}
+  _dummyPrefab: {fileID: 4518614525930734970, guid: dda83642e31bb184195e3019805c3c9f, type: 3}
 --- !u!114 &1345348947003301475
 MonoBehaviour:
   m_ObjectHideFlags: 0

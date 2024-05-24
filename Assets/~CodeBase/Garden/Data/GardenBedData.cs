@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _CodeBase.Garden
+namespace _CodeBase.Garden.Data
 {
     [Serializable] public sealed class GardenBedData
     {
