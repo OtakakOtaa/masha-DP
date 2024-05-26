@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using _CodeBase.Infrastructure;
+using _CodeBase.Input;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;

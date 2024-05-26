@@ -1,5 +1,6 @@
 ﻿using _CodeBase.Garden.Data;
 using _CodeBase.Input.InteractiveObjsTypes;
+using _CodeBase.Input.Manager;
 using UnityEngine;
 
 namespace _CodeBase.Infrastructure.UI
@@ -17,7 +18,7 @@ namespace _CodeBase.Infrastructure.UI
         
         public abstract void Init(TParam param);
         
-        public override void ProcessInteractivity() { }
+        public override void ProcessInteractivity(InputManager.InputAction inputAction) { }
 
         protected override void OnAwake() { }
     }

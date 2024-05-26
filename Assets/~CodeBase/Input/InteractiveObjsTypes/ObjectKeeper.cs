@@ -16,7 +16,7 @@ namespace _CodeBase.Input.InteractiveObjsTypes
             base.Awake();
         }
 
-        public abstract override void ProcessInteractivity();
+        public abstract override void ProcessInteractivity(InputManager.InputAction inputAction);
         
         public bool CanKeep(Vector2 point)
         {

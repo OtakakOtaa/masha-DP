@@ -1,0 +1,102 @@
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace ARTnGAME.LIQUA_Volumetric_Fluids.MODULES.CTP_Fluid_Volumetrics_Explosions.FSVE._3D.Behaviours.Fluid_Interactors
+{
+    [Serializable]
+    public class FireEmitter : MonoBehaviour
+    {
+        [SerializeField] bool draw_debug = true;
+        [SerializeField] bool emit = true;
+        [SerializeField] float emission_radius = 0.04f;
+        [SerializeField] float density_amount = 6.0f;
+        [SerializeField] float temperature_amount = 10.0f;
+
+        public static List<FireEmitter> emitters_in_scene = null;
+        const uint MAX_EMITTERS_ALLOWED_IN_SCENE = 50;// Capped beacuse I am manually tracking these in a list, not great
+
+
+        void Start()
+        {
+            if (emitters_in_scene == null)
+                emitters_in_scene = new List<FireEmitter>();
+
+            if (emitters_in_scene.Count > MAX_EMITTERS_ALLOWED_IN_SCENE)
+            {
+                Debug.LogWarning("Max emitters per scene exceeded!");
+                Destroy(this);
+            }
+
+            emitters_in_scene.Add(this);
+        }
+
+
+        public bool Emit
+        {
+            get
+            {
+                return emit;
+            }
+            set
+            {
+                emit = value;
+            }
+        }
+
+
+        public float EmissionRadius
+        {
+            get
+            {
+                return emission_radius;
+            }
+            set
+            {
+                emission_radius = value;
+            }
+        }
+
+
+        public float DenisityAmount
+        {
+            get
+            {
+                return density_amount;
+            }
+            set
+            {
+                density_amount = value;
+            }
+        }
+
+
+        public float TemperatureAmount
+        {
+            get
+            {
+                return temperature_amount;
+            }
+            set
+            {
+                temperature_amount = value;
+            }
+        }
+
+
+        private void OnDestroy()
+        {
+            emitters_in_scene.Remove(this);
+        }
+
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!draw_debug)
+                return;
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, emission_radius);
+        }
+    }
+}

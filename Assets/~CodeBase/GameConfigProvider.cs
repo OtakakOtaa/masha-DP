@@ -25,6 +25,9 @@ namespace _CodeBase
         
         [TabGroup("main")]
         [SerializeField] private CustomersConfiguration _customersConfiguration;
+
+        [TabGroup("main")]
+        [SerializeField] private string _mixerUniqId;
         
         
         [TabGroup("PreGame Data")]
@@ -45,11 +48,13 @@ namespace _CodeBase
         
         public string[] StaticPlantsForLanding => _staticPlantsForLanding;
         public string[] StaticEssences => _staticEssences;
-        
-        public IEnumerable<PotionConfig> Potions => _potionConfigs;
-        
 
-        
+
+        public IEnumerable<PotionConfig> Potions => _potionConfigs;
+        public IEnumerable<string> AllEssencesIDs => _essenceConfigs.Select(e => e.ID);
+        public string MixerUniqId => _mixerUniqId;
+
+
         public TType GetByID<TType>(string id) where TType : IUniq
         {
             if (_browser is null) CreteBrowser();

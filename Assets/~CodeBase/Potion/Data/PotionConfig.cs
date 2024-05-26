@@ -58,8 +58,21 @@ namespace _CodeBase.Potion.Data
         [HorizontalGroup(30)]
         [HideLabel]
         [SerializeField] private int _amount = 1;
-
+        
+        [SerializeField] private UniqItemsType _type;
+        
+        
+        
         public string ID => _id;
         public int Amount => _amount;
+        public UniqItemsType Type => _type;
+
+
+#if UNITY_EDITOR
+        public void SetData(UniqItemsType uniqItemsType)
+        {
+            _type = uniqItemsType;
+        }
+#endif
     }
 }

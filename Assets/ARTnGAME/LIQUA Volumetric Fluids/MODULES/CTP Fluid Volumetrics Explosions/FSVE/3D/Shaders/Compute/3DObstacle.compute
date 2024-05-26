@@ -1,0 +1,86 @@
+﻿#include "FSVEUtility.cginc"
+
+
+float4 size;
+RWStructuredBuffer<float> write_R;
+float4 sphere_position;
+float sphere_radius;
+
+
+#pragma kernel Boundary
+[numthreads(8,8,8)]
+void Boundary(uint3 id : SV_DispatchThreadID)
+{
+	float obstacle = 0;
+
+	// If at edge add an obstacle, TODO try replace branching
+	if (id.x - 1  <= 0)	
+	{ 
+		obstacle = 1;
+	}
+
+	if (id.x + 1 > (uint)size.x - 1)
+	{ 
+		obstacle = 1;
+	}
+
+	if (id.y - 1 <= 0)
+	{ 
+		obstacle = 1;
+	}
+
+	if (id.y + 1 > (uint)size.y - 1)
+	{ 
+		obstacle = 1;
+	}
+
+	if (id.z - 1 <= 0)
+	{ 
+		obstacle = 1;
+	}
+
+	if (id.z + 1 > (uint)size.z - 1)	
+	{ 
+		obstacle = 1;
+	}
+
+	write_R[GetIndex(id, size)] = obstacle;
+}
+
+
+
+float CreateSphereMask(uint3 _id, float3 _sphere_pos, float _sphere_radius, float3 _size)
+{
+	float3 pos = _id / (_size.xyz - 1.0f) - _sphere_pos.xyz;// Need to take into account simulation scaling
+	float magnitude = pos.x * pos.x + pos.y * pos.y + pos.z * pos.z;
+
+	float radius_percent = _sphere_radius * 0.1f;// More scale fudging
+	float radius_squared = radius_percent * radius_percent;
+
+	float amount = exp(-magnitude/radius_squared);
+	amount = step(0.01f, amount);// If greater than or equal 0.01f, set obstacle to 1
+
+	return amount;
+}
+
+
+#pragma kernel AddSphereObstacle
+[numthreads(8,8,8)]
+void AddSphereObstacle(uint3 id : SV_DispatchThreadID)
+{
+	float mask = CreateSphereMask(id, sphere_position.xyz, sphere_radius, size.xyz);
+	int index = GetIndex(id, size);
+	write_R[index] = write_R[index] + mask;
+}
+
+
+#pragma kernel AddSphereContainer
+[numthreads(8,8,8)]
+void AddSphereContainer(uint3 id : SV_DispatchThreadID)// Seperate function for container avoids branching on GPU
+{
+	float mask = CreateSphereMask(id, sphere_position.xyz, sphere_radius, size.xyz);
+	mask = 1 - mask;// Invert mask
+
+	int index = GetIndex(id, size);
+	write_R[index] = mask;// Completely override
+}

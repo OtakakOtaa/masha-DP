@@ -1,0 +1,44 @@
+﻿#include "FSVEUtility.cginc"
+
+
+float4 size;
+StructuredBuffer<float> read_R;
+RWTexture3D<float4> write_tex;
+
+
+struct FuelParticle// CPU struct maps to this one
+{
+	float3 position;
+	float3 velocity;
+	float temperature;
+	float mass;
+};
+
+RWStructuredBuffer<FuelParticle> particles;
+
+
+#pragma kernel ConvertToVolume
+[numthreads(8,8,8)]
+void ConvertToVolume (uint3 id : SV_DispatchThreadID)
+{
+	float d = read_R[GetIndex(id, size)];
+	write_tex[id] = float4(d, d, d, d);// Should store in 1 channel, would have to update volume renderer though
+}
+
+
+#pragma kernel ParticleToVolume
+[numthreads(8,1,1)]
+void ParticleToVolume (uint3 id : SV_DispatchThreadID)
+{
+	float3 grid_pos =  particles[id.x].position.xyz * size.xyz;// Scale position according to sim size
+	float d = particles[id.x].mass;// Get mass
+	write_tex[grid_pos] = float4(d, d, d, d);// Use particle position to access grid and assign mass as pseudo density
+}
+
+
+#pragma kernel ClearVolume
+[numthreads(8,8,8)]
+void ClearVolume (uint3 id : SV_DispatchThreadID)
+{
+	write_tex[id] = float4(0, 0, 0, 0);
+}

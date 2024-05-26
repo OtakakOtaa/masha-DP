@@ -13,7 +13,7 @@ namespace _CodeBase.Infrastructure.UI
         [SerializeField] private AnimationCurve _plantPanelAnimationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         [SerializeField] private Vector3 _plantPanelAnimationOffset;
         [SerializeField] private float _plantPanelAnimationDuration;
-        [SerializeField] private BasketUIElement _UIItemPrefab;
+        [SerializeField] private ScrollViewItem _UIItemPrefab;
         [SerializeField] private Transform _container;
         [SerializeField] private ScrollRect _scroll;
         
@@ -25,7 +25,7 @@ namespace _CodeBase.Infrastructure.UI
         private bool _isPanelOpening;
         private float _currentAnimProgress;
 
-        private readonly List<BasketUIElement> _items = new();
+        private readonly List<ScrollViewItem> _items = new();
         
         
         public ReactiveCommand OnClosed => _closeTrigger.OnExecuted;

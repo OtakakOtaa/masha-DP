@@ -81,8 +81,8 @@ namespace _CodeBase.Input.Manager
                 }
 
                 var nearKeeper = _droppedItemsKeepers.FirstOrDefault(k => k.CanKeep(GameplayCursor.HandleItem.transform.position));
-                nearKeeper?.ProcessInteractivity();
-                GameplayCursor.ProcessedItem.ProcessEndInteractivity();
+                nearKeeper?.ProcessInteractivity(InputAction.SomeItemDropped);
+                GameplayCursor.ProcessedItem.ProcessEndInteractivity(InputAction.Hold);
 
                 GameplayCursor.DetachItem();
                 return;
@@ -113,7 +113,7 @@ namespace _CodeBase.Input.Manager
 
             if (GameplayCursor.IsHoldNow)
             {
-                GameplayCursor.ProcessedItem.ProcessInteractivity();
+                GameplayCursor.ProcessedItem.ProcessInteractivity(InputAction.Hold);
             }
         }
 
@@ -142,7 +142,7 @@ namespace _CodeBase.Input.Manager
                 
                 if (uiItem != null && uiItem.TryGetComponent<InteractiveObject>(out var uiInteractiveObject) && uiInteractiveObject.SupportedActions.Contains(InputAction.Click))
                 {
-                    uiInteractiveObject.ProcessInteractivity();
+                    uiInteractiveObject.ProcessInteractivity(InputAction.Click);
                 }
                 return;
             }
@@ -151,7 +151,7 @@ namespace _CodeBase.Input.Manager
             var hasHit = Physics.Raycast(_ray, out var hit, _camera.farClipPlane, _layerMask);
             if (hasHit && hit.collider.TryGetComponent<InteractiveObject>(out var interactiveObject) && interactiveObject.SupportedActions.Contains(InputAction.Click))
             {
-                interactiveObject.ProcessInteractivity();
+                interactiveObject.ProcessInteractivity(InputAction.Click);
             }
         }
         
@@ -159,7 +159,7 @@ namespace _CodeBase.Input.Manager
         private void AttachItemToCursor(InteractiveObject interactiveObject)
         {
             GameplayCursor.AttachItem(interactiveObject, interactiveObject.GetTargetID(), interactiveObject.GetHandleTarget());
-            interactiveObject?.ProcessStartInteractivity();
+            interactiveObject?.ProcessStartInteractivity(InputAction.Hold);
         }
     }
 }

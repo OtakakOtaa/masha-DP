@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Liquid chemical 2 GLASS 3 TEXTURED 3
+  m_Shader: {fileID: -6465566751694194690, guid: f16bfc0b701a3c740ad166ce6b5c0b71, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - NormalMap:
+        m_Texture: {fileID: 2800000, guid: 2c6092e04ed6c224fb8337f9b271a7b5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Foam_Texture:
+        m_Texture: {fileID: 2800000, guid: 572a588b60c1e1148912b6ee8d59d9a5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_863EA43B_Texture_1:
+        m_Texture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Boolean_7937B813: 1
+    - FrontRender: 1
+    - IndexOfRefraction: 1
+    - Vector1_4296D34C: -0.05
+    - Vector1_817FF511: 111
+    - Vector1_AB3A3EBC: 2
+    - Vector1_ACE54085: 12.43
+    - Vector1_B30B07BF: 0.116
+    - Vector1_D45DB484: 0.06
+    - Vector1_F2BB55D7: 5.85
+    - Vector1_F51841FD: 11
+    - _Amp: 9.16
+    - _AmpOffset: 1.4
+    - _Camera_Level_Scaler: 3.6
+    - _Camera_XZ_Pos_Scaler: -0.83
+    - _Camera_Y_Level_Multiplier: 0.78
+    - _Levl: 0.78
+    - _MultLevel: 7
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _fill_Level: 0.08
+    - _rotateRate: 1
+    - _sssss: 1.82
+    - _svaler: 6
+    - _translateRate: 2
+    m_Colors:
+    - Color_17C6C3C7: {r: 0.06899248, g: 0.5878485, b: 0.6415094, a: 0}
+    - Color_FB35205B: {r: 0.1469562, g: 0.40864468, b: 0.4528302, a: 0}
+    - SmoothOclusMetalic: {r: 0.5, g: 1, b: 0, a: 0.1}
+    - TilingOffsetNormals: {r: 1, g: 1, b: 0, a: 0}
+    - _FoamSpeed: {r: 0.01, g: 0.01, b: 0, a: 0}
+    - _Speed: {r: 0.74, g: 0.2, b: 0, a: 0}
+    - _UV_Scaler: {r: 1, g: 1, b: 0, a: 0}
+    - _Vector2: {r: 0.3, g: 0.3, b: 0, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &1505803020676472120
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7

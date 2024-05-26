@@ -37,6 +37,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e87a7db82e16e734599edd0b95fa07d5, type: 2}
   - {fileID: 11400000, guid: f1f98aa68c6365047a344532be5d1224, type: 2}
   _customersConfiguration: {fileID: 11400000, guid: 72b9a0d9cefdab34e839437c32b0d224, type: 2}
+  _mixerUniqId: "[Essense] \u0421\u041A\u041B\u042F\u041D\u041A\u0410"
   _staticPlantsForLanding:
   - "[Plant] {\u0437\u0432\u0435\u0440\u0430\u0431\u043E\u0439}"
   - "[Plant] {\u043A\u0430\u043B\u0435\u043D\u0434\u0443\u043B\u0430}"

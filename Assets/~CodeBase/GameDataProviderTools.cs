@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 
+using System;
 using System.Linq;
 using _CodeBase.Garden.Data;
 using _CodeBase.Potion.Data;
@@ -18,7 +19,22 @@ namespace _CodeBase
             _essenceConfigs = GetAllEssence();
             _potionConfigs = GetAllPotions();
         }
-
+        
+        [Button("DefineAllPotionCompoundTypes")]
+        public void DefineAllPotionCompoundTypes()
+        {
+            foreach (var potionConfig in _potionConfigs)
+            {
+                foreach (var potionCompound in potionConfig.Compound)
+                {
+                    var type = TryDefineTypeByID(potionCompound.ID);
+                    if (type == UniqItemsType.None) throw new Exception(potionCompound.ID);
+                    
+                    potionCompound.SetData(type);
+                }
+            }
+        }
+        
 
         private static PlantConfig[] GetAllPlants()
         {

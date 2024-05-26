@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6527799093859059815
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Liquid Tank 7b TEXTURED 1
+  m_Shader: {fileID: -6465566751694194690, guid: 7c678af60186bab4faa524e7b90d6769, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - NormalMap:
+        m_Texture: {fileID: 2800000, guid: 2c6092e04ed6c224fb8337f9b271a7b5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Background:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Foam_Texture:
+        m_Texture: {fileID: 2800000, guid: 2f9f66719a67d5641a4e5e7f47608d99, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Surface_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_863EA43B_Texture_1:
+        m_Texture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Boolean_7937B813: 1
+    - FrontRender: 0
+    - IndexOfRefraction: 1
+    - Vector1_4296D34C: -0.02
+    - Vector1_817FF511: 311
+    - Vector1_AB3A3EBC: 251
+    - Vector1_ACE54085: 5
+    - Vector1_B30B07BF: 0.01
+    - Vector1_D45DB484: 0.3
+    - Vector1_F2BB55D7: -8.62
+    - Vector1_F51841FD: 11
+    - _AmpOffset: 0.44
+    - _Camera_Level_Scaler: 0
+    - _Camera_XZ_Pos_Scaler: 0
+    - _Camera_Y_Level_Multiplier: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _SurfaceBrightness: 1
+    - _constantSin: 0
+    - _fill_Level: 0.48
+    - _rotateRate: 0
+    - _sssss: 0
+    - _translateRate: 0
+    - _wobbleDegree: 0
+    - _wobbleSin: 0.022
+    m_Colors:
+    - Color_17C6C3C7: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 0}
+    - Color_FB35205B: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 0.6745098}
+    - ScaleRefraction: {r: 0.07, g: -0.03, b: 1, a: 1}
+    - SmoothOclusMetalic: {r: 22.89, g: 6, b: 1.18, a: 0.07}
+    - TilingOffsetNormals: {r: 0.54, g: 0.54, b: 0, a: 0}
+    - TilingOffsetNormals_1: {r: 1, g: 1, b: 1, a: 1}
+    - _FoamSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _Speed: {r: 0.02, g: -0.02, b: 0, a: 0}
+    - _UV_Scaler: {r: 0, g: 0, b: 0, a: 0}
+    - _Wobble: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

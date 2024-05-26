@@ -1,0 +1,88 @@
+﻿#include "FSVEUtility.cginc"
+
+
+RWStructuredBuffer<float3> write_RGB;
+StructuredBuffer<float3> velocity;
+
+StructuredBuffer<float> pressure;
+StructuredBuffer<float> obstacles;
+
+float4 size;
+
+
+#pragma kernel Projection
+[numthreads(8,8,8)]
+void Projection (uint3 id : SV_DispatchThreadID)
+{
+	int index = GetIndex(id, size);
+
+	if (obstacles[index] > 0.1f)
+	{
+		write_RGB[index] = float3(0, 0, 0);
+		return;
+	}
+
+	// Get neighbour indexs
+	int up_id =  GetIndex(int3(id.x, min(size.y - 1, id.y + 1), id.z), size);
+	int down_id = GetIndex(int3(id.x, max(0, id.y-1), id.z), size);
+
+	int left_id = GetIndex(int3(max(0, id.x-1), id.y, id.z), size);
+	int right_id = GetIndex(int3(min(size.x-1, id.x+1), id.y, id.z), size);
+
+	int front_id = GetIndex(int3(id.x, id.y, max(0, id.z-1)), size);
+	int back_id = GetIndex(int3(id.x, id.y, min(size.z-1, id.z+1)), size);
+
+	// Get neighbours pressure
+	float pressure_up = pressure[up_id];
+	float pressure_down = pressure[down_id];
+
+	float pressure_left = pressure[left_id];
+	float pressure_right = pressure[right_id];
+
+	float pressure_front = pressure[front_id];
+	float pressure_back = pressure[back_id];
+
+	float cell_pressure = pressure[index];
+	float3 mask = float3(1, 1, 1);
+	
+	// Check neighbours obstacles
+	if (obstacles[up_id] > 0.1f)
+	{
+		pressure_up = cell_pressure;
+		mask.y = 0;// Mask this direction
+	}
+
+	if (obstacles[down_id] > 0.1f)
+	{
+		pressure_down = cell_pressure;
+		mask.y = 0;
+	}
+
+	if (obstacles[left_id] > 0.1f)
+	{
+		pressure_left = cell_pressure;
+		mask.x = 0;
+	}
+
+	if (obstacles[right_id] > 0.1f)
+	{
+		pressure_right = cell_pressure;
+		mask.x = 0;
+	}
+
+	if (obstacles[front_id] > 0.1f)
+	{
+		pressure_front = cell_pressure;
+		mask.z = 0;
+	}
+
+	if (obstacles[back_id] > 0.1f)
+	{
+		pressure_back = cell_pressure;
+		mask.z = 0;
+	}
+
+	float3 cell_velocity = velocity[index] - float3(pressure_right - pressure_left,
+	pressure_up - pressure_down, pressure_back - pressure_front ) * 0.5f;// Subtract average pressure from velocity field
+	write_RGB[index] = cell_velocity * mask;// Mask out obstacles
+}

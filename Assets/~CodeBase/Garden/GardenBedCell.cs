@@ -72,7 +72,7 @@ namespace _CodeBase.Garden
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        public override void ProcessInteractivity()
+        public override void ProcessInteractivity(InputManager.InputAction inputAction)
         {
             if (_gardenBedData.hasPlant is false || HasPlantGrown is false) return;
 

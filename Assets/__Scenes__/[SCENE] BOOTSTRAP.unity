@@ -237,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 973776405}
+  _cursorLayerID: Cursor
 --- !u!212 &973776405
 SpriteRenderer:
   m_ObjectHideFlags: 0

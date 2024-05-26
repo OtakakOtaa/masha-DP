@@ -1,0 +1,56 @@
+﻿#include "FSVEUtility.cginc"
+
+
+float4 size;
+float dt;
+float dissipation;
+
+StructuredBuffer<float3> velocity;
+StructuredBuffer<float> obstacles;
+
+RWStructuredBuffer<float3> write_RGB;// RGB is float3 suffix, I was using textures initialy so it made sense, now not so much
+StructuredBuffer<float3> read_RGB;
+
+RWStructuredBuffer<float> write_R;// R is float suffix
+StructuredBuffer<float> read_R;
+
+
+float3 GetAdvectedPosition(float3 _position, int _index)
+{
+	_position -= dt * velocity[_index];
+	return _position;
+}
+
+
+#pragma kernel Advect
+[numthreads(8, 8, 8)]
+void Advect(uint3 id : SV_DispatchThreadID)// Single value advection
+{
+	int index = GetIndex(id, size);
+
+	if (obstacles[index] > 0.1f)// If obstacle present
+	{
+		write_R[index] = 0;
+		return;
+	}
+
+	float3 advect_pos = GetAdvectedPosition(id, index);
+	write_R[index] = max(0, SampleBilinear(read_R, advect_pos, size) * dissipation);
+}
+
+
+#pragma kernel AdvectVelocity
+[numthreads(8, 8, 8)]
+void AdvectVelocity(uint3 id : SV_DispatchThreadID)// For vector advection
+{
+	int index = GetIndex(id, size);
+
+	if (obstacles[index] > 0.1f)
+	{
+		write_RGB[index] = float3(0, 0, 0);// If an obstacle is at this grid coord, set velocity to zero
+		return;
+	}
+
+	float3 advect_pos = GetAdvectedPosition(id, index);
+	write_RGB[index] = SampleBilinear(read_RGB, advect_pos, size) * dissipation;
+}

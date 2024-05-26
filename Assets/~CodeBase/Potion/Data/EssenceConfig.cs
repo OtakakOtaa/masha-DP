@@ -11,7 +11,6 @@ namespace _CodeBase.Potion.Data
         [SerializeField] private string _id;
         [SerializeField] private Color _color;
         [SerializeField] private string _name;
-        
 
 #if UNITY_EDITOR
 

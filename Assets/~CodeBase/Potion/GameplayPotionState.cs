@@ -12,6 +12,8 @@ namespace _CodeBase.Potion
     public sealed class GameplayPotionState : GameplaySceneState
     {
         [SerializeField] private EssenceBottle[] _essenceBottles;
+        [SerializeField] private EssenceMixer _essenceMixer;
+        
         
         
         [Inject] private GameplayService _gameplayService;
@@ -21,23 +23,14 @@ namespace _CodeBase.Potion
         {
             _gameplayService.UI.PotionUI.Init();
 
+            InitEssenceBottles();
 
             
-            foreach (var essenceBottle in _essenceBottles)
+            _essenceMixer.gameObject.SetActive(false);
+            if (_gameplayService.Data.UniqItems.Contains(_gameConfigProvider.MixerUniqId))
             {
-                essenceBottle.gameObject.SetActive(false);
-            }
-
-            var reachedEssencesIds = _gameplayService.Data.AllEssences.ToArray();
-            var maxInitEssencesCount = Math.Min(reachedEssencesIds.Length, _essenceBottles.Length);
-            
-            for (var i = 0; i < maxInitEssencesCount; i++)
-            {
-                var conf = _gameConfigProvider.GetByID<EssenceConfig>(reachedEssencesIds[i]);
-                if (conf == null) throw new Exception("reachedEssencesIds[i] can't found");
-                
-                _essenceBottles[i].InitData(conf);
-                _essenceBottles[i].gameObject.SetActive(true);
+                _essenceMixer.Init();
+                _essenceMixer.gameObject.SetActive(true);
             }
         }
 
@@ -52,6 +45,31 @@ namespace _CodeBase.Potion
 
         protected override void OnExit()
         {
+        }
+
+        
+        
+        private void InitEssenceBottles()
+        {
+            foreach (var essenceBottle in _essenceBottles)
+            {
+                essenceBottle.gameObject.SetActive(false);
+            }
+
+            var reachedEssencesIds = _gameplayService.Data.AllEssences.ToArray();
+            
+            for (var i = 0; i < reachedEssencesIds.Length; i++)
+            {
+                var conf = _gameConfigProvider.GetByID<EssenceConfig>(reachedEssencesIds[i]);
+                if (conf == null) throw new Exception($"{reachedEssencesIds[i]} can't found");
+                
+                var typedBottle = _essenceBottles.FirstOrDefault(e => e.EssenceID == conf.ID);
+                if (typedBottle == default) throw new Exception($"{conf.ID} can't found needed bottle in scene");
+                
+                
+                typedBottle.InitData(conf);
+                typedBottle.gameObject.SetActive(true);
+            }
         }
     }
 }

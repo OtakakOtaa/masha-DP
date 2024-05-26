@@ -4,6 +4,7 @@ using System.Linq;
 using _CodeBase.Garden.Data;
 using _CodeBase.Garden.UI;
 using _CodeBase.Input.InteractiveObjsTypes;
+using _CodeBase.Input.Manager;
 using Cysharp.Threading.Tasks;
 using Sirenix.Utilities;
 using UniRx;
@@ -131,7 +132,7 @@ namespace _CodeBase.Garden
             }
         }
         
-        public override void ProcessInteractivity()
+        public override void ProcessInteractivity(InputManager.InputAction inputAction)
         {
             var isGardenTool = _inputManager.GameplayCursor.HandleItem.TryGetComponent(out GardenTool gardenTool);
             if (CurrentState is State.NeedFertilizers or State.NeedWater or State.NeedBugResolver && isGardenTool && gardenTool.Resolve == CurrentState)

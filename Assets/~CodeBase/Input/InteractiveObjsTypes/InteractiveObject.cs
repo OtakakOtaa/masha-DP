@@ -36,10 +36,10 @@ namespace _CodeBase.Input.InteractiveObjsTypes
         }
         
 
-        public abstract void ProcessInteractivity();
+        public abstract void ProcessInteractivity(InputManager.InputAction inputAction);
 
-        public virtual void ProcessEndInteractivity() { }
-        public virtual void ProcessStartInteractivity() { }
+        public virtual void ProcessEndInteractivity(InputManager.InputAction inputAction) { }
+        public virtual void ProcessStartInteractivity(InputManager.InputAction inputAction) { }
         
         public virtual InteractiveObject GetHandleTarget() => this;
 

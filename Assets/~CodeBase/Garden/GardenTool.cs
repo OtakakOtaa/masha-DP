@@ -30,17 +30,17 @@ namespace _CodeBase.Garden
         }
 
 
-        public override void ProcessStartInteractivity()
+        public override void ProcessStartInteractivity(InputManager.InputAction inputAction)
         {
             _spriteRenderer.sortingLayerID = _inputManager.GameplayCursor.TargetSpriteLayerOrder;
         }
         
-        public override void ProcessInteractivity()
+        public override void ProcessInteractivity(InputManager.InputAction inputAction)
         {
             transform.position = _inputManager.WorldPosition;
         }
 
-        public override void ProcessEndInteractivity()
+        public override void ProcessEndInteractivity(InputManager.InputAction inputAction)
         {
             _spriteRenderer.sortingLayerID = _originDrawLayerID;
             

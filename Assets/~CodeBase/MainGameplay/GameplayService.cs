@@ -75,11 +75,13 @@ namespace _CodeBase.MainGameplay
             {
                 Data.AddPlantsToLandingPool(staticPlantSeeds, GameplayData.InfinityLandingValue);
             }
-            
+
             foreach (var staticEssence in _gameConfigProvider.StaticEssences)
             {
                 Data.AddEssence(staticEssence);
             }
+
+            Data.AddUniqItem(_gameConfigProvider.MixerUniqId);
         } 
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

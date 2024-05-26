@@ -51,7 +51,7 @@ namespace _CodeBase.Infrastructure.UI
         }
         
         
-        public override void ProcessInteractivity()
+        public override void ProcessInteractivity(InputManager.InputAction inputAction)
         {
             if (_isExecuted || enabled is false) return;
 
@@ -75,13 +75,13 @@ namespace _CodeBase.Infrastructure.UI
             ExecuteWithAnimation();
         }
 
-        public override void ProcessEndInteractivity()
+        public override void ProcessEndInteractivity(InputManager.InputAction inputAction)
         {
             if (_isExecuted) return;
             _rectTransform.anchoredPosition = _initialPosition;
         }
 
-        public override void ProcessStartInteractivity()
+        public override void ProcessStartInteractivity(InputManager.InputAction inputAction)
         {
             if (_isExecuted && enabled is false) return;
 

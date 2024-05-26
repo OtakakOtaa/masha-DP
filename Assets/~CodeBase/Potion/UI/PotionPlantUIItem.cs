@@ -1,5 +1,6 @@
 ﻿using _CodeBase.Garden.Data;
 using _CodeBase.Infrastructure.UI;
+using _CodeBase.Input.Manager;
 using UnityEngine.UI;
 
 namespace _CodeBase.Potion.UI
@@ -7,6 +8,7 @@ namespace _CodeBase.Potion.UI
     public sealed class PotionPlantUIItem : BasketUIElement<PlantConfig, ScrollRect>
     {
         private ScrollRect _scrollRect;
+        
         
         protected override void OnInit(PlantConfig config, ScrollRect param)
         {
@@ -18,16 +20,16 @@ namespace _CodeBase.Potion.UI
         }
         
         
-        public override void ProcessStartInteractivity()
+        public override void ProcessStartInteractivity(InputManager.InputAction inputAction)
         {
             _scrollRect.movementType = ScrollRect.MovementType.Clamped;
-            base.ProcessStartInteractivity();
+            base.ProcessStartInteractivity(inputAction);
         }
 
-        public override void ProcessEndInteractivity()
+        public override void ProcessEndInteractivity(InputManager.InputAction inputAction)
         {
             _scrollRect.movementType = ScrollRect.MovementType.Elastic;
-            base.ProcessEndInteractivity();
+            base.ProcessEndInteractivity(inputAction);
         }
     }
 }

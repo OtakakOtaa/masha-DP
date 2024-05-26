@@ -1,6 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using Random = System.Random;
 
 namespace _CodeBase.Infrastructure
 {
@@ -8,5 +9,6 @@ namespace _CodeBase.Infrastructure
     {
         public static TItem GetRandom<TItem>(this IEnumerable<TItem> items)
             => items.ElementAt(new Random().Next(0, items.Count()));
+
     }
 }
