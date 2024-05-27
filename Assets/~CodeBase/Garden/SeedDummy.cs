@@ -1,6 +1,5 @@
 ﻿using _CodeBase.Garden.Data;
 using _CodeBase.Infrastructure.UI;
-using UnityEngine;
 
 namespace _CodeBase.Garden
 {
@@ -8,7 +7,7 @@ namespace _CodeBase.Garden
     {
         public override void Init(PlantConfig param)
         {
-            transform.localScale = Vector3.one;
+            transform.localScale = _scale;
             PlantConfig = param;
             ID = param.ID;
             

@@ -11,6 +11,7 @@ namespace _CodeBase.MainGameplay
         public bool IsTimeUp => _startTime + _targetDTime >= Time.time;
 
         public TimeSpan Value => TimeSpan.FromSeconds(Time.time - _startTime);
+        public float TimeProgress => (Time.time - _startTime) / (_startTime + _targetDTime);
         
         public void Run(TimeSpan target)
         {

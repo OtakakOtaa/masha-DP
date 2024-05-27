@@ -40,7 +40,7 @@ namespace _CodeBase.Garden.UI
         private void OpenPanel()
         {
             _openPanelBtn.gameObject.SetActive(false);
-            _scrollPanel.gameObject.SetActive(true);
+            _scrollPanel.OpenPanel();
         }
 
         private void ClosePanel()

@@ -27,13 +27,12 @@ namespace _CodeBase.Input.Manager
         private IEnumerable<ObjectKeeper> _droppedItemsKeepers;
 
 
-
         public static InputManager Instance { get; private set; }
         
         [Inject] public GameplayCursor GameplayCursor { get; private set; }
         public Vector3 WorldPosition { get; private set; }
         public Vector2 ScreenMousePos { get; private set; }
-        public ReactiveCommand ClickEvent { get; private set; } = new ();
+        public ReactiveCommand<Vector2> ClickEvent { get; private set; } = new ();
         public bool IntractableInputFlag { get; set; } = false;
 
         
@@ -65,6 +64,25 @@ namespace _CodeBase.Input.Manager
             _camera = camera;
         }
 
+        public Vector2 WorldToViewPort(Vector2 worldPos)
+        {
+            return _camera.WorldToViewportPoint(worldPos);
+        }
+
+        public bool IsPosInViewPort(RectTransform rect, Vector2 targetViewPortPos)
+        {
+            var corners = new Vector3[4];
+            rect.GetWorldCorners(corners);
+            
+            for (var i = 0; i < corners.Length; i++)
+            {
+                corners[i] = WorldToViewPort(corners[i]);
+            }
+
+            return targetViewPortPos.x > corners[0].x && targetViewPortPos.x < corners[3].x 
+                                                      && targetViewPortPos.y > corners[0].y && targetViewPortPos.x < corners[1].y;
+        }
+        
 
         private void UpdateInput()
         {
@@ -133,9 +151,9 @@ namespace _CodeBase.Input.Manager
         private void OnClick(UnityEngine.InputSystem.InputAction.CallbackContext inputContext)
         {
             if (!IntractableInputFlag) return;
-            
-            ClickEvent.Execute();
 
+            ClickEvent.Execute(_camera.WorldToViewportPoint(WorldPosition));
+            
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 var uiItem = EventSystem.current.currentSelectedGameObject;

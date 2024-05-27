@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _CodeBase.Garden.Data;
 using _CodeBase.Infrastructure.UI;
+using _CodeBase.Input.Manager;
 using _CodeBase.Potion.Data;
 using UniRx;
 using UniRx.Triggers;
@@ -17,14 +18,14 @@ namespace _CodeBase.Potion.UI
         public const string PlusSign = "+";
         public const string EqualSign = "=";
 
-
+        
         [SerializeField] private PulledUIItem _openPlantsPanelBtn;
         [SerializeField] private PulledUIItem _openCraftInfoPanelBtn;
         [SerializeField] private PulledUIItem _clearBtn;
 
-
         [SerializeField] private ScrollPanel _scrollPanel;
         [SerializeField] private GameObject _craftPanel;
+        [SerializeField] private RectTransform _craftPanelRec;
         [SerializeField] private Transform _container;
         [SerializeField] private PotionRecipeUIItem _potionRecipePrefab;
 
@@ -83,7 +84,7 @@ namespace _CodeBase.Potion.UI
         private void OpenPlantPanel()
         {
             DisableAll();
-            _scrollPanel.gameObject.SetActive(true);
+            _scrollPanel.OpenPanel();
         }
 
         private void ClosePlantPanel()
@@ -96,6 +97,11 @@ namespace _CodeBase.Potion.UI
         {
             DisableAll();
             _craftPanel.gameObject.SetActive(true);
+            
+            InputManager.Instance.ClickEvent
+                .Where(t => !InputManager.Instance.IsPosInViewPort(_craftPanelRec, t))
+                .First()
+                .Subscribe(_ => CloseCraftInfoPanel());
         }
         
         private void CloseCraftInfoPanel()
@@ -106,9 +112,9 @@ namespace _CodeBase.Potion.UI
 
         private void DisableAll()
         {
-            _openPlantsPanelBtn.gameObject.SetActive(false);
-            _openCraftInfoPanelBtn.gameObject.SetActive(false);
-            _clearBtn.gameObject.SetActive(false);
+            _openPlantsPanelBtn.PlayExecuteAnimation(isNeedExecuted: false);
+            _openCraftInfoPanelBtn.PlayExecuteAnimation(isNeedExecuted: false);
+            _clearBtn.PlayExecuteAnimation(isNeedExecuted: false);
             
             _scrollPanel.gameObject.SetActive(false);
             _craftPanel.gameObject.SetActive(false);
@@ -141,7 +147,8 @@ namespace _CodeBase.Potion.UI
                 _recipesInstances[i].gameObject.SetActive(false);
             }
         }
-
+        
+        
         [Obsolete]
         private void FillRecipesDataAsCells(ICollection<PotionConfig> allAvailablePotions)
         {

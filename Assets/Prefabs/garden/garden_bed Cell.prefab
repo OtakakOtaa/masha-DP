@@ -106,8 +106,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.538079, y: 0.59622055, z: 0.7}
-  m_Center: {x: 0.008254799, y: 0.16115834, z: 0}
+  m_Size: {x: 0.58651376, y: 1.2688046, z: 0.7}
+  m_Center: {x: 0.03247218, y: 0.49745035, z: 0}
 --- !u!114 &2854077892725617814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 1773842198862634817}
-  _tag: {fileID: 21300000, guid: 9be4592f34980d746803b03a1ad783d8, type: 3}
+  _tag: {fileID: 0}
 --- !u!1 &6038561671973526787
 GameObject:
   m_ObjectHideFlags: 0

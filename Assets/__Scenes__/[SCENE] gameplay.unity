@@ -709,6 +709,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6229111681536182760 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 900809807445198356, guid: a7d2be5eedc0914478791844d31b00c7, type: 3}
+  m_PrefabInstance: {fileID: 6229111681536182758}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6810438657446110915
 RectTransform:
   m_ObjectHideFlags: 0
@@ -955,6 +966,7 @@ MonoBehaviour:
   _locationBtn2Image: {fileID: 6890632717507568670}
   _menuBtn: {fileID: 4360415407379171274}
   _timeFld: {fileID: 6140043342956998132}
+  _timeSignImage: {fileID: 6229111681536182760}
   _customerIndicatorFld: {fileID: 3604058302198669136}
   _customerIndicatorImage: {fileID: 6229111681536182759}
   _coinsFld: {fileID: 4118429183379300180}
@@ -966,6 +978,8 @@ MonoBehaviour:
   _hallIcon: {fileID: 21300000, guid: fa1cad5dd69fbc042b2b911d60b7652d, type: 3}
   _gardenIcon: {fileID: 21300000, guid: 61465c65831303e4d81f689845d9c017, type: 3}
   _potionIcon: {fileID: 21300000, guid: daf289ccf968ccb479244cd5247d63c0, type: 3}
+  _startDayHTime: 12
+  _endDatHTime: 18
 --- !u!114 &8559114280034542017 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6252453504381374603, guid: a7d2be5eedc0914478791844d31b00c7, type: 3}

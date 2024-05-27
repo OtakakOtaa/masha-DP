@@ -16,7 +16,8 @@ namespace _CodeBase.Infrastructure.UI
         [SerializeField] private ScrollViewItem _UIItemPrefab;
         [SerializeField] private Transform _container;
         [SerializeField] private ScrollRect _scroll;
-        
+
+        private bool _intFlag = false;
         
         private Tween _panelAnimationHandler;
         private Vector3 _panelStartAnimPos;
@@ -33,22 +34,28 @@ namespace _CodeBase.Infrastructure.UI
         
         private void Awake()
         {
+            _intFlag = true;
+            
             _panelOriginPos = transform.position;
             _currentAnimProgress = 1f;
+            transform.position = PanelHidePosition;
         }
 
 
-        private void OnEnable()
+        public void OpenPanel()
         {
+            gameObject.SetActive(true);
+            if (_intFlag is false) Awake();
+            
             UpdatePanelState(true);
             _panelAnimationHandler.OnComplete(() =>
             {
                 _closeTrigger.enabled = true;
                 _closeTrigger.SetCurrentPositionAsInit();
             });
-
         }
-
+        
+        
         private void OnDisable()
         {
             _closeTrigger.enabled = false;
@@ -84,7 +91,8 @@ namespace _CodeBase.Infrastructure.UI
         private void UpdatePanelState(bool isOpenRequired)
         {
             _panelAnimationHandler?.Kill();
-
+            _currentAnimProgress = 1f;
+            
             _panelEndAnimPos = isOpenRequired ? _panelOriginPos : PanelHidePosition;
             _panelStartAnimPos = transform.position;
             _isPanelOpening = isOpenRequired;

@@ -10,17 +10,29 @@ namespace _CodeBase.Potion
 {
     public sealed class EssenceMixer : ObjectKeeper
     {
+        [SerializeField] private SpriteRenderer[] _allSprites;
+        
+        
         [Inject] private GameConfigProvider _gameConfigProvider;
         [Inject] private GameplayService _gameplayService;
-        
-        
+
+
         private Dictionary<PotionMixData, string> _mixMap; 
         private PotionMixData _currentPotionMix;
         private string _targetMix;
-
+        private Vector3 _originPos;
+        private string[] _originSpritesLayers;
 
         protected override void OnAwake()
         {
+            _originPos = transform.position;
+            
+            _originSpritesLayers = new string[_allSprites.Length];
+            for (var i = 0; i < _originSpritesLayers.Length; i++)
+            {
+                _originSpritesLayers[i] = _allSprites[i].sortingLayerName;
+            }
+            
             InitSupportedActionsList(InputManager.InputAction.Hold, InputManager.InputAction.SomeItemDropped);
         }
 
@@ -76,11 +88,37 @@ namespace _CodeBase.Potion
             if (inputAction == InputManager.InputAction.Hold)
             {
                 transform.position = _inputManager.WorldPosition;
-                
                 return;
             }
         }
 
+        public override void ProcessStartInteractivity(InputManager.InputAction inputAction)
+        {
+            if (inputAction == InputManager.InputAction.Hold)
+            {
+                foreach (var sprite in _allSprites)
+                {
+                    sprite.sortingLayerName = _inputManager.GameplayCursor.CursorLayerID;
+                }
+                return;
+            }
+        }
+
+        public override void ProcessEndInteractivity(InputManager.InputAction inputAction)
+        {
+            if (inputAction == InputManager.InputAction.Hold)
+            {
+                transform.position = _originPos;
+
+                for (var i = 0; i < _originSpritesLayers.Length; i++)
+                {
+                    _allSprites[i].sortingLayerName = _originSpritesLayers[i];
+                }
+
+                return;
+            }
+        }
+        
 
         private int GetCurrentFixState()
         {

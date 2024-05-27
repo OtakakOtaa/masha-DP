@@ -84,7 +84,7 @@ namespace _CodeBase.Infrastructure.UI
             
             if ((_rectTransform.anchoredPosition - _initialPosition).magnitude + _releaseDistance / 5f < _releaseDistance) return;
 
-            ExecuteWithAnimation();
+            PlayExecuteAnimation();
         }
 
         public override void ProcessEndInteractivity(InputManager.InputAction inputAction)
@@ -108,7 +108,7 @@ namespace _CodeBase.Infrastructure.UI
             _rectTransform.anchoredPosition = _initialPosition;
         }
 
-        private void ExecuteWithAnimation()
+        public void PlayExecuteAnimation(bool isNeedExecuted = true)
         {
             _isExecuted = true;
 
@@ -121,7 +121,7 @@ namespace _CodeBase.Infrastructure.UI
                 .OnComplete(() =>
                 {
                     _isExecuted = false;
-                    OnExecuted.Execute();
+                    if (isNeedExecuted) OnExecuted.Execute();
                 });
         }
     }

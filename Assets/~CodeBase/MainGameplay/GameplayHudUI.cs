@@ -18,6 +18,8 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private Button _menuBtn;
 
         [SerializeField] private TMP_Text _timeFld;
+        [SerializeField] private Image _timeSignImage;
+        
         [SerializeField] private TMP_Text _customerIndicatorFld;
         [SerializeField] private Image _customerIndicatorImage;
         [SerializeField] private TMP_Text _coinsFld;
@@ -32,12 +34,14 @@ namespace _CodeBase.MainGameplay
         
         [SerializeField] private Sprite _angryCustomerEmj;
         
-        
         [SerializeField] private Sprite _hallIcon;
         [SerializeField] private Sprite _gardenIcon;
         [SerializeField] private Sprite _potionIcon;
-
-
+        
+        [SerializeField] private float _startDayHTime = 12;
+        [SerializeField] private float _endDatHTime = 18;
+        
+        
         private readonly CompositeDisposable _compositeDisposable = new();
         private GameplayService _gameplayService;
 
@@ -71,7 +75,7 @@ namespace _CodeBase.MainGameplay
                 .AddTo(_compositeDisposable);
 
             Observable.EveryUpdate()
-                .Subscribe(_ => UpdateTime(_gameplayService.GameTimer.Value))
+                .Subscribe(_ => UpdateTime(_gameplayService.GameTimer.TimeProgress))
                 .AddTo(_compositeDisposable);
             
             
@@ -112,10 +116,15 @@ namespace _CodeBase.MainGameplay
         [Button]
         public void UpdateCoins(int amount)
             => _coinsFld.text = amount.ToString();
-        
+
         [Button]
-        public void UpdateTime(TimeSpan span)
-            => _timeFld.text = span.ToString(@"\mm\:ss");
+        public void UpdateTime(float progress)
+        {
+            _timeSignImage.fillAmount = progress;
+            var h = Mathf.Lerp(_startDayHTime, _endDatHTime, progress);
+            
+            _timeFld.text = TimeSpan.FromHours(h).ToString(@"\hh\:mm");
+        }
 
         [Button]
         public void UpdateCustomerIndicator(float customerLoyalty)

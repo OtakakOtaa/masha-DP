@@ -10,7 +10,6 @@ using Sirenix.Utilities;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VContainer;
 using Random = UnityEngine.Random;
 
@@ -84,7 +83,8 @@ namespace _CodeBase.Garden
             CurrentState = startState;
             _maps.ForEach(m => m.Value.gameObject.SetActive(false));
             _maps[CurrentState].gameObject.SetActive(true);
-            _ui.gameObject.SetActive(false);
+            _ui.gameObject.SetActive(true);
+            _ui.HideAll();
         }
 
         public void UpdateState()
@@ -169,8 +169,14 @@ namespace _CodeBase.Garden
 
         private void SwitchState(State newState)
         {
-            _ui.gameObject.SetActive(false);
+            _ui.HideAll();
+
             
+            var isNewStateBeProblem = newState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver; 
+            if (isNewStateBeProblem)
+            {
+                _ui.ShowCareRequiredTag();
+            }
             
             var nowIsProblemState = CurrentState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver; 
             if (nowIsProblemState)
@@ -194,7 +200,7 @@ namespace _CodeBase.Garden
                         .ContinueWith(() => cell.ApplyGrownPlantState(_plantConfig, _needConsedStartRandomOffset ? -growingTimeOffset : 0f));
                 }
                 _startGrowTimePoint = Time.time;
-                _ui.gameObject.SetActive(true);
+                _ui.ShowProgressBar();
             }
 
             _maps.ForEach(m => m.Value.gameObject.SetActive(false));
