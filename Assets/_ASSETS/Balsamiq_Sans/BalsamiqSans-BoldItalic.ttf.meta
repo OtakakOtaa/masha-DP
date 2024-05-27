@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 61d9569a0e252c243a315f294ead7365
+guid: 12e13c08d2c2c9c43814355541959ec2
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Inter
+  - Balsamiq Sans
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

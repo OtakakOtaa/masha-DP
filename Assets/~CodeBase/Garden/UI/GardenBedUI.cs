@@ -5,11 +5,11 @@ namespace _CodeBase.Garden.UI
 {
     public sealed class GardenBedUI : MonoBehaviour
     {
-        [SerializeField] private Image _progressBar;
+        [SerializeField] private Slider _progressBar;
         
         public void UpdateProgressBar(float delta)
         {
-            _progressBar.fillAmount = delta;
+            _progressBar.value = delta;
         }
     }
 }

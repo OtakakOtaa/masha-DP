@@ -19,12 +19,19 @@ namespace _CodeBase.MainGameplay
 
         [SerializeField] private TMP_Text _timeFld;
         [SerializeField] private TMP_Text _customerIndicatorFld;
+        [SerializeField] private Image _customerIndicatorImage;
         [SerializeField] private TMP_Text _coinsFld;
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+        [SerializeField] private Sprite _goodCustomerEmj;
+        [SerializeField] private float _goodCustomerBottomThreshold;
         
         [SerializeField] private Sprite _normalCustomerEmj;
+        [SerializeField] private float _normalCustomerBottomThreshold;
+        
         [SerializeField] private Sprite _angryCustomerEmj;
+        
         
         [SerializeField] private Sprite _hallIcon;
         [SerializeField] private Sprite _gardenIcon;
@@ -113,7 +120,23 @@ namespace _CodeBase.MainGameplay
         [Button]
         public void UpdateCustomerIndicator(float customerLoyalty)
         {
-            _customerIndicatorFld.text = $"{(int)(customerLoyalty * 100)}%";
+            var loyaltyPer = (int)(customerLoyalty * 100f);
+            
+            _customerIndicatorFld.text = $"{loyaltyPer}%";
+
+            if (_goodCustomerBottomThreshold < loyaltyPer)
+            {
+                _customerIndicatorImage.sprite = _goodCustomerEmj;
+                return;
+            }
+
+            if (_normalCustomerBottomThreshold < loyaltyPer)
+            {
+                _customerIndicatorImage.sprite = _normalCustomerEmj;
+                return;
+            }
+            
+            _customerIndicatorImage.sprite = _angryCustomerEmj;
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
