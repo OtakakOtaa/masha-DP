@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: '[Essense] RED'
   _color: {r: 1, g: 0, b: 0, a: 1}
+  _name: 
+  _sprite: {fileID: 21300000, guid: 64cf2686111d4f84eb7f99f19dada59c, type: 3}

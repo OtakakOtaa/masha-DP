@@ -9,14 +9,14 @@ namespace _CodeBase.Garden.UI
     public sealed class GardenUI : MonoBehaviour 
     {
         [SerializeField] private ScrollPanel _scrollPanel;
-        [SerializeField] private DraggableExecutableItem _openPanelExecutableItem;
+        [SerializeField] private PulledUIItem _openPanelBtn;
         
         
         private readonly CompositeDisposable _subscriptions = new();
         
         public void Init()
         {
-            _openPanelExecutableItem.OnExecuted.Subscribe(_ => OpenPanel()).AddTo(_subscriptions);
+            _openPanelBtn.OnExecuted.Subscribe(_ => OpenPanel()).AddTo(_subscriptions);
             _scrollPanel.OnClosed.Subscribe(_ => ClosePanel()).AddTo(_subscriptions);
             
             gameObject.OnDestroyAsObservable().Subscribe(_ => _subscriptions.Dispose());
@@ -25,10 +25,10 @@ namespace _CodeBase.Garden.UI
         
         public void HardResetPanelToDefault()
         {
-            _openPanelExecutableItem.gameObject.SetActive(true);
+            _openPanelBtn.gameObject.SetActive(true);
             _scrollPanel.gameObject.SetActive(false);
             
-            _openPanelExecutableItem.SetToDefault();
+            _openPanelBtn.SetToDefaultWithAnim();
         }
 
         public void FillData(PlantConfig[] plantConfigs)
@@ -39,15 +39,15 @@ namespace _CodeBase.Garden.UI
         
         private void OpenPanel()
         {
-            _openPanelExecutableItem.gameObject.SetActive(false);
+            _openPanelBtn.gameObject.SetActive(false);
             _scrollPanel.gameObject.SetActive(true);
         }
 
         private void ClosePanel()
         {
             _scrollPanel.gameObject.SetActive(false);
-            _openPanelExecutableItem.gameObject.SetActive(true);
-            _openPanelExecutableItem.SetToDefault();
+            _openPanelBtn.gameObject.SetActive(true);
+            _openPanelBtn.SetToDefaultWithAnim();
         }
     }
 }

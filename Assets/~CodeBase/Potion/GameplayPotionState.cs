@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using _CodeBase.Garden.Data;
 using _CodeBase.Infrastructure.GameStructs;
@@ -23,6 +24,7 @@ namespace _CodeBase.Potion
         {
             _gameplayService.UI.PotionUI.Init();
 
+            InitCraftUI();
             InitEssenceBottles();
 
             
@@ -70,6 +72,25 @@ namespace _CodeBase.Potion
                 typedBottle.InitData(conf);
                 typedBottle.gameObject.SetActive(true);
             }
+        }
+        
+        private void InitCraftUI()
+        {
+            var allPotions = _gameConfigProvider.Potions.ToArray();
+            var availablePotionsForCraft = new List<PotionConfig>();
+            var accessedComponentsIDs = _gameplayService.Data.AvailablePlantsLanding.Concat(_gameplayService.Data.AllEssences).Concat(new[] { _gameConfigProvider.MixerUniqId });
+            
+            
+            foreach (var potion in allPotions)
+            {
+                var canConceivablyCreated = potion.Compound.All(c => accessedComponentsIDs.Contains(c.ID));
+                if (canConceivablyCreated)
+                {
+                    availablePotionsForCraft.Add(potion);
+                }
+            }
+            
+            _gameplayService.UI.PotionUI.FillRecipesData(availablePotionsForCraft);
         }
     }
 }

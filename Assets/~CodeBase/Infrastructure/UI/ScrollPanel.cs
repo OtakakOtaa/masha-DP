@@ -9,7 +9,7 @@ namespace _CodeBase.Infrastructure.UI
 {
     public sealed class ScrollPanel : MonoBehaviour
     {
-        [SerializeField] private DraggableExecutableItem _closeTrigger;
+        [SerializeField] private PulledUIItem _closeTrigger;
         [SerializeField] private AnimationCurve _plantPanelAnimationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         [SerializeField] private Vector3 _plantPanelAnimationOffset;
         [SerializeField] private float _plantPanelAnimationDuration;

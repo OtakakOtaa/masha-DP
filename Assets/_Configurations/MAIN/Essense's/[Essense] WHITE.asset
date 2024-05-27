@@ -15,3 +15,4 @@ MonoBehaviour:
   _id: '[Essense] WHITE'
   _color: {r: 1, g: 1, b: 1, a: 1}
   _name: 
+  _sprite: {fileID: 21300000, guid: 3ceec386f0be67d4b92cb139e9425bee, type: 3}

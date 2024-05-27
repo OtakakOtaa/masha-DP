@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace _CodeBase.Infrastructure.UI
 {
-    public abstract class ItemDummy<TParam> : InteractiveObject where TParam : IUniq
+    public abstract class ItemDummy<TParam> : Input.InteractiveObjsTypes.InteractiveObject where TParam : IUniq
     {
         [SerializeField] protected SpriteRenderer _spriteRenderer;
         [SerializeField] protected  Vector3 _scale = Vector3.one;

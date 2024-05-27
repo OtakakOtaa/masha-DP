@@ -38,6 +38,66 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f1f98aa68c6365047a344532be5d1224, type: 2}
   _customersConfiguration: {fileID: 11400000, guid: 72b9a0d9cefdab34e839437c32b0d224, type: 2}
   _mixerUniqId: "[Essense] \u0421\u041A\u041B\u042F\u041D\u041A\u0410"
+  _mixEssenceDictionary:
+  - _compoundData:
+    - _id: '[Essense] YELLOW'
+      _amount: 1
+      _type: 1
+    - _id: '[Essense] BLUE'
+      _amount: 1
+      _type: 1
+    _sprite: {fileID: 21300000, guid: 01f1e6431ddcf75439e563071a63ff49, type: 3}
+  - _compoundData:
+    - _id: '[Essense] WHITE'
+      _amount: 1
+      _type: 1
+    - _id: '[Essense] BLUE'
+      _amount: 1
+      _type: 1
+    _sprite: {fileID: 21300000, guid: e9b88ce40a1211545ad3d6ba8c18b8cd, type: 3}
+  - _compoundData:
+    - _id: '[Essense] YELLOW'
+      _amount: 1
+      _type: 1
+    - _id: '[Essense] RED'
+      _amount: 1
+      _type: 1
+    _sprite: {fileID: 21300000, guid: 172202fcf2ca0404fb4f377ce2f505c8, type: 3}
+  - _compoundData:
+    - _id: '[Essense] RED'
+      _amount: 1
+      _type: 1
+    - _id: '[Essense] WHITE'
+      _amount: 1
+      _type: 1
+    _sprite: {fileID: 21300000, guid: cb2ae47b86f950e45b7cc613461ef372, type: 3}
+  - _compoundData:
+    - _id: '[Essense] RED'
+      _amount: 1
+      _type: 1
+    - _id: '[Essense] BLUE'
+      _amount: 1
+      _type: 1
+    _sprite: {fileID: 21300000, guid: 6b235b4ddcb43554baddb9d73803b9c1, type: 3}
+  _craftRowsData:
+  - _potionID: "[Potion] \u0410\u041D\u0422\u0418\u0414\u041E\u0422"
+    _sprite: {fileID: 21300000, guid: ba7d070c7fb8d5f4f99b623728a39e6d, type: 3}
+  - _potionID: "[Potion] \u0412\u0414\u041E\u0425\u041D\u041E\u0412\u0415\u041D\u0418\u042F"
+    _sprite: {fileID: 21300000, guid: ae689df84ad9a7d4a922699d44da34c8, type: 3}
+  - _potionID: "[Potion] \u0418\u0421\u0426\u0415\u041B\u0415\u041D\u0418\u0415"
+    _sprite: {fileID: 21300000, guid: 9f75e6351efe6264aaae875d1aaafc93, type: 3}
+  - _potionID: "[Potion] \u041B\u042E\u0411\u041E\u0412\u041D\u041E\u0415"
+    _sprite: {fileID: 21300000, guid: 658a57a934d61e5418f260e4fa720d98, type: 3}
+  - _potionID: "[Potion] \u041D\u0410\u0413\u0420\u0415\u0412\u0410\u041D\u0418\u042F"
+    _sprite: {fileID: 21300000, guid: 07e31123a631b6349a3b2ee52ffb5475, type: 3}
+  - _potionID: "[Potion] \u041E\u0425\u041B\u0410\u0416\u0414\u0415\u041D\u0418\u042F"
+    _sprite: {fileID: 21300000, guid: 7afdbaaba9d7c33478b8bab0d7dd18b6, type: 3}
+  - _potionID: "[Potion] \u0420\u0410\u0421\u0421\u041B\u0410\u0411\u041B\u0415\u041D\u0418\u042F"
+    _sprite: {fileID: 21300000, guid: 169505898ffb72743a0f73439898072b, type: 3}
+  - _potionID: "[Potion] \u0421\u0427\u0410\u0421\u0422\u042C\u042F"
+    _sprite: {fileID: 21300000, guid: 6fef1b1903d244047974d8e17fa017ed, type: 3}
+  - _potionID: "[Potion] \u042D\u041D\u0415\u0420\u0413\u0418\u0418"
+    _sprite: {fileID: 21300000, guid: bea60e79e3e0c8046b6ce7627a8da1d2, type: 3}
   _staticPlantsForLanding:
   - "[Plant] {\u0437\u0432\u0435\u0440\u0430\u0431\u043E\u0439}"
   - "[Plant] {\u043A\u0430\u043B\u0435\u043D\u0434\u0443\u043B\u0430}"

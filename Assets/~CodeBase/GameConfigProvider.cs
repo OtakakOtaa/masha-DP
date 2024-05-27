@@ -5,6 +5,7 @@ using _CodeBase.Customers;
 using _CodeBase.Customers._Data;
 using _CodeBase.Garden.Data;
 using _CodeBase.Potion.Data;
+using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -25,9 +26,15 @@ namespace _CodeBase
         
         [TabGroup("main")]
         [SerializeField] private CustomersConfiguration _customersConfiguration;
-
+        
         [TabGroup("main")]
         [SerializeField] private string _mixerUniqId;
+        
+        [TabGroup("main")]
+        [SerializeField] private MixEssenceVisualData[] _mixEssenceDictionary;
+        
+        [TabGroup("main")]
+        [SerializeField] private CraftRowsData[] _craftRowsData;
         
         
         [TabGroup("PreGame Data")]
@@ -39,7 +46,10 @@ namespace _CodeBase
         [SerializeField] private string[] _staticEssences;
         
         
+        
         private Dictionary<string, IUniq> _browser;
+        private Dictionary<string, Sprite> _craftRowsSpriteBrowser;
+        
         
         public int UniqOrderCount => _customersConfiguration.Orders.GroupBy(c => c.RequestedItemID).Count();
         public int UniqVisualCount => _customersConfiguration.CustomerVisuals.Count();
@@ -98,8 +108,38 @@ namespace _CodeBase
             }
 
             return shuffledPool[0];
+        }
+
+        
+        [CanBeNull]
+        public MixEssenceVisualData GetEssenceMixVisualData(List<(string id, int amount)> essences)
+        {
+            var mixerComponentI = essences.FindIndex(e => e.id == _mixerUniqId);
+            
+            if (mixerComponentI != -1) essences.RemoveAt(mixerComponentI);
+            
+            
+            foreach (var mixEssenceVisualData in _mixEssenceDictionary)
+            {
+                var isEqual = mixEssenceVisualData.CompoundData.All(cd =>
+                {
+                    var index = essences.FindIndex(e => e.id == cd.ID);
+                    return index != -1 && essences[index].amount == cd.Amount;
+                });
+
+                if (isEqual) return mixEssenceVisualData;
+            }
+
+            return null;
         } 
         
+
+        [CanBeNull]
+        public Sprite GetCraftRowForPotionID(string id)
+        {
+            _craftRowsSpriteBrowser ??= _craftRowsData.ToDictionary(c => c.PotionID, c => c.Sprite);
+            return _craftRowsSpriteBrowser.GetValueOrDefault(id);
+        } 
         
         private void CreteBrowser()
         {
@@ -132,4 +172,26 @@ namespace _CodeBase
         string Name { get; }
         UniqItemsType Type { get; }
     }
+
+    [Serializable] public sealed class MixEssenceVisualData
+    {
+        [SerializeField] private PotionCompoundData[] _compoundData;
+        [SerializeField] private Sprite _sprite;
+
+        public PotionCompoundData[] CompoundData => _compoundData;
+        public Sprite Sprite => _sprite;
+    }
+    
+
+    [Serializable] public sealed class CraftRowsData
+    {
+        [ValueDropdown("@MashaEditorUtility.GetAllPotionsID()")]
+        [SerializeField] private string _potionID;
+        
+        [SerializeField] private Sprite _sprite;
+        
+        public string PotionID => _potionID;
+        public Sprite Sprite => _sprite;
+    }
+    
 }

@@ -17,7 +17,10 @@ MonoBehaviour:
   _compound:
   - _id: "[Plant] {\u044D\u0445\u0438\u043D\u0430\u0446\u0438\u044F}"
     _amount: 1
+    _type: 2
   - _id: '[Essense] YELLOW'
     _amount: 1
+    _type: 1
   _tier: 1
   _color: {r: 0.9450981, g: 0.8117648, b: 0.27450982, a: 1}
+  _staticSprite: {fileID: 21300000, guid: 7d27564c28467b34ba0f25081fcc1f22, type: 3}

@@ -15,7 +15,9 @@ namespace _CodeBase.Potion.Data
         [SerializeField] private PotionCompoundData[] _compound;
         [SerializeField] private int _tier = 1;
         [SerializeField] private Color _color = new Color(0, 0, 0, 1);
-
+        [SerializeField] private Sprite _staticSprite;
+        
+        
         private Dictionary<string, PotionCompoundData> _browser;
         
         
@@ -45,6 +47,7 @@ namespace _CodeBase.Potion.Data
         public UniqItemsType Type => UniqItemsType.Potion;
         public int Tier => _tier;
         public Color Color => _color;
+        public Sprite StaticSprite => _staticSprite;
     }
     
 

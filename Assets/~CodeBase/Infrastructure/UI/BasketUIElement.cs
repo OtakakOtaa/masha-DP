@@ -18,7 +18,7 @@ namespace _CodeBase.Infrastructure.UI
         }
     }
     
-    public abstract class ScrollViewItem : InteractiveObject
+    public abstract class ScrollViewItem : Input.InteractiveObjsTypes.InteractiveObject
     {
         public abstract void Init(object data1, object data2);
     }
@@ -77,7 +77,7 @@ namespace _CodeBase.Infrastructure.UI
         }
 
         
-        public override InteractiveObject GetHandleTarget()
+        public override Input.InteractiveObjsTypes.InteractiveObject GetHandleTarget()
         {
             return _dummy;
         }

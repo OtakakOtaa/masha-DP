@@ -10,7 +10,7 @@ using UnityEngine.UI;
 namespace _CodeBase.Infrastructure.UI
 {
     [RequireComponent(typeof(Button))]
-    public class DraggableExecutableItem : InteractiveObject
+    public class PulledUIItem : InteractiveObject
     {
         [SerializeField] private float _releaseDistance = 50f;
         [SerializeField] private float _returnDuration = 0.3f;
@@ -23,7 +23,8 @@ namespace _CodeBase.Infrastructure.UI
         private RectTransform _rectTransform;
         private Vector2 _initialPosition;
         private bool _isExecuted = false;
-        private Tweener _tween;
+        private Tweener _executeAnim;
+        private Tweener _backAnim;
 
         public ReactiveCommand OnExecuted { get; private set; } = new();
         
@@ -43,6 +44,17 @@ namespace _CodeBase.Infrastructure.UI
             _rectTransform.anchoredPosition = _initialPosition;
         }
 
+        public void SetToDefaultWithAnim()
+        {
+            if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
+
+            _backAnim?.Kill();
+            
+            var startPos = _initialPosition + _endPositionOffset;
+            _backAnim = DOTween.To(setter: v => _rectTransform.anchoredPosition = Vector2.Lerp(startPos, _initialPosition, v), startValue: 0f, endValue: 1f, _returnDuration).SetEase(_anim);
+        }
+
+        
         public void SetCurrentPositionAsInit()
         {
             if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
@@ -78,13 +90,20 @@ namespace _CodeBase.Infrastructure.UI
         public override void ProcessEndInteractivity(InputManager.InputAction inputAction)
         {
             if (_isExecuted) return;
+
+            _backAnim?.Kill();
+            
+            var startPos = _rectTransform.anchoredPosition;
+            _backAnim = DOTween.To(setter: v => _rectTransform.anchoredPosition = Vector2.Lerp(startPos, _initialPosition, v), startValue: 0f, endValue: 1f, _returnDuration).SetEase(_anim);
+            
             _rectTransform.anchoredPosition = _initialPosition;
         }
 
         public override void ProcessStartInteractivity(InputManager.InputAction inputAction)
         {
-            if (_isExecuted && enabled is false) return;
+            if (_isExecuted || enabled is false || _backAnim?.IsComplete() is false) return;
 
+            _backAnim?.Kill();
             _isExecuted = false;
             _rectTransform.anchoredPosition = _initialPosition;
         }
@@ -93,11 +112,10 @@ namespace _CodeBase.Infrastructure.UI
         {
             _isExecuted = true;
 
-            _tween?.Kill();
+            _executeAnim?.Kill();
             var pos = _rectTransform.anchoredPosition;
 
-            _tween = DOTween.To(setter: v => _rectTransform.anchoredPosition = Vector2.Lerp(_initialPosition + _endPositionOffset, pos, v),
-                    startValue: 0f, endValue: 1f, _returnDuration)
+            _executeAnim = DOTween.To(setter: v => _rectTransform.anchoredPosition = Vector2.Lerp(_initialPosition + _endPositionOffset, pos, v), startValue: 0f, endValue: 1f, _returnDuration)
                 .SetEase(_anim)
                 .SetInverted(true)
                 .OnComplete(() =>

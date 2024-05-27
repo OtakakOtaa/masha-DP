@@ -11,7 +11,9 @@ namespace _CodeBase.Potion.Data
         [SerializeField] private string _id;
         [SerializeField] private Color _color;
         [SerializeField] private string _name;
-
+        [SerializeField] private Sprite _sprite;
+        
+        
 #if UNITY_EDITOR
 
         [Button("Generate ID")]
@@ -26,5 +28,6 @@ namespace _CodeBase.Potion.Data
         public string Name => _name.Trim();
         public UniqItemsType Type => UniqItemsType.Essence;
         public Color Color => _color;
+        public Sprite Sprite => _sprite;
     }
 }

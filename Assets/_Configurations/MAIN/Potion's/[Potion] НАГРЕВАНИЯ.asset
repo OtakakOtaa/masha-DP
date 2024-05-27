@@ -17,13 +17,19 @@ MonoBehaviour:
   _compound:
   - _id: "[Plant] {\u0437\u0432\u0435\u0440\u0430\u0431\u043E\u0439}"
     _amount: 1
+    _type: 2
   - _id: "[Plant] {\u0442\u0438\u043C\u044F\u043D}"
     _amount: 1
+    _type: 2
   - _id: '[Essense] RED'
     _amount: 1
+    _type: 1
   - _id: '[Essense] YELLOW'
     _amount: 1
+    _type: 1
   - _id: "[Essense] \u0421\u041A\u041B\u042F\u041D\u041A\u0410"
     _amount: 1
+    _type: 1
   _tier: 2
   _color: {r: 0.9686275, g: 0.52156866, b: 0.007843138, a: 1}
+  _staticSprite: {fileID: 21300000, guid: 67bb8e770df6d7b4c9e023539e4fc280, type: 3}
