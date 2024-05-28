@@ -30,6 +30,15 @@ namespace _CodeBase.Customers
         
 #if UNITY_EDITOR
 
+        [TabGroup("orders")] [Button("ClearAllTabs")]
+        public void ClearAllTabs()
+        {
+            foreach (var order in _orders)
+            {
+                order.Set(order.Message.Replace("\r\n", " "), order.ConcreteMessage.Replace("\r\n", " "));
+            }
+        }
+        
         [TabGroup("orders")] [Button("AutoFillIDs")]
         private void AutoFillIDsForOrder()
         {

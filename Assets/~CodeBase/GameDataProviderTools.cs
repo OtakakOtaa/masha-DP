@@ -35,7 +35,7 @@ namespace _CodeBase
             }
         }
         
-
+        
         private static PlantConfig[] GetAllPlants()
         {
             return AssetDatabase.FindAssets($"t:{nameof(PlantConfig)}")

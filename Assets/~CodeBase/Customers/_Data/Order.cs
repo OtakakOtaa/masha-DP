@@ -38,6 +38,12 @@ namespace _CodeBase.Customers._Data
         {
             _id = id;
         }
+        
+        public void Set(string mess, string conc)
+        {
+            _message = mess;
+            _concreteMessage = conc;
+        }
 #endif
     }
 }
