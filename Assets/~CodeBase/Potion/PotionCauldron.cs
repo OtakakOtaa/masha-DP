@@ -1,53 +1,118 @@
-﻿using DG.Tweening;
+﻿using System.Collections.Generic;
+using System.Linq;
+using _CodeBase.Input.InteractiveObjsTypes;
+using _CodeBase.Potion.Data;
+using UniRx;
 using UnityEngine;
+
 
 namespace _CodeBase.Potion
 {
-    public sealed class PotionCauldron : MonoBehaviour
+    public sealed class PotionCauldron : MixerBase
     {
-        [SerializeField] private GameObject _targetObj;
-        [SerializeField] private float _activationDistance;
-        [SerializeField] private float _maxDropDuration = 1f;
-        [SerializeField] private float _twistStrength;
+        [SerializeField] private SpriteRenderer _liquidRenderer;
 
-        private bool _hasSpawnedPrefab;
 
-        private void Update()
+        public readonly ReactiveCommand<string> PotionCreatedEvent = new();
+        public readonly ReactiveCommand<string> AddPlantEvent = new();
+        
+        
+        protected override void OnAwake() { }
+
+        
+        public override void Init(ICollection<PotionConfig> allAvailablePotions)
         {
-            if (_targetObj.activeSelf is false)
+            InitMixMap(allAvailablePotions);
+            ClearCurrentMix();
+        }
+        
+        public override void ClearCurrentMix()
+        {
+            _targetMix = string.Empty;
+            _currentPotionMix = null;
+            _liquidRenderer.color = Color.white;
+        }
+        
+        protected override void HandleDropComponent(InteractiveObject interactiveObject)
+        {
+            _currentPotionMix ??= new PotionMixData();
+            
+            switch (interactiveObject)
             {
-                var distance = Vector3.Distance(transform.position, _targetObj.transform.position);
-
-                if (distance <= _activationDistance && !_hasSpawnedPrefab)
+                case EssenceMixer essenceMixer:
                 {
-                    var copyObj = Instantiate(_targetObj, _targetObj.transform.position, _targetObj.transform.rotation,
-                        _targetObj.transform.parent);
-                    _hasSpawnedPrefab = true;
-                    
-                    copyObj.SetActive(true);
-                    var startPos = copyObj.transform.position;
-
-                    DOTween.To
-                        (
-                            setter: v =>
-                            {
-                                var linPos = Vector3.Lerp(copyObj.transform.position, transform.position, v);
-                                copyObj.transform.position = linPos;
-                                copyObj.transform.RotateAround(transform.position, Vector3.forward, _twistStrength);
-                            },
-                            startValue: 0,
-                            endValue: 1,
-                            duration: _maxDropDuration
-                        )
-                        .OnComplete(() =>
-                        {
-                            Destroy(copyObj);
-                            _hasSpawnedPrefab = false;
-                        });
-
-                    _targetObj.transform.position = new Vector3(100, 0, 0);
+                    foreach (var parts in essenceMixer.CurrentPotionMix.Parts)
+                    {
+                        _currentPotionMix.AddPart(parts.Key, parts.Value);
+                    }
+                    essenceMixer.ClearCurrentMix();
+                    break;
                 }
+                case PlantDummy plantDummy:
+                    _currentPotionMix.AddPart(plantDummy.ID);
+                    AddPlantEvent?.Execute(plantDummy.ID);
+                    break;
+                case EssenceBottle essenceBottle:
+                {
+                    if (!(essenceBottle.TrySpendOneSip())) return;
+                    _currentPotionMix.AddPart(essenceBottle.EssenceID);
+                    break;
+                }
+                default:
+                    return;
             }
+
+            var state = GetCurrentMixState(_mixMap, _currentPotionMix);
+
+            _targetMix = _mixMap.GetValueOrDefault(_currentPotionMix);
+            SetVisualForState(state);
+
+            StateChangeEvent?.Execute(state);
+            if (state == ComparableResultType.EntireMix)
+            {
+                PotionCreatedEvent?.Execute(_targetMix);
+            }
+            
+            Debug.Log($"Cauldron STATE: {state.ToString()}");
+        }
+
+        protected override void SetVisualForState(ComparableResultType state)
+        {
+            var color = CalculateColorForState(state);
+            _liquidRenderer.color = color;
+        }
+        
+        
+        protected override void InitMixMap(ICollection<PotionConfig> allAvailablePotions)
+        {
+            _mixMap = new Dictionary<PotionMixData, string>();
+            
+            foreach (var potion in allAvailablePotions)
+            {
+                var finalMix = new PotionMixData();
+                
+                foreach (var compoundData in potion.Compound)
+                {
+                    if (compoundData.ID == _gameConfigProvider.MixerUniqId) continue;
+                    
+                    for (var i = 0; i < compoundData.Amount; i++)
+                    {
+                        finalMix.AddPart(compoundData.ID);
+                    }
+                }
+                
+                _mixMap[finalMix] = potion.ID;
+            }
+        }
+
+        protected override Color CalculateAverageColorVisual()
+        {
+            if (_currentPotionMix.Parts.All(p => _gameConfigProvider.TryDefineTypeByID(p.Key) == UniqItemsType.Plant))
+            {
+                return Color.white;
+            }
+            
+            return _currentPotionMix.Parts.Aggregate(Color.black, (current, part) => current + _gameConfigProvider.GetByID<EssenceConfig>(part.Key)?.Color ?? Color.black);
         }
     }
 }

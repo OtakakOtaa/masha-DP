@@ -23,6 +23,7 @@ namespace _CodeBase.Garden
 
         public float Progress { get; private set; }
         public bool HasPlant => _gardenBedData.hasPlant;
+        public bool LockFlag { get; set; }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -74,7 +75,7 @@ namespace _CodeBase.Garden
 
         public override void ProcessInteractivity(InputManager.InputAction inputAction)
         {
-            if (_gardenBedData.hasPlant is false || HasPlantGrown is false) return;
+            if (_gardenBedData.hasPlant is false || HasPlantGrown is false || LockFlag) return;
 
             _gameplayService.Data.AddPlant(_plantConfig.ID);
             ApplyNoPlantState();

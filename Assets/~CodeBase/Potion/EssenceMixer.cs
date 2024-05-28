@@ -1,32 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
-using _CodeBase.MainGameplay;
 using _CodeBase.Potion.Data;
 using UnityEngine;
-using VContainer;
+
+
 
 namespace _CodeBase.Potion
 {
-    public sealed class EssenceMixer : ObjectKeeper, ICanDropToTrash
+    public sealed class EssenceMixer : MixerBase, ICanDropToTrash
     {
         [SerializeField] private SpriteRenderer[] _allSprites;
         [SerializeField] private EssenceBottleShader _essenceBottleShader;
-        [SerializeField] private Color _trashColor;
+        [SerializeField] private GameObject _kernel;
         
-        
-        [Inject] private GameConfigProvider _gameConfigProvider;
-        [Inject] private GameplayService _gameplayService;
-
-
-        private Dictionary<PotionMixData, string> _mixMap; 
-        private PotionMixData _currentPotionMix;
-        private string _targetMix;
         private Vector3 _originPos;
         private string[] _originSpritesLayers;
-
+        
+        
         
         protected override void OnAwake()
         {
@@ -43,73 +35,33 @@ namespace _CodeBase.Potion
 
         
         
-        public void Init()
+        public override void Init(ICollection<PotionConfig> allAvailablePotions)
         {
-            _mixMap = new Dictionary<PotionMixData, string>();
-            
-            var allAccessedEssences = _gameplayService.Data.AllEssences.ToArray();
-            var allPotions = _gameConfigProvider.Potions.ToArray();
-            
-            foreach (var potion in allPotions)
-            {
-                var essenceComponents = potion.Compound.Where(c => allAccessedEssences.Contains(c.ID)).ToArray();
-                if (!(essenceComponents.Length >= 2f)) continue;
+            InitMixMap(allAvailablePotions);
+            _essenceBottleShader.SetProgress(0f);
+            // SetColorForSprites(Color.white);
+        }
 
-                var finalMix = new PotionMixData();
-                foreach (var essenceComponent in essenceComponents)
-                {
-                    for (var i = 0; i < essenceComponent.Amount; i++)
-                    {
-                        finalMix.AddPart(essenceComponent.ID);
-                    }
-                }
-                
-                _mixMap[finalMix] = potion.ID;
-            }
-            
+        public override void ClearCurrentMix()
+        {
+            _targetMix = string.Empty;
+            _currentPotionMix = new PotionMixData();
             _essenceBottleShader.SetProgress(0f);
             // SetColorForSprites(Color.white);
         }
 
         
-        
         public override void ProcessInteractivity(InputManager.InputAction inputAction)
         {
             if (inputAction == InputManager.InputAction.SomeItemDropped)
             {
-                var essenceBottle = _inputManager.GameplayCursor.HandleItem as EssenceBottle;
-                if (!(essenceBottle != null && essenceBottle.TrySpendOneSip())) return;
-                
-                
-                _currentPotionMix ??= new PotionMixData();
-                var key = essenceBottle.EssenceID;
-            
-            
-                _currentPotionMix.AddPart(essenceBottle.EssenceID);
-
-                var state = GetCurrentMixState();
-                _targetMix = _mixMap.GetValueOrDefault(_currentPotionMix);
-                
-                Debug.Log($"MIX STATE: {state.ToString()}");
-                
-                var currentColor = state switch
-                {
-                    -1 => _trashColor,
-                    1 => _gameConfigProvider.GetByID<PotionConfig>(_targetMix).Color,
-                    0 => CalculateAverageColorVisual(),
-                    _ => throw new ArgumentOutOfRangeException()
-                };
-                    
-                _essenceBottleShader.SetColor(currentColor);
-                _essenceBottleShader.SetProgress(1f);
-                // SetColorForSprites(currentColor);
-                
+                HandleDropComponent(_inputManager.GameplayCursor.HandleItem);
                 return;
             }
 
             if (inputAction == InputManager.InputAction.Hold)
             {
-                transform.position = _inputManager.WorldPosition;
+                transform.position = _inputManager.WorldPosition + (Vector3.forward * _inputManager.GameplayCursor.ZPos);
                 return;
             }
         }
@@ -125,7 +77,7 @@ namespace _CodeBase.Potion
                 return;
             }
         }
-
+        
         public override void ProcessEndInteractivity(InputManager.InputAction inputAction)
         {
             if (inputAction == InputManager.InputAction.Hold)
@@ -140,30 +92,60 @@ namespace _CodeBase.Potion
                 return;
             }
         }
-
+        
         public void HandleDropToTrashCan()
         {
             ClearCurrentMix();
-            _essenceBottleShader.SetProgress(0f);
-            // SetColorForSprites(Color.white);
         }
+
         
-        
-        private int GetCurrentMixState()
+        protected override void HandleDropComponent(InteractiveObject interactiveObject)
         {
-            var isHasThatMix = _mixMap.ContainsKey(_currentPotionMix);
+            var essenceBottle = _inputManager.GameplayCursor.HandleItem as EssenceBottle;
+            if (!(essenceBottle != null && essenceBottle.TrySpendOneSip())) return;
+                
+                
+            _currentPotionMix ??= new PotionMixData();
+            _currentPotionMix.AddPart(essenceBottle.EssenceID);
             
-            if (isHasThatMix) return 1;
-
-            if (_mixMap.Any(finalMix => finalMix.Key.CheckOfPartialResemblance(_currentPotionMix))) return 0;
-
-            return -1;
+            
+            var state = GetCurrentMixState(_mixMap, _currentPotionMix);
+            _targetMix = _mixMap.GetValueOrDefault(_currentPotionMix);
+            SetVisualForState(state);
+            
+            Debug.Log($"MIX STATE: {state.ToString()}");
         }
 
-        private void ClearCurrentMix()
+        protected override void SetVisualForState(ComparableResultType state)
         {
-            _targetMix = string.Empty;
-            _currentPotionMix = null;
+            var color = CalculateColorForState(state);
+            _essenceBottleShader.SetColor(color);
+            _essenceBottleShader.SetProgress(1f);
+            // SetColorForSprites(currentColor);
+        }
+
+        protected override void InitMixMap(ICollection<PotionConfig> allAvailablePotions)
+        {
+            _mixMap = new Dictionary<PotionMixData, string>();
+            
+            var allAccessedEssences = _gameplayService.Data.AllEssences.ToArray();
+            
+            foreach (var potion in allAvailablePotions)
+            {
+                var essenceComponents = potion.Compound.Where(c => allAccessedEssences.Contains(c.ID)).ToArray();
+                if (!(essenceComponents.Length >= 2f)) continue;
+
+                var finalMix = new PotionMixData();
+                foreach (var essenceComponent in essenceComponents)
+                {
+                    for (var i = 0; i < essenceComponent.Amount; i++)
+                    {
+                        finalMix.AddPart(essenceComponent.ID);
+                    }
+                }
+                
+                _mixMap[finalMix] = potion.ID;
+            }
         }
 
         private void SetColorForSprites(Color color)
@@ -172,11 +154,6 @@ namespace _CodeBase.Potion
             {
                 allSprite.color = color;
             }
-        }
-        
-        private Color CalculateAverageColorVisual()
-        {
-            return _currentPotionMix.Parts.Aggregate(Color.black, (current, part) => current + _gameConfigProvider.GetByID<EssenceConfig>(part.Key).Color);
         }
     }
 }

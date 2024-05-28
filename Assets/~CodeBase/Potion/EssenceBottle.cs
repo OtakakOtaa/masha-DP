@@ -15,10 +15,10 @@ namespace _CodeBase.Potion
         [SerializeField] private EssenceBottleShader _essenceBottleShader;
         [SerializeField] private Slider _amountViewer;
         [SerializeField] private SpriteRenderer _spriteRenderer;
-        [SerializeField] private MeshFilter _meshFilter;
         [SerializeField] private SpriteRenderer _neckOfVessel;
         [SerializeField] private float _regenDuration = 5f; 
         [SerializeField] private int _sipCount = 4; 
+        [SerializeField] private GameObject _kernel;
         
         
         [ValueDropdown("@MashaEditorUtility.GetAllEssenceID()")]
@@ -110,7 +110,7 @@ namespace _CodeBase.Potion
         {
             if (IsRegenerateNow) return;
             
-            transform.position = _inputManager.WorldPosition;
+            transform.position = _inputManager.WorldPosition + (Vector3.forward * _inputManager.GameplayCursor.ZPos);
         }
 
         public override void ProcessEndInteractivity(InputManager.InputAction inputAction)

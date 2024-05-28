@@ -9,6 +9,7 @@ namespace _CodeBase.Input
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private string _cursorLayerID = "Cursor";
+        [SerializeField] private float _zPos = -5;
         
         
         
@@ -18,6 +19,7 @@ namespace _CodeBase.Input
         public bool IsHoldNow => ProcessedItem != null;
         public int TargetSpriteLayerOrder => _spriteRenderer.sortingLayerID;
         public string CursorLayerID => _cursorLayerID;
+        public float ZPos => _zPos;
 
 
         public void AttachItem(InteractiveObject processedItem, string id = null, InteractiveObject handleItem = null)

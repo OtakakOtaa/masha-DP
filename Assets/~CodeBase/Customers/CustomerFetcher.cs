@@ -1,22 +1,50 @@
 using System.Collections.Generic;
+using System.Linq;
 using _CodeBase.Customers._Data;
+using _CodeBase.MainGameplay;
+using _CodeBase.Potion.Data;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
+using VContainer;
 
 namespace _CodeBase.Customers
 {
     public sealed class CustomerFetcher : MonoBehaviour
     {
-        [FormerlySerializedAs("_gameDataProvider")] [SerializeField] private GameConfigProvider _gameConfigProvider;
         [SerializeField] private Customer _customer;
         [SerializeField] private int _noRepeatableIndex = 4;
-        
+
+
+        [Inject] private GameplayService _gameplayService;
+        [Inject] private GameConfigProvider _gameConfigProvider;
         
         private readonly Queue<string> _ordersRecordsList = new();
         private readonly Queue<string> _customersInfoRecordsList = new();
         private readonly Queue<string> _customerVisualRecordsList = new();
-        
+
+        private Dictionary<string, bool> _availableOrdersMask;
+
+
+        public void Init()
+        {
+            _availableOrdersMask = new Dictionary<string, bool>();
+            
+            var orders = _gameConfigProvider.Orders.ToArray();
+            var accessedComponentsIDs = _gameplayService.Data.AvailablePlantsLanding.Concat(_gameplayService.Data.AllEssences);
+
+            if (_gameplayService.Data.UniqItems.Contains(_gameConfigProvider.MixerUniqId))
+            {
+                accessedComponentsIDs = accessedComponentsIDs.Concat(new[] { _gameConfigProvider.MixerUniqId });
+            }
+            
+            foreach (var order in orders)
+            {
+                var potion = _gameConfigProvider.GetByID<PotionConfig>(order.RequestedItemID);
+                
+                var canConceivablyCreated = potion.Compound.All(c => accessedComponentsIDs.Contains(c.ID));
+                _availableOrdersMask[order.ID] = canConceivablyCreated;
+            }
+        }
         
         public async UniTask<Customer> GetNextCustomer()
         {
@@ -30,7 +58,7 @@ namespace _CodeBase.Customers
         private async UniTask<Order> GetNextOrder()
         {
             var order = _gameConfigProvider.GetRandomBasedOnWeight<Order>();
-            if (_ordersRecordsList.Contains(order.RequestedItemID) && _gameConfigProvider.UniqOrderCount > 1f)
+            if ((_ordersRecordsList.Contains(order.RequestedItemID) && _gameConfigProvider.UniqOrderCount > 1f) || (_availableOrdersMask[order.ID] is false))
             {
                 await UniTask.Yield();
                 return await GetNextOrder();

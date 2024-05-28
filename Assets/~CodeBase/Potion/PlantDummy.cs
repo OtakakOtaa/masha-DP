@@ -9,10 +9,10 @@ namespace _CodeBase.Potion
         public override void Init(PlantConfig param)
         {
             transform.localScale = Vector3.one;
-            PlantConfig = param;
+            Config = param;
             ID = param.ID;
             
-            _spriteRenderer.sprite = PlantConfig.Sprite;
+            _spriteRenderer.sprite = Config.Sprite;
         }
     }
 }

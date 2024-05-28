@@ -219,6 +219,9 @@ MonoBehaviour:
   - {fileID: 2041009109}
   - {fileID: 1194142281}
   _essenceMixer: {fileID: 7081750843883817875}
+  _topRenderingObjects:
+  - {fileID: 403940783}
+  _potionCauldron: {fileID: 403940785}
 --- !u!114 &56716545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &58975783
 Transform:
   m_ObjectHideFlags: 0
@@ -511,7 +514,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78834852973846e7bcda39b3dafcf9b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameConfigProvider: {fileID: 0}
   _customer: {fileID: 0}
   _noRepeatableIndex: 4
 --- !u!1 &250029779
@@ -561,6 +563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 403940782}
   - component: {fileID: 403940783}
+  - component: {fileID: 403940785}
   - component: {fileID: 403940784}
   m_Layer: 0
   m_Name: "[potion] \u0421auldron"
@@ -578,7 +581,7 @@ Transform:
   m_GameObject: {fileID: 403940781}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.47, y: -4.33, z: 0}
+  m_LocalPosition: {x: -0.47, y: -4.33, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -664,6 +667,21 @@ MonoBehaviour:
   - {fileID: 1558211813}
   - {fileID: 1921177981}
   - {fileID: 1300509720}
+--- !u!114 &403940785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403940781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4728b71d3dc43cfbfa61673a92f0312, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _someInputsArea: {fileID: 403940784}
+  _trashColor: {r: 0, g: 0, b: 0, a: 1}
+  _liquidRenderer: {fileID: 1146130855}
 --- !u!1 &407161645
 GameObject:
   m_ObjectHideFlags: 0
@@ -2636,10 +2654,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 250029780}
     m_Modifications:
-    - target: {fileID: 2400989760235453706, guid: 08dbccf06de74af4da43493839876d35, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 2cc0a03eccdf52f4693cc8bc93628fae, type: 2}
     - target: {fileID: 2948071946424726660, guid: 08dbccf06de74af4da43493839876d35, type: 3}
       propertyPath: m_Name
       value: '[potion] MIXER'
@@ -2684,44 +2698,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4767579540868520692, guid: 08dbccf06de74af4da43493839876d35, type: 3}
-      propertyPath: _trashColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4767579540868520692, guid: 08dbccf06de74af4da43493839876d35, type: 3}
-      propertyPath: _essenceBottleShader
-      value: 
-      objectReference: {fileID: 7081750843883817876}
-    - target: {fileID: 6101967686549193165, guid: 08dbccf06de74af4da43493839876d35, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6101967686549193165, guid: 08dbccf06de74af4da43493839876d35, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6101967686549193165, guid: 08dbccf06de74af4da43493839876d35, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2948071946424726660, guid: 08dbccf06de74af4da43493839876d35, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7081750843883817876}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08dbccf06de74af4da43493839876d35, type: 3}
---- !u!23 &1738372965877242669 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2400989760235453706, guid: 08dbccf06de74af4da43493839876d35, type: 3}
-  m_PrefabInstance: {fileID: 1738372965877242668}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1738372965877242670 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2948071946424726660, guid: 08dbccf06de74af4da43493839876d35, type: 3}
-  m_PrefabInstance: {fileID: 1738372965877242668}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5012425603958319321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2804,26 +2785,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4767579540868520692, guid: 08dbccf06de74af4da43493839876d35, type: 3}
   m_PrefabInstance: {fileID: 1738372965877242668}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738372965877242670}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4150b46567e40e496c6e037827edd1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7081750843883817876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738372965877242670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b54e6d9717684fa9b7d62b769163c05e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _renderer: {fileID: 1738372965877242669}
-  _fillRange: {x: -0.015, y: 0.24}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

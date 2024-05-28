@@ -62,6 +62,7 @@ namespace _CodeBase
 
         public IEnumerable<PotionConfig> Potions => _potionConfigs;
         public IEnumerable<string> AllEssencesIDs => _essenceConfigs.Select(e => e.ID);
+        public IEnumerable<Order> Orders => _customersConfiguration.Orders;
         public string MixerUniqId => _mixerUniqId;
 
 

@@ -17,6 +17,7 @@ namespace _CodeBase.MainGameplay
         private readonly Dictionary<string, int> _availablePlantsPoolForLandings = new();
         private readonly HashSet<string> _availableEssences = new();
         private readonly HashSet<string> _uniqItems = new();
+        private string _craftedPotion = null;
         
         public readonly ReactiveCommand<int> CoinsChanged = new();
         public readonly ReactiveCommand<int> ServedCustomersAmountChanged = new();
@@ -30,6 +31,7 @@ namespace _CodeBase.MainGameplay
         public IEnumerable<string> AvailablePlantsStorage => _availablePlants.Keys;
         public IEnumerable<string> AllEssences => _availableEssences;
         public IEnumerable<string> UniqItems => _uniqItems;
+        public string CraftedPotion => _craftedPotion;
 
         
         public int GetPlantsCountForLanding(string key)
@@ -81,7 +83,12 @@ namespace _CodeBase.MainGameplay
             PlantWasRemoved.Execute((plantType, amount: 1));
             return true;
         }
-
+        
+        public int GetPlantsCount(string key)
+        {
+            return _availablePlants.GetValueOrDefault(key);
+        }
+        
         public bool CheckPlantContains(string plantType)
         {
             return _availablePlants.ContainsKey(plantType) && _availablePlants[plantType] > 0;
@@ -95,6 +102,11 @@ namespace _CodeBase.MainGameplay
         public void AddUniqItem(string id)
         {
             _uniqItems.Add(id);
+        }
+        
+        public void SetCraftedPotion(string potionID)
+        {
+            _craftedPotion = potionID;
         }
     }
 }

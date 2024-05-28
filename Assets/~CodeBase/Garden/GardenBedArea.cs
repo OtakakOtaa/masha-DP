@@ -51,6 +51,7 @@ namespace _CodeBase.Garden
         private (State state, float chance)[] _problemsPool;
         private float _currentProgress;
         private PlantConfig _plantConfig;
+        private float _currentMaxGrowCellOffset;
         
         public State CurrentState { get; private set; }
 
@@ -99,7 +100,7 @@ namespace _CodeBase.Garden
                     }
                 }
 
-                _currentProgress = (float)((Time.time - _startGrowTimePoint) /  _plantConfig.GrowTime);
+                _currentProgress = (float)((Time.time - _startGrowTimePoint) / (_plantConfig.GrowTime + _currentMaxGrowCellOffset));
                 _ui.UpdateProgressBar(_currentProgress);
 
                 if (_cells.All(c => c.Progress >= 1f))
@@ -145,7 +146,7 @@ namespace _CodeBase.Garden
             var isPantSeed = _inputManager.GameplayCursor.HandleItem.TryGetComponent<SeedDummy>(out var plantDummy);
             if (CurrentState is State.ReadyToUsing or State.ReadyToUsingWithoutRestrictions && isGardenTool is false && isPantSeed)
             {
-                _plantConfig = plantDummy.PlantConfig;
+                _plantConfig = plantDummy.Config;
                 SwitchState(State.Growing);
                 return;
             }
@@ -187,15 +188,24 @@ namespace _CodeBase.Garden
             if (newState == State.NeedHarvest)
             {
                 _currentProgress = 1;
+                foreach (var cell in _cells)
+                {
+                    cell.LockFlag = false;
+                }
             }
             
             if (newState == State.Growing)
             {
                 _currentProgress = 0;
+                _currentMaxGrowCellOffset = 0f;
                 
                 foreach (var cell in _cells)
                 {
+                    cell.LockFlag = true;
+                    
                     var growingTimeOffset = Random.Range(_growingStartRandomOffsetRange.x, _growingStartRandomOffsetRange.y);
+                    if (_currentMaxGrowCellOffset < growingTimeOffset) _currentMaxGrowCellOffset = growingTimeOffset; 
+                    
                     UniTask.Delay((int)(growingTimeOffset * 1000), cancellationToken: destroyCancellationToken)
                         .ContinueWith(() => cell.ApplyGrownPlantState(_plantConfig, _needConsedStartRandomOffset ? -growingTimeOffset : 0f));
                 }

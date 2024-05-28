@@ -58,7 +58,7 @@ namespace _CodeBase.MainGameplay
             
             _gameplayService = gameplayService;
 
-            _gameplayService.StatsChangedEvent
+            _gameplayService.Data.CoinsChanged
                 .Subscribe(_ => UpdateCoins(_gameplayService.Data.Coins))
                 .AddTo(_compositeDisposable);
             

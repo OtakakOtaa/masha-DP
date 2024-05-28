@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3485522243339807625}
   - component: {fileID: 4767579540868520692}
   - component: {fileID: 7202531802154047191}
+  - component: {fileID: 4778695403344357139}
   m_Layer: 0
   m_Name: '[potion] MIXER'
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2948071946424726660}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.86, y: -3.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -123,9 +124,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _someInputsArea: {fileID: 7202531802154047191}
+  _trashColor: {r: 0, g: 0, b: 0, a: 1}
   _allSprites:
   - {fileID: 6101967686549193165}
   - {fileID: 2642992670431061219}
+  _essenceBottleShader: {fileID: 4778695403344357139}
+  _kernel: {fileID: 8568677084378405335}
 --- !u!114 &7202531802154047191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,6 +143,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 3485522243339807625}
+--- !u!114 &4778695403344357139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2948071946424726660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54e6d9717684fa9b7d62b769163c05e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 2400989760235453706}
+  _fillRange: {x: -0.015, y: 0.24}
 --- !u!1 &7079377316739727968
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +256,7 @@ PrefabInstance:
     - target: {fileID: 2161983077507224918, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9e9b92750e0f5454195999394027c6a5, type: 2}
+      objectReference: {fileID: 2100000, guid: 2cc0a03eccdf52f4693cc8bc93628fae, type: 2}
     - target: {fileID: 4262439853043699881, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
       propertyPath: m_LocalScale.x
       value: 38.816288
@@ -307,5 +325,15 @@ PrefabInstance:
 --- !u!4 &321397308890888437 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4262439853043699881, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
+  m_PrefabInstance: {fileID: 4562972502729844828}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2400989760235453706 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2161983077507224918, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
+  m_PrefabInstance: {fileID: 4562972502729844828}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8568677084378405335 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5312243391528038795, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
   m_PrefabInstance: {fileID: 4562972502729844828}
   m_PrefabAsset: {fileID: 0}

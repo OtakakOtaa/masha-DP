@@ -6,39 +6,25 @@ namespace _CodeBase.Potion
     public sealed class PotionMixData
     {
         private readonly Dictionary<string, int> _parts = new();
-
-
+        
+        
         public Dictionary<string, int> Parts => new(_parts);
+
         
         
-        
-        public override int GetHashCode()
+        public PotionMixData() { }
+
+        public PotionMixData(PotionMixData refer)
         {
-            var sortedParts = _parts.OrderBy(kvp => kvp.Key);
-
-            unchecked
-            {
-                var hashCode = 17;
-                foreach (var kvp in sortedParts)
-                {
-                    hashCode = hashCode * 31 + kvp.Key.GetHashCode();
-                    hashCode = hashCode * 31 + kvp.Value.GetHashCode();
-                }
-
-                return hashCode;
-            }
+            _parts = new Dictionary<string, int>(refer._parts);
         }
         
-        public override bool Equals(object obj)
+        
+        public void AddPart(string part, int amount = 1)
         {
-            return obj != null && obj.GetHashCode() == GetHashCode();
-        }
-
-        public void AddPart(string part)
-        {
-            if (!_parts.TryAdd(part, 1))
+            if (!_parts.TryAdd(part, amount))
             {
-                _parts[part] += 1;
+                _parts[part] += amount;
             }
         }
 
@@ -56,6 +42,29 @@ namespace _CodeBase.Potion
             }
             
             return true;
+        }
+
+
+        public override int GetHashCode()
+        {
+            var sortedParts = _parts.OrderBy(kvp => kvp.Key);
+
+            unchecked
+            {
+                var hashCode = 17;
+                foreach (var kvp in sortedParts)
+                {
+                    hashCode = hashCode * 31 + kvp.Key.GetHashCode();
+                    hashCode = hashCode * 31 + kvp.Value.GetHashCode();
+                }
+
+                return hashCode;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj != null && obj.GetHashCode() == GetHashCode();
         }
     }
 }

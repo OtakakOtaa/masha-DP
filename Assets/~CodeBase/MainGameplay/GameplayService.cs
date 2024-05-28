@@ -18,7 +18,7 @@ namespace _CodeBase.MainGameplay
     {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private static readonly TimeSpan GameTime = new(0, 0, minutes: 2, 0);
+        private static readonly TimeSpan GameTime = new(0, 0, minutes: 4, 0);
         
         private GameService _gameService;
         private InputManager _inputManager;

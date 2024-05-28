@@ -1,7 +1,9 @@
-using System;
 using System.Threading;
-using System.Threading.Tasks;
 using _CodeBase.Customers._Data;
+using _CodeBase.Hall;
+using _CodeBase.Input.InteractiveObjsTypes;
+using _CodeBase.Input.Manager;
+using _CodeBase.Potion.Data;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
@@ -10,23 +12,32 @@ using UnityEngine;
 namespace _CodeBase.Customers
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    public sealed class Customer : MonoBehaviour
+    public sealed class Customer : ObjectKeeper
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _startAnimPos;
+
         [SerializeField] private Transform _endAnimPos;
+
         [SerializeField] private AnimationCurve _animEase = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
         [SerializeField] private float _animationDuration;
 
 
         private Tween _movementAnimTween;
-        
-        
+
         public ReactiveCommand CustomerEnterEnded { get; private set; }
         public Order Order { get; private set; }
         public CustomerInfo CustomerInfo { get; private set; }
+
+
+        public readonly ReactiveCommand<PotionConfig> GetPotionEvent = new();
         
         
+        protected override void OnAwake()
+        {
+        }
+
         
         public async UniTask ExecuteEntering(CancellationToken token)
         {
@@ -48,7 +59,7 @@ namespace _CodeBase.Customers
             await awaiter.Task.AttachExternalCancellation(token);
         }
 
-        
+
         public Customer Init(CustomerVisual visual, Order order, CustomerInfo data)
         {
             _spriteRenderer.sprite = visual.Sprite;
@@ -66,6 +77,14 @@ namespace _CodeBase.Customers
             _movementAnimTween = DOTween.To(f => transform.position = Vector3.LerpUnclamped(_startAnimPos.position, _endAnimPos.position, f), startValue: 0f, endValue: 1f, duration: _animationDuration)
                 .SetEase(_animEase)
                 .SetInverted(rewindFlag);
+        }
+
+        public override void ProcessInteractivity(InputManager.InputAction inputAction)
+        {
+            if (_inputManager.GameplayCursor.HandleItem is PotionDummy potionDummy)
+            {
+                GetPotionEvent?.Execute(potionDummy.Config);
+            }
         }
     }
 }

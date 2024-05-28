@@ -5,9 +5,11 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Infrastructure.UI;
 using _CodeBase.Input.Manager;
 using _CodeBase.Potion.Data;
+using TMPro;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 
 
@@ -25,28 +27,48 @@ namespace _CodeBase.Potion.UI
 
         [SerializeField] private ScrollPanel _scrollPanel;
         [SerializeField] private GameObject _craftPanel;
+        [SerializeField] private GameObject _potionPopup;
         [SerializeField] private RectTransform _craftPanelRec;
         [SerializeField] private Transform _container;
         [SerializeField] private PotionRecipeUIItem _potionRecipePrefab;
 
+        [SerializeField] private Image _potionPopupImage;
+        [SerializeField] private TMP_Text _potionPopupName;
+        [SerializeField] private Button _potionPopupAcceptBtn;
+        [SerializeField] private Button _potionPopupReworkBtn;
+        
 
         [Inject] private GameConfigProvider _gameConfigProvider;
         
+        private SpriteRenderer[] _upRenderingMapObjects;
+        private int[] _upRenderingMapObjectsOriginalLayers;
+        private bool _isFreeForShow;
         
         private readonly List<PotionRecipeUIItem> _recipesInstances = new();
-        public readonly Dictionary<string, UniqItemsType> compoundsMap = new();
-        
-
         private readonly CompositeDisposable _subscriptions = new();
         
-        public void Init()
+        
+        public readonly ReactiveCommand<bool> AcceptCreatedPotionEvent = new();
+        
+        
+        
+        public void Init(SpriteRenderer[] upRenderingMapObjects, PotionCauldron mixer)
         {
+            _upRenderingMapObjects = upRenderingMapObjects;
+            _upRenderingMapObjectsOriginalLayers = upRenderingMapObjects.Select(r => r.sortingLayerID).ToArray();
+            
+            
             _openPlantsPanelBtn.OnExecuted.Subscribe(_ => OpenPlantPanel()).AddTo(_subscriptions);
             _scrollPanel.OnClosed.Subscribe(_ => ClosePlantPanel()).AddTo(_subscriptions);
-            
             _openCraftInfoPanelBtn.OnExecuted.Subscribe(_ => OpenCraftInfoPanel()).AddTo(_subscriptions);
+            
+            _clearBtn.OnExecuted.Subscribe(_ => mixer.ClearCurrentMix()).AddTo(_subscriptions);
+            mixer.StateChangeEvent.Where(s => _clearBtn.IsExecuted is false && _isFreeForShow).Subscribe(_ => _clearBtn.SetToDefaultWithAnim()).AddTo(_subscriptions);
+            mixer.PotionCreatedEvent.Subscribe(OpenPotionPopup).AddTo(_subscriptions);
 
-
+            _potionPopupAcceptBtn.OnClickAsObservable().Subscribe(_ => ClosePotionPopup(true)).AddTo(_subscriptions);
+            _potionPopupReworkBtn.OnClickAsObservable().Subscribe(_ => ClosePotionPopup(false)).AddTo(_subscriptions);
+            
             gameObject.OnDestroyAsObservable().Subscribe(_ => _subscriptions.Dispose());
         }
 
@@ -55,6 +77,7 @@ namespace _CodeBase.Potion.UI
         {
             DisableAll();
             ShowAllBtns();
+            _isFreeForShow = true;
         }
 
         public void FillPlantData(PlantConfig[] plantConfigs)
@@ -85,6 +108,37 @@ namespace _CodeBase.Potion.UI
         {
             DisableAll();
             _scrollPanel.OpenPanel();
+            _isFreeForShow = false;
+        }
+
+        private void OpenCraftInfoPanel()
+        {
+            DisableAll();
+            _craftPanel.gameObject.SetActive(true);
+            HideTopRenderingElements();
+            
+            InputManager.Instance.ClickEvent
+                .Where(t => !InputManager.Instance.IsPosInViewPort(_craftPanelRec, t))
+                .First()
+                .Subscribe(_ => CloseCraftInfoPanel());
+            
+            _isFreeForShow = false;
+        }
+
+        private void OpenPotionPopup(string potionID)
+        {
+            DisableAll();
+            _potionPopup.gameObject.SetActive(true); 
+            HideTopRenderingElements();
+
+            var config = _gameConfigProvider.GetByID<PotionConfig>(potionID);
+            
+            _potionPopupImage.sprite = config.StaticSprite;
+            _potionPopupImage.preserveAspect = true;
+            _potionPopupName.text =  string.Format("{0:C}", config.Name);
+            _potionPopupName.color = config.Color;
+            
+            _isFreeForShow = false;
         }
 
         private void ClosePlantPanel()
@@ -93,21 +147,20 @@ namespace _CodeBase.Potion.UI
             ShowAllBtns();
         }
 
-        private void OpenCraftInfoPanel()
-        {
-            DisableAll();
-            _craftPanel.gameObject.SetActive(true);
-            
-            InputManager.Instance.ClickEvent
-                .Where(t => !InputManager.Instance.IsPosInViewPort(_craftPanelRec, t))
-                .First()
-                .Subscribe(_ => CloseCraftInfoPanel());
-        }
-        
         private void CloseCraftInfoPanel()
         {
             DisableAll();
             ShowAllBtns();
+            RestoreTopRenderingElements();
+            
+        }
+
+        private void ClosePotionPopup(bool acceptFlag)
+        {
+            DisableAll();
+            ShowAllBtns();
+            RestoreTopRenderingElements();
+            AcceptCreatedPotionEvent?.Execute(acceptFlag);
         }
 
         private void DisableAll()
@@ -118,6 +171,9 @@ namespace _CodeBase.Potion.UI
             
             _scrollPanel.gameObject.SetActive(false);
             _craftPanel.gameObject.SetActive(false);
+            _potionPopup.gameObject.SetActive(false);
+            
+            _isFreeForShow = true;
         }
 
         private void ShowAllBtns()
@@ -147,6 +203,22 @@ namespace _CodeBase.Potion.UI
                 _recipesInstances[i].gameObject.SetActive(false);
             }
         }
+
+        private void HideTopRenderingElements()
+        {
+            for (var i = 0; i < _upRenderingMapObjects.Length; i++)
+            {
+                _upRenderingMapObjects[i].sortingLayerName = C.DefaultLayer;
+            }
+        } 
+
+        private void RestoreTopRenderingElements()
+        {
+            for (var i = 0; i < _upRenderingMapObjects.Length; i++)
+            {
+                _upRenderingMapObjects[i].sortingLayerID = _upRenderingMapObjectsOriginalLayers[i];
+            }
+        } 
         
         
         [Obsolete]

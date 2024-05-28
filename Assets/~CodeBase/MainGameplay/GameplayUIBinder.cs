@@ -1,8 +1,7 @@
 ﻿using _CodeBase.Garden.UI;
 using _CodeBase.Potion.UI;
 using UnityEngine;
-using UnityEngine.Serialization;
-
+ 
 namespace _CodeBase.MainGameplay
 {
     public sealed class GameplayUIBinder : MonoBehaviour

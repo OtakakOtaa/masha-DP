@@ -8,10 +8,10 @@ namespace _CodeBase.Garden
         public override void Init(PlantConfig param)
         {
             transform.localScale = _scale;
-            PlantConfig = param;
+            Config = param;
             ID = param.ID;
             
-            _spriteRenderer.sprite = PlantConfig.Seed;
+            _spriteRenderer.sprite = Config.Seed;
         }
     }
 }

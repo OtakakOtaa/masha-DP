@@ -15,6 +15,8 @@ namespace _CodeBase.Infrastructure.UI
         [SerializeField] private float _releaseDistance = 50f;
         [SerializeField] private float _returnDuration = 0.3f;
         [SerializeField] private Vector2 _endPositionOffset;
+        [SerializeField] private Vector2 _anchoredPositionOffset = Vector2.zero;
+        
         
         [SerializeField] private Vector2 _direction;
         [SerializeField] private Ease _anim;
@@ -27,6 +29,8 @@ namespace _CodeBase.Infrastructure.UI
         private Tweener _backAnim;
 
         public ReactiveCommand OnExecuted { get; private set; } = new();
+        public bool IsExecuted => _isExecuted;
+
         
         
         protected override void OnAwake()
@@ -76,7 +80,7 @@ namespace _CodeBase.Infrastructure.UI
             
             _rectTransform.anchoredPosition += delta * new Vector2(Math.Abs(_direction.x), Math.Abs(_direction.y)).normalized;
 
-            var clampDelta = (_rectTransform.anchoredPosition - _initialPosition) * _direction.normalized;
+            var clampDelta = ((_rectTransform.anchoredPosition + _anchoredPositionOffset) - _initialPosition) * _direction.normalized;
             if (clampDelta.x < 0f || clampDelta.y < 0f)
             {
                 _rectTransform.anchoredPosition = _initialPosition;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "[Potion] \u042D\u041D\u0415\u0420\u0413\u0418\u0418"
   m_EditorClassIdentifier: 
   _id: "[Potion] \u042D\u041D\u0415\u0420\u0413\u0418\u0418"
-  _name: 
+  _name: "\u042D\u043D\u0435\u0440\u0433\u0438\u0438"
   _compound:
   - _id: "[Plant] {\u0437\u0432\u0435\u0440\u0430\u0431\u043E\u0439}"
     _amount: 1

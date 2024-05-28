@@ -5,7 +5,10 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Infrastructure.GameStructs;
 using _CodeBase.MainGameplay;
 using _CodeBase.Potion.Data;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 
 namespace _CodeBase.Potion
@@ -13,27 +16,40 @@ namespace _CodeBase.Potion
     public sealed class GameplayPotionState : GameplaySceneState
     {
         [SerializeField] private EssenceBottle[] _essenceBottles;
-        [SerializeField] private EssenceMixer _essenceMixer;
-        
+        [FormerlySerializedAs("_essenceMixerBase")] [SerializeField] private EssenceMixer _essenceMixer;
+        [SerializeField] private SpriteRenderer[] _topRenderingObjects;
+        [SerializeField] private PotionCauldron _potionCauldron;
         
         
         [Inject] private GameplayService _gameplayService;
         [Inject] private GameConfigProvider _gameConfigProvider;
 
+        
         protected override void OnFirstEnter()
         {
-            _gameplayService.UI.PotionUI.Init();
+            var sub = new CompositeDisposable();
+            
+            var availablePotionsForCraft = CalculateAllAvailablePotions();
+            
+            _gameplayService.UI.PotionUI.Init(_topRenderingObjects, _potionCauldron);
+            _gameplayService.UI.PotionUI.FillRecipesData(availablePotionsForCraft);
 
-            InitCraftUI();
+            _gameplayService.UI.PotionUI.AcceptCreatedPotionEvent.Subscribe(HandlePotionCreation).AddTo(sub);
+            _potionCauldron.AddPlantEvent.Subscribe(HandlePlantConsummation).AddTo(sub);
+            
+            gameObject.OnDestroyAsObservable().First().Subscribe(_ => sub.Dispose());
+            
+            
             InitEssenceBottles();
-
             
             _essenceMixer.gameObject.SetActive(false);
             if (_gameplayService.Data.UniqItems.Contains(_gameConfigProvider.MixerUniqId))
             {
-                _essenceMixer.Init();
+                _essenceMixer.Init(availablePotionsForCraft);
                 _essenceMixer.gameObject.SetActive(true);
             }
+            
+            _potionCauldron.Init(availablePotionsForCraft);
         }
 
         protected override void OnEnter()
@@ -74,12 +90,17 @@ namespace _CodeBase.Potion
             }
         }
         
-        private void InitCraftUI()
+        private ICollection<PotionConfig> CalculateAllAvailablePotions()
         {
             var allPotions = _gameConfigProvider.Potions.ToArray();
             var availablePotionsForCraft = new List<PotionConfig>();
-            var accessedComponentsIDs = _gameplayService.Data.AvailablePlantsLanding.Concat(_gameplayService.Data.AllEssences).Concat(new[] { _gameConfigProvider.MixerUniqId });
+            var accessedComponentsIDs = _gameplayService.Data.AvailablePlantsLanding.Concat(_gameplayService.Data.AllEssences);
             
+            if (_gameplayService.Data.UniqItems.Contains(_gameConfigProvider.MixerUniqId))
+            {
+                accessedComponentsIDs = accessedComponentsIDs.Concat(new[] { _gameConfigProvider.MixerUniqId });
+            }
+
             
             foreach (var potion in allPotions)
             {
@@ -89,8 +110,25 @@ namespace _CodeBase.Potion
                     availablePotionsForCraft.Add(potion);
                 }
             }
+
+            return availablePotionsForCraft;
+        }
+
+        private void HandlePotionCreation(bool isTacked)
+        {
+            if (isTacked)
+            {
+                _gameplayService.Data.SetCraftedPotion(_potionCauldron.TargetMix);
+            }
             
-            _gameplayService.UI.PotionUI.FillRecipesData(availablePotionsForCraft);
+            _potionCauldron.ClearCurrentMix();
+        }
+        
+        private void HandlePlantConsummation(string id)
+        {
+            _gameplayService.Data.TryRemovePlant(id);
+            var plants = _gameplayService.Data.AvailablePlantsStorage.Select(p => _gameConfigProvider.GetByID<PlantConfig>(p)).ToArray();
+            _gameplayService.UI.PotionUI.FillPlantData(plants);
         }
     }
 }
