@@ -76,7 +76,7 @@ Material:
     - _AmpOffset: 0.07
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _fill_Level: 0.285
+    - _fill_Level: 0.04
     m_Colors:
     - Color_17C6C3C7: {r: 0.85882354, g: 0.22691897, b: 0, a: 0.6666667}
     - Color_FB35205B: {r: 0.5856889, g: 0.6558562, b: 0.6792453, a: 0.27058825}

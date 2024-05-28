@@ -98,7 +98,7 @@ namespace _CodeBase.Input.Manager
                     _droppedItemsKeepers = FindObjectsByType<ObjectKeeper>(FindObjectsSortMode.None);
                 }
 
-                var nearKeeper = _droppedItemsKeepers.FirstOrDefault(k => k.CanKeep(GameplayCursor.HandleItem.transform.position));
+                var nearKeeper = _droppedItemsKeepers.FirstOrDefault(k => GameplayCursor.HandleItem != k && k.CanKeep(GameplayCursor.HandleItem.transform.position));
                 nearKeeper?.ProcessInteractivity(InputAction.SomeItemDropped);
                 GameplayCursor.ProcessedItem.ProcessEndInteractivity(InputAction.Hold);
 

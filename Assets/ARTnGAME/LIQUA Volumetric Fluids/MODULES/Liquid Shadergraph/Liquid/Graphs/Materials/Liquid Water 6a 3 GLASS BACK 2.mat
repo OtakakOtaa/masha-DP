@@ -69,17 +69,17 @@ Material:
     - Vector1_817FF511: 111
     - Vector1_AB3A3EBC: 1
     - Vector1_ACE54085: 1.55
-    - Vector1_B30B07BF: 0.026
+    - Vector1_B30B07BF: 0.037
     - Vector1_D45DB484: 0.23
     - Vector1_F2BB55D7: 111
     - Vector1_F51841FD: 1
     - _AmpOffset: 5.66
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _fill_Level: 0.17
+    - _fill_Level: 0
     m_Colors:
-    - Color_17C6C3C7: {r: 0, g: 0.35924768, b: 0.3773585, a: 0.6666667}
-    - Color_FB35205B: {r: 0.014204336, g: 0.11110454, b: 0.13207549, a: 0.27058825}
+    - Color_17C6C3C7: {r: 0.4528165, g: 1, b: 0, a: 0.6666667}
+    - Color_FB35205B: {r: 0, g: 0, b: 0, a: 0.27058825}
     - SmoothOclusMetalic: {r: 2.27, g: 1, b: 0.42, a: 0}
     - TilingOffsetNormals: {r: -0.59, g: -0.77, b: 0, a: 0}
     - TilingOffsetNormals_1: {r: 0.002, g: 0.003, b: 0.002, a: 1.62}

@@ -59,25 +59,25 @@ Material:
     m_Ints: []
     m_Floats:
     - Boolean_7937B813: 1
-    - FrontRender: 1
-    - IndexOfRefraction: -2.04
-    - Vector1_4296D34C: -0.1
-    - Vector1_817FF511: 61
+    - FrontRender: 0
+    - IndexOfRefraction: 0
+    - Vector1_4296D34C: 49.28
+    - Vector1_817FF511: 100000
     - Vector1_AB3A3EBC: -51.6
-    - Vector1_ACE54085: 4.86
-    - Vector1_B30B07BF: 0.14
+    - Vector1_ACE54085: 11.33
+    - Vector1_B30B07BF: 0.075
     - Vector1_D45DB484: 0.23
-    - Vector1_F2BB55D7: 21.9
+    - Vector1_F2BB55D7: 29.71
     - Vector1_F51841FD: 2
-    - _AmpOffset: 0
+    - _AmpOffset: -1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _fill_Level: 0.1
+    - _fill_Level: 0.09
     m_Colors:
-    - Color_17C6C3C7: {r: 0.15471691, g: 1, b: 0.8539588, a: 0.6666667}
-    - Color_FB35205B: {r: 0.09490919, g: 0.8113208, b: 0.77230823, a: 0.27058825}
-    - ScaleRefraction: {r: 1, g: 1, b: 1, a: 1}
-    - SmoothOclusMetalic: {r: 12.29, g: 1, b: 0, a: 0}
-    - TilingOffsetNormals: {r: -0.59, g: 1.53, b: 0, a: 0}
+    - Color_17C6C3C7: {r: 0.035294294, g: 1, b: 0, a: 0.6666667}
+    - Color_FB35205B: {r: 1, g: 1, b: 1, a: 0.27058825}
+    - ScaleRefraction: {r: 13.12, g: 5.5, b: 2.58, a: 2.54}
+    - SmoothOclusMetalic: {r: 15.89, g: 5, b: 0, a: 0}
+    - TilingOffsetNormals: {r: 0.37, g: 1.53, b: 0, a: 0}
     - _Speed: {r: -0.3, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []

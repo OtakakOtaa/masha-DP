@@ -69,14 +69,14 @@ Material:
     - Vector1_817FF511: 0.01
     - Vector1_AB3A3EBC: 21
     - Vector1_ACE54085: 1.55
-    - Vector1_B30B07BF: 0.026
+    - Vector1_B30B07BF: 0.041
     - Vector1_D45DB484: 0.23
     - Vector1_F2BB55D7: 1
     - Vector1_F51841FD: 1.69
     - _AmpOffset: 18.09
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _fill_Level: 0.17
+    - _fill_Level: 0
     m_Colors:
     - Color_17C6C3C7: {r: 0.751157, g: 0.9353862, b: 0.9433962, a: 0.6666667}
     - Color_FB35205B: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 0.27058825}

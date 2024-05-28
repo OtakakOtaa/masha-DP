@@ -177,9 +177,12 @@ namespace _CodeBase
     {
         [SerializeField] private PotionCompoundData[] _compoundData;
         [SerializeField] private Sprite _sprite;
-
+        [SerializeField] private Color _color = UnityEngine.Color.white;
+        
+        
         public PotionCompoundData[] CompoundData => _compoundData;
         public Sprite Sprite => _sprite;
+        public Color Color => _color;
     }
     
 

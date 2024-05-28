@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Surface_Texture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 8a53e49f5ad7e8e4dbefe9f5657d6984, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Triplanar_863EA43B_Texture_1:
@@ -75,9 +75,9 @@ Material:
     - IndexOfRefraction: 1
     - Vector1_4296D34C: -0.02
     - Vector1_817FF511: 311
-    - Vector1_AB3A3EBC: 251
+    - Vector1_AB3A3EBC: 252.59
     - Vector1_ACE54085: 5
-    - Vector1_B30B07BF: 0.01
+    - Vector1_B30B07BF: 0.117
     - Vector1_D45DB484: 0.3
     - Vector1_F2BB55D7: -8.62
     - Vector1_F51841FD: 11
@@ -96,8 +96,8 @@ Material:
     - _wobbleDegree: 0
     - _wobbleSin: 0.022
     m_Colors:
-    - Color_17C6C3C7: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 0}
-    - Color_FB35205B: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 0.6745098}
+    - Color_17C6C3C7: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0}
+    - Color_FB35205B: {r: 0.9811321, g: 0.1804913, b: 0.1804913, a: 0.6745098}
     - ScaleRefraction: {r: 0.07, g: -0.03, b: 1, a: 1}
     - SmoothOclusMetalic: {r: 22.89, g: 6, b: 1.18, a: 0.07}
     - TilingOffsetNormals: {r: 0.54, g: 0.54, b: 0, a: 0}

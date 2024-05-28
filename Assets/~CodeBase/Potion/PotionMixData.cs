@@ -6,6 +6,11 @@ namespace _CodeBase.Potion
     public sealed class PotionMixData
     {
         private readonly Dictionary<string, int> _parts = new();
+
+
+        public Dictionary<string, int> Parts => new(_parts);
+        
+        
         
         public override int GetHashCode()
         {
@@ -23,7 +28,7 @@ namespace _CodeBase.Potion
                 return hashCode;
             }
         }
-
+        
         public override bool Equals(object obj)
         {
             return obj != null && obj.GetHashCode() == GetHashCode();

@@ -47,6 +47,7 @@ MonoBehaviour:
       _amount: 1
       _type: 1
     _sprite: {fileID: 21300000, guid: 01f1e6431ddcf75439e563071a63ff49, type: 3}
+    _color: {r: 0.7363517, g: 1, b: 0, a: 1}
   - _compoundData:
     - _id: '[Essense] WHITE'
       _amount: 1
@@ -55,6 +56,7 @@ MonoBehaviour:
       _amount: 1
       _type: 1
     _sprite: {fileID: 21300000, guid: e9b88ce40a1211545ad3d6ba8c18b8cd, type: 3}
+    _color: {r: 0.33333334, g: 0.5026584, b: 1, a: 1}
   - _compoundData:
     - _id: '[Essense] YELLOW'
       _amount: 1
@@ -63,6 +65,7 @@ MonoBehaviour:
       _amount: 1
       _type: 1
     _sprite: {fileID: 21300000, guid: 172202fcf2ca0404fb4f377ce2f505c8, type: 3}
+    _color: {r: 0.9622642, g: 0.4745651, b: 0.05900679, a: 1}
   - _compoundData:
     - _id: '[Essense] RED'
       _amount: 1
@@ -71,6 +74,7 @@ MonoBehaviour:
       _amount: 1
       _type: 1
     _sprite: {fileID: 21300000, guid: cb2ae47b86f950e45b7cc613461ef372, type: 3}
+    _color: {r: 1, g: 0.033018887, b: 0.7550142, a: 1}
   - _compoundData:
     - _id: '[Essense] RED'
       _amount: 1
@@ -79,6 +83,7 @@ MonoBehaviour:
       _amount: 1
       _type: 1
     _sprite: {fileID: 21300000, guid: 6b235b4ddcb43554baddb9d73803b9c1, type: 3}
+    _color: {r: 1, g: 0, b: 1, a: 1}
   _craftRowsData:
   - _potionID: "[Potion] \u0410\u041D\u0422\u0418\u0414\u041E\u0422"
     _sprite: {fileID: 21300000, guid: ba7d070c7fb8d5f4f99b623728a39e6d, type: 3}
@@ -110,3 +115,4 @@ MonoBehaviour:
   - '[Essense] BLUE'
   - '[Essense] RED'
   - '[Essense] YELLOW'
+  - '[Essense] WHITE'

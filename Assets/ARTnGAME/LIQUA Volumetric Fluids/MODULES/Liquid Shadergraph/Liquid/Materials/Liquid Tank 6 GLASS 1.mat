@@ -32,16 +32,16 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: TilingOffsetNormals
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - NormalMap:
-        m_Texture: {fileID: 2800000, guid: 2c6092e04ed6c224fb8337f9b271a7b5, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Foam_Texture:
-        m_Texture: {fileID: 2800000, guid: 4b487b1050574ea4f8f9024ff15100ba, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8a53e49f5ad7e8e4dbefe9f5657d6984, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Triplanar_863EA43B_Texture_1:
@@ -67,25 +67,25 @@ Material:
     - IndexOfRefraction: 1
     - Vector1_4296D34C: -0.02
     - Vector1_817FF511: 50
-    - Vector1_AB3A3EBC: 1.51
+    - Vector1_AB3A3EBC: -131.3
     - Vector1_ACE54085: 9.35
-    - Vector1_B30B07BF: 0.034
+    - Vector1_B30B07BF: 0.079
     - Vector1_D45DB484: 0.09
     - Vector1_F2BB55D7: 8.41
     - Vector1_F51841FD: 0.5
     - _Amp: 0
-    - _AmpOffset: 0.56
+    - _AmpOffset: 0.27
     - _QueueControl: 0
     - _QueueOffset: 0
     - _constantSin: 0
     - _fill_Level: 0.6
-    - _wobbleSin: 0
+    - _wobbleSin: -0.02
     m_Colors:
-    - Color_17C6C3C7: {r: 0.8830189, g: 0.93628037, b: 0.9811321, a: 0}
-    - Color_FB35205B: {r: 0.34607512, g: 0.5477011, b: 0.7264151, a: 0}
-    - ScaleRefraction: {r: 0.02, g: 0.02, b: -0.92, a: 1}
-    - SmoothOclusMetalic: {r: 0.5, g: 1, b: 0, a: 0.1}
+    - Color_17C6C3C7: {r: 0.667678, g: 1, b: 0, a: 0}
+    - Color_FB35205B: {r: 0.29569575, g: 0.5, b: 0.2523585, a: 0}
+    - ScaleRefraction: {r: 0.01, g: 0.9, b: -4, a: 1.67}
+    - SmoothOclusMetalic: {r: -5.06, g: 1, b: 0, a: 0.1}
     - TilingOffsetNormals: {r: 1, g: 1, b: 0, a: 0}
     - _Speed: {r: 0.1, g: 0.1, b: 0, a: 0}
-    - _Wobble: {r: 0, g: 0, b: 0, a: 0}
+    - _Wobble: {r: -0.67, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

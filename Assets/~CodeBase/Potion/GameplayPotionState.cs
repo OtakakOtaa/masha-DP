@@ -69,7 +69,7 @@ namespace _CodeBase.Potion
                 if (typedBottle == default) throw new Exception($"{conf.ID} can't found needed bottle in scene");
                 
                 
-                typedBottle.InitData(conf);
+                typedBottle.InitData(conf, typedBottle.MaxAvailableSipsCount);
                 typedBottle.gameObject.SetActive(true);
             }
         }

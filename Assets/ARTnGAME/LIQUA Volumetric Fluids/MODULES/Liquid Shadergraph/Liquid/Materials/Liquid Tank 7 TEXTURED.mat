@@ -45,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Surface_Texture:
-        m_Texture: {fileID: 2800000, guid: 572a588b60c1e1148912b6ee8d59d9a5, type: 3}
+        m_Texture: {fileID: 2800000, guid: aa31808b06fb60741accd1b5297257d7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Triplanar_863EA43B_Texture_1:
@@ -79,21 +79,21 @@ Material:
     - Vector1_F51841FD: -0.8
     - _AmpOffset: 0.01
     - _Camera_Level_Scaler: 7
-    - _Camera_XZ_Pos_Scaler: 6
-    - _Camera_Y_Level_Multiplier: 0.68
+    - _Camera_XZ_Pos_Scaler: 7.29
+    - _Camera_Y_Level_Multiplier: 22.5
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _SurfaceBrightness: 32
+    - _SurfaceBrightness: 0
     - _constantSin: 0
     - _fill_Level: 0.499
-    - _rotateRate: 33
+    - _rotateRate: 0
     - _sssss: 1.82
-    - _translateRate: 1.82
+    - _translateRate: 0
     - _wobbleDegree: 0
     - _wobbleSin: 0.022
     m_Colors:
-    - Color_17C6C3C7: {r: 0.28066927, g: 0.3865789, b: 0.509434, a: 0.5176471}
-    - Color_FB35205B: {r: 0.60106796, g: 0.77331436, b: 0.7924528, a: 0.6117647}
+    - Color_17C6C3C7: {r: 0, g: 0, b: 0, a: 0.5176471}
+    - Color_FB35205B: {r: 1, g: 1, b: 1, a: 0.6117647}
     - ScaleRefraction: {r: 1, g: 5.71, b: 1.27, a: 4.35}
     - SmoothOclusMetalic: {r: 1.84, g: 3.59, b: 1, a: 1}
     - TilingOffsetNormals: {r: 10.07, g: 2.9, b: 0.4, a: -0.5}

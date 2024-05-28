@@ -45,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Foam_Texture:
-        m_Texture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+        m_Texture: {fileID: 2800000, guid: 73c7128dfd799084c80f082249046db1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Triplanar_863EA43B_Texture_1:
@@ -77,16 +77,16 @@ Material:
     - Vector1_D45DB484: 0.3
     - Vector1_F2BB55D7: 1
     - Vector1_F51841FD: -0.04
-    - _AmpOffset: 2.73
+    - _AmpOffset: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _fill_Level: 0.022
     m_Colors:
     - Color_17C6C3C7: {r: 0.28593805, g: 0.2961101, b: 0.3018868, a: 0}
     - Color_FB35205B: {r: 0.27702028, g: 0.6777331, b: 0.745283, a: 0.6745098}
-    - ScaleRefraction: {r: -0.34, g: -0.05, b: -0.28, a: -4.85}
-    - SmoothOclusMetalic: {r: 0.5, g: 1.46, b: -2.42, a: 0.46}
-    - TilingOffsetNormals: {r: 1, g: 1, b: 0, a: 0}
+    - ScaleRefraction: {r: 1, g: 1, b: 1, a: 1}
+    - SmoothOclusMetalic: {r: 0, g: 1, b: 1, a: 1}
+    - TilingOffsetNormals: {r: 0, g: 1, b: 0, a: 0}
     - TilingOffsetNormals_1: {r: 1, g: 1, b: 1, a: 1}
     - _Speed: {r: 0.1, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []

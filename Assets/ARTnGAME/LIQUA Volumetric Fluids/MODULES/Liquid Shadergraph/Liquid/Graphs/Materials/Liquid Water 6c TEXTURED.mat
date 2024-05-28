@@ -77,7 +77,7 @@ Material:
     - Vector1_817FF511: 301
     - Vector1_AB3A3EBC: 87.2
     - Vector1_ACE54085: -1
-    - Vector1_B30B07BF: 0.019
+    - Vector1_B30B07BF: 0.075
     - Vector1_D45DB484: 0.23
     - Vector1_F2BB55D7: 0.58
     - Vector1_F51841FD: -0.8
@@ -95,7 +95,7 @@ Material:
     - _translateRate: 1.82
     - _wobbleSin: 0.022
     m_Colors:
-    - Color_17C6C3C7: {r: 0.28066924, g: 0.38657886, b: 0.509434, a: 0.5176471}
+    - Color_17C6C3C7: {r: 0.10849059, g: 0.5235036, b: 1, a: 0.5176471}
     - Color_FB35205B: {r: 0.60106796, g: 0.77331436, b: 0.7924528, a: 0.6117647}
     - ScaleRefraction: {r: 3.38, g: 5.71, b: -0.48, a: 4.35}
     - SmoothOclusMetalic: {r: 2.31, g: -5.67, b: 0.99, a: -1.13}

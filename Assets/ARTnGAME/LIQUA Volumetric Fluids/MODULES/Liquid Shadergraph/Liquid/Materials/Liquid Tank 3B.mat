@@ -37,7 +37,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - NormalMap:
-        m_Texture: {fileID: 2800000, guid: 2c6092e04ed6c224fb8337f9b271a7b5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 758d35297b8f5c44a83b047f25d72a90, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Triplanar_863EA43B_Texture_1:
@@ -62,22 +62,22 @@ Material:
     - FrontRender: 0
     - IndexOfRefraction: 1
     - Vector1_4296D34C: -0.02
-    - Vector1_817FF511: 50
-    - Vector1_AB3A3EBC: 0.31
-    - Vector1_ACE54085: 7.04
-    - Vector1_B30B07BF: 0.173
+    - Vector1_817FF511: 59
+    - Vector1_AB3A3EBC: -0.5
+    - Vector1_ACE54085: 4.65
+    - Vector1_B30B07BF: 0.176
     - Vector1_D45DB484: 0.11
     - Vector1_F2BB55D7: 2.2
-    - Vector1_F51841FD: 0.85
+    - Vector1_F51841FD: -9.41
     - _AmpOffset: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _fill_Level: 0.006633691
+    - _fill_Level: 0.07
     m_Colors:
-    - Color_17C6C3C7: {r: 0.8632076, g: 0.935749, b: 1, a: 0}
-    - Color_FB35205B: {r: 0.1247419, g: 0.17924714, b: 0.2264151, a: 0}
-    - ScaleRefraction: {r: 1, g: 1, b: 1, a: 1}
-    - SmoothOclusMetalic: {r: 0.5, g: 1, b: 0, a: 0.1}
-    - TilingOffsetNormals: {r: 1, g: 1, b: 0, a: 0}
+    - Color_17C6C3C7: {r: 0.754717, g: 0, b: 0, a: 0}
+    - Color_FB35205B: {r: 0.18812098, g: 0.1462264, b: 1, a: 0}
+    - ScaleRefraction: {r: 5.96, g: 1.54, b: 1, a: 1}
+    - SmoothOclusMetalic: {r: 0.5, g: 1, b: -3.96, a: 0.1}
+    - TilingOffsetNormals: {r: 101.83, g: 0.78, b: 2.1, a: 22.62}
     - _Speed: {r: 0.1, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []

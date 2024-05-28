@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 5186119439207290955}
   - component: {fileID: 7081750843647306914}
   - component: {fileID: 5234955664617849446}
+  - component: {fileID: 3396004195880813495}
   m_Layer: 0
   m_Name: '[potion] EssenceBottle'
   m_TagString: Untagged
@@ -208,9 +209,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da8efd185c884949b5d481f05f7e988a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _essenceBottleShader: {fileID: 3396004195880813495}
+  _amountViewer: {fileID: 2605542585099019273}
   _spriteRenderer: {fileID: 7081750843647306914}
   _meshFilter: {fileID: 118872280410410562}
-  _neckOfVessel: {fileID: 2230340218165997961}
+  _neckOfVessel: {fileID: 850893530761400993}
+  _regenPerSecond: 0.1
+  _sipCost: 0.2
   _essenceID: '[Essense] WHITE'
 --- !u!212 &7081750843647306914
 SpriteRenderer:
@@ -285,6 +290,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.08, y: 1.86815, z: 0.2}
   m_Center: {x: 0, y: 0.06907499, z: 0}
+--- !u!114 &3396004195880813495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3308501750911977738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54e6d9717684fa9b7d62b769163c05e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 1457593453961481809}
 --- !u!1 &4148105556042462421
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,7 +640,7 @@ PrefabInstance:
     - target: {fileID: 2161983077507224918, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9e9b92750e0f5454195999394027c6a5, type: 2}
+      objectReference: {fileID: 2100000, guid: 2cc0a03eccdf52f4693cc8bc93628fae, type: 2}
     - target: {fileID: 4262439853043699881, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
       propertyPath: m_LocalScale.x
       value: 32.024
@@ -691,6 +709,11 @@ PrefabInstance:
 --- !u!33 &118872280410410562 stripped
 MeshFilter:
   m_CorrespondingSourceObject: {fileID: 836772415587915077, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
+  m_PrefabInstance: {fileID: 737044019992222471}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1457593453961481809 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2161983077507224918, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
   m_PrefabInstance: {fileID: 737044019992222471}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &3539191414650112942 stripped
