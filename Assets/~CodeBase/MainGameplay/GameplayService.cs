@@ -30,8 +30,9 @@ namespace _CodeBase.MainGameplay
         [Inject] private ShopConfigurationProvider _shopConfigurationProvider;
 
         private readonly ReactiveCommand _statsChangedEvent = new();
-
-
+        private int _startMoney; 
+        
+        
         [Inject] public GameplayUIContainer UI { get; private set; }
         public IReactiveCommand<Unit> StatsChangedEvent => _statsChangedEvent;
         public Timer GameTimer { get; private set; }
@@ -40,7 +41,7 @@ namespace _CodeBase.MainGameplay
         public GameplayData Data { get; private set; } = new();
         public Camera Camera { get; private set; }
         public GameObject CurrentGameSceneMap { get; private set; }
-
+        public int EarnedMoney { get; private set; }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -74,8 +75,8 @@ namespace _CodeBase.MainGameplay
             {
                 GameTimer = new Timer();
                 GameTimer.RunWithDuration(DayDuration);
-                ObserveGameEnd().Forget();
-
+                HookGameEnd().Forget();
+                
                 UI.HudUI.Bind(this);
                 UI.HudUI.gameObject.SetActive(true);
                 await GoToHallLac();
@@ -111,7 +112,7 @@ namespace _CodeBase.MainGameplay
                 }
             }
             
-            Data.ChangeCoinBalance(_gameService.PersistentGameData.Coins);
+            Data.ChangeGlobalCoinBalance(_gameService.PersistentGameData.Coins);
         } 
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,14 +157,14 @@ namespace _CodeBase.MainGameplay
         {
             UI.HudUI.UpdateCustomerIndicator(loyalty);
         }
-
+        
         public void DisableAllUI()
         {
             UI.PotionUI.gameObject.SetActive(false);
             UI.GardenUI.gameObject.SetActive(false);
             UI.ShopUI.gameObject.SetActive(false);
+            UI.DayResultsUI.gameObject.SetActive(false);
         }
-
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -176,9 +177,15 @@ namespace _CodeBase.MainGameplay
             _gameService.GameStateMachine.Enter<TState>(beforeEnterAction: () => { CurrentGameSceneMap = (_gameService.GameStateMachine.CurrentGameState as GameplaySceneState)?.SceneMap; });
         }
 
-        private async UniTaskVoid ObserveGameEnd()
+        private async UniTaskVoid HookGameEnd()
         {
             await UniTask.WaitUntil(() => GameTimer.IsTimeUp);
+            UI.DayResultsUI.gameObject.SetActive(true);
+            UI.DayResultsUI.Init(Data.EarnedCoins);
+            await UniTask.WaitUntil(() => UI.DayResultsUI.ContinueEventFlag, cancellationToken: destroyCancellationToken);
+
+            SaveGameplayData();
+            GoToMainMenu();
         }
         
         private void HandleBuyItemRequest(string id)
@@ -186,7 +193,7 @@ namespace _CodeBase.MainGameplay
             var data = _shopConfigurationProvider.GetDataByID(id);
             if (data == null) throw new Exception(nameof(HandleBuyItemRequest));
             
-            var operationFlag = Data.TryWithdrawCoins(data.Cost);
+            var operationFlag = Data.TryWithdrawGlobalCoins(data.Cost);
             if (!operationFlag) return;
 
 
@@ -210,6 +217,27 @@ namespace _CodeBase.MainGameplay
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void SaveGameplayData()
+        {
+            _gameService.PersistentGameData.UpdateItems(Data.Seeds.Union(Data.AccessibleEssences).Union(Data.UniqItems));
+
+            var hasPursuance = _gameService.PersistentGameData.Coins > Data.GlobalCoins;
+            if (hasPursuance)
+            {
+                _gameService.PersistentGameData.Withdraw(_gameService.PersistentGameData.Coins - Data.GlobalCoins);
+            }
+
+            var hasEarnedCoins = Data.EarnedCoins > 0;
+            if (hasEarnedCoins)
+            {
+                _gameService.PersistentGameData.Deposit(Data.EarnedCoins);
+            }
+            
+            _gameService.PersistentGameData.IncreaseDay();
+
+            _gameService.SaveGameData();
         }
     }
 }

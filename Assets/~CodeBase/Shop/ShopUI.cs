@@ -175,7 +175,7 @@ namespace _CodeBase.Shop
                 btnBinder.button.image.sprite = _selectedFilterBtnSprite;
             }
 
-            _coins.text = _gameplayService.Data.Coins.ToString();
+            _coins.text = _gameplayService.Data.GlobalCoins.ToString();
         }
 
         private void HandleItemRemove(string id)

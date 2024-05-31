@@ -4,6 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 namespace _CodeBase.MainGameplay
@@ -12,24 +13,26 @@ namespace _CodeBase.MainGameplay
     {
         public const int InfinityLandingValue = -1; 
         
-        [SerializeField] private int _coins;
+        [SerializeField] private int _globalCoins;
         [SerializeField] private int _servedCustomersAmount;
         [SerializeField] private string _craftedPotion;
+        [SerializeField] private int _earnedCoins = 0;
         
         private readonly Dictionary<string, int> _availablePlants = new();
         private readonly Dictionary<string, int> _availablePlantsPoolForLandings = new();
         private readonly HashSet<string> _availableEssences = new();
         private readonly HashSet<string> _uniqItems = new();
-
+        
         public readonly ReactiveCommand<string> DataAddedEvent = new();
         public readonly ReactiveCommand<int> CreatedPotionEvent = new();
         public readonly ReactiveCommand<int> CoinsBalanceChangedEvent = new();
         public readonly ReactiveCommand<int> ServedCustomersAmountChangedEvent = new();
         public readonly ReactiveCommand<(string type, int amount)> PlantWasAddedEvent = new();
         public readonly ReactiveCommand<(string type, int amount)> PlantWasRemovedEvent = new();
-        
 
-        public int Coins => _coins;
+
+        public int EarnedCoins => _earnedCoins;
+        public int GlobalCoins => _globalCoins;
         public int ServedCustomersAmount => _servedCustomersAmount;
         public IEnumerable<string> Seeds => _availablePlantsPoolForLandings.Keys; 
         public IEnumerable<string> HarvestPlants => _availablePlants.Keys;
@@ -67,21 +70,27 @@ namespace _CodeBase.MainGameplay
             return true;
         }
         
-        public void ChangeCoinBalance(int finalValue)
+        public void ChangeGlobalCoinBalance(int finalValue)
         {
-            if (finalValue < 0) throw new Exception($"{typeof(GameplayData).FullName} : {nameof(ChangeCoinBalance)} try set as 0 or less");
+            if (finalValue < 0) throw new Exception($"{typeof(GameplayData).FullName} : {nameof(ChangeGlobalCoinBalance)} try set as 0 or less");
 
-            _coins = finalValue;
+            _globalCoins = finalValue;
             CoinsBalanceChangedEvent.Execute(finalValue);
         }
 
-        public bool TryWithdrawCoins(int amount)
+        public bool TryWithdrawGlobalCoins(int amount)
         {
-            if (amount <= 0 || _coins < amount) return false;
+            if (amount <= 0 || _globalCoins < amount) return false;
 
-            _coins -= amount; 
-            CoinsBalanceChangedEvent.Execute(_coins);
+            _globalCoins -= amount; 
+            CoinsBalanceChangedEvent.Execute(_globalCoins);
             return true;
+        }
+        
+        public void AddCustomerCoinToBalance(int amount)
+        {
+            if (amount < 0) throw new Exception($"{typeof(GameplayData).FullName} : {nameof(AddCustomerCoinToBalance)} try set as 0 or less");
+            _earnedCoins += amount;
         }
         
         public void IncreaseServedCustomers()

@@ -44,6 +44,11 @@ namespace _CodeBase
             Enter();
         }
 
+        public void Update()
+        {
+            GameUpdateSource.Execute(); 
+        }
+
         public async void Enter()
         { 
             InitSaves();            
@@ -51,7 +56,7 @@ namespace _CodeBase
             _gameStateMachine.Enter<MainMenuGameState>();
         }
 
-        
+
         public async UniTask TryLoadScene(GameScene scene, bool asAdditive = false)
         {
             if (_currentActiveAdditiveScenes.Contains(scene))
@@ -83,11 +88,11 @@ namespace _CodeBase
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(_sceneResolver[activeScene]));
         }
 
-        public void Update()
+        public void SaveGameData()
         {
-            GameUpdateSource.Execute(); 
+            PlayerPrefs.SetString(SavesId, JsonUtility.ToJson(PersistentGameData));
         }
-
+        
         private void InitSaves()
         {
             var rawSaves = PlayerPrefs.GetString(SavesId, string.Empty);

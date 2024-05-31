@@ -25,17 +25,13 @@ namespace _CodeBase.Customers
 
         [TabGroup("last_words")]
         [ListDrawerSettings(ShowPaging = true, Expanded = true)]
-        [SerializeField] private List<string> _goodBueMes;
-
-        [TabGroup("last_words")]
-        [ListDrawerSettings(ShowPaging = true, Expanded = true)]
-        [SerializeField] private List<string> _badBueMes;
+        [SerializeField] private List<CustomerFarewellWord> _farewellWords;
         
         public IEnumerable<Order> Orders => _orders;
         public IEnumerable<CustomerVisual> CustomerVisuals => _customerVisuals;
         public IEnumerable<CustomerInfo> CustomerInfos => _customerInfos;
-        public List<string> BadBueMes => _badBueMes;
-        public List<string> GoodBueMes => _goodBueMes;
+        public List<CustomerFarewellWord> FarewellWords => _farewellWords;
+        
 
 #if UNITY_EDITOR
 
@@ -66,6 +62,13 @@ namespace _CodeBase.Customers
         {
             _customerInfos.Select((i, i1) => (i, i1)).ForEach(i => i.i.SetID_EDITOR($"[INFO] - {i.i.Name} #{i.i1}"));
         }
+        
+        [TabGroup("last_words")] [Button("AutoFillIDs")]
+        private void AutoFillIDsForLastWords()
+        {
+            _farewellWords.Select((i, i1) => (i, i1)).ForEach(i => i.i.SetID_EDITOR($"[FAREWELL] - #{i.i1}"));
+        }
+
 #endif
     }
 }

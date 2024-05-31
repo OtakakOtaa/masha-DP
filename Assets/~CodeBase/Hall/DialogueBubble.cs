@@ -56,27 +56,31 @@ namespace _CodeBase.Hall
         
         public async UniTask Activate(Order order)
         {
-            _messAnimProcess?.Cancel();
-            _messAnimProcess = new CancellationTokenSource();
+            Activate(showButtons: true);
             _activeOrder = order;
-
-            _messageFld.text = string.Empty;
-            gameObject.SetActive(true);
-            _concreteHintBtn.gameObject.SetActive(true);
-            BubbleOpenedFlag = true;
-            
             await FillTextFld(order.Message, _messAnimProcess.Token);
         }
 
+        public void Activate(bool showButtons = true)
+        {
+            _messAnimProcess?.Cancel();
+            _messAnimProcess = new CancellationTokenSource();
+            
+            _messageFld.text = string.Empty;
+            gameObject.SetActive(true);
+            _concreteHintBtn.gameObject.SetActive(showButtons);
+            _confirmBtn.gameObject.SetActive(showButtons);
+            BubbleOpenedFlag = true;
+        }
+        
         public async UniTask Deactivate()
         {
             _messAnimProcess?.Cancel();
             gameObject.SetActive(false);
             BubbleOpenedFlag = false;
         }
-        
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private async UniTask FillTextFld(string mess, CancellationToken cancellationToken)
+
+        public async UniTask FillTextFld(string mess, CancellationToken cancellationToken)
         {
             const float delayDelta = 0.2f;
             const float spaceSignDelta = 0.5f;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _CodeBase.Customers
 {
-    [Serializable] public class ClientFarewellWord : PollEntity, IUniq
+    [Serializable] public class CustomerFarewellWord : PollEntity, IUniq
     {
         [SerializeField] private string _id;
         [TextArea]
@@ -17,5 +17,13 @@ namespace _CodeBase.Customers
         public bool IsGoodMes => _isGoodMes;
         public override UniqItemsType Type => UniqItemsType.CustomerFarewellWord; 
         public override Sprite Sprite => null;
+        
+        
+#if UNITY_EDITOR
+        public void SetID_EDITOR(string id)
+        {
+            _id = id;
+        }
+#endif
     }
 }

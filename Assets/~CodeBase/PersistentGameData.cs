@@ -32,6 +32,11 @@ namespace _CodeBase
             _items.Add(item);
         }
 
+        public void UpdateItems(IEnumerable<string> items)
+        {
+            _items = items.Distinct().ToList();
+        }
+        
         public void IncreaseDay()
         {
             _day++;

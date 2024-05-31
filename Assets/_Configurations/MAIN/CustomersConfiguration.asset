@@ -410,3 +410,12 @@ MonoBehaviour:
   - _weight: 1
     _id: '[INFO] - EGOR #0'
     _name: EGOR
+  _farewellWords:
+  - _weight: 1
+    _id: '[FAREWELL] - #0'
+    _mess: good goodgoodgoodgoodgood goodgood good good good good
+    _isGoodMes: 1
+  - _weight: 1
+    _id: '[FAREWELL] - #1'
+    _mess: bad bad bad bad bad badbad bad badbad bad badbad bad badbad bad bad
+    _isGoodMes: 0

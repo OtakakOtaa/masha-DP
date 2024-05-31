@@ -100,15 +100,17 @@ namespace _CodeBase.Hall
             await UniTask.WaitUntil(() => (_customerExpectationFlag && (_customerLoyalty <= 0.01f)) || giveAwayPotionFlag, cancellationToken: token);
             subToPotionGive?.Dispose();
 
+            var isCorrectResult = giveAwayPotionFlag && _activeCustomer.Order.RequestedItemID == _potionDummy.ID; 
+            
             if (giveAwayPotionFlag)
             {
                 _potionDummy.gameObject.SetActive(false);
                 _gameplayService.Data.SetCraftedPotion(null);
             }
 
-            if (giveAwayPotionFlag && _activeCustomer.Order.RequestedItemID == _potionDummy.ID)
+            if (isCorrectResult)
             {
-                _gameplayService.Data.ChangeCoinBalance(_gameplayService.Data.Coins + _activeCustomer.Order.Reward);
+                _gameplayService.Data.AddCustomerCoinToBalance(_activeCustomer.Order.Reward);
             }
             
             if (giveAwayPotionFlag is false)
@@ -119,9 +121,14 @@ namespace _CodeBase.Hall
                 }
             }
             
-            ExecuteLeaveCustomer(token).Forget();
-
+            await UniTask.WaitForSeconds(_bubblePassTime, cancellationToken: token);
+            _dialogueBubble.Activate(showButtons: false);
+            await _dialogueBubble.FillTextFld(isCorrectResult ? _activeCustomer.GoodFarewellWord.Mess : _activeCustomer.BadFarewellWord.Mess, token)
+                .ContinueWith(() => _dialogueBubble.Deactivate());
             
+            await UniTask.WaitUntil(() => _dialogueBubble.BubbleOpenedFlag is false, cancellationToken: token);
+            
+            ExecuteLeaveCustomer(token).Forget();
         }
 
         [Button(nameof(ExecuteLeaveCustomer))]

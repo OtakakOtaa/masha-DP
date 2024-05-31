@@ -7,6 +7,7 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Potion.Data;
 using JetBrains.Annotations;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -42,16 +43,35 @@ namespace _CodeBase
         
         private Dictionary<string, IUniq> _browser;
         private Dictionary<string, Sprite> _craftRowsSpriteBrowser;
+        private CustomerFarewellWord[] _goodCustomerFarewellWords;
+        private CustomerFarewellWord[] _badCustomerFarewellWords;
         
         
         public int UniqOrderCount => _customersConfiguration.Orders.GroupBy(c => c.RequestedItemID).Count();
         public int UniqVisualCount => _customersConfiguration.CustomerVisuals.Count();
-        public int UniqCustomerInfo => _customersConfiguration.CustomerInfos.Count();
+        public int UniqCustomerInfoCount => _customersConfiguration.CustomerInfos.Count();
         public PersistentGameData StaticData => PersistentGameData.Clone(_staticData);
         public IEnumerable<PotionConfig> Potions => _potionConfigs;
         public IEnumerable<string> AllEssencesIDs => _essenceConfigs.Select(e => e.ID);
         public IEnumerable<Order> Orders => _customersConfiguration.Orders;
         public string MixerUniqId => _mixerUniqId;
+        public IEnumerable<CustomerFarewellWord> GoodCustomerFarewells
+        {
+            get
+            {
+                if (_goodCustomerFarewellWords.IsNullOrEmpty()) CreateFarewellsCollections();
+                return _goodCustomerFarewellWords;
+            }
+        }
+
+        public IEnumerable<CustomerFarewellWord> BadCustomerFarewells
+        {
+            get
+            {
+                if (_badCustomerFarewellWords.IsNullOrEmpty()) CreateFarewellsCollections();
+                return _badCustomerFarewellWords;
+            }
+        }
 
 
         public TType GetByID<TType>(string id) where TType : IUniq
@@ -99,6 +119,27 @@ namespace _CodeBase
             return shuffledPool[0];
         }
 
+        
+        public CustomerFarewellWord GetRandomBasedOnWeightFarewell(bool goodnessFlag)
+        {
+            var pool = goodnessFlag ? GoodCustomerFarewells : BadCustomerFarewells;
+            
+            if (pool.Count() == 0) throw new Exception($"CRITICAL ERROR : Orders list is empty");
+            if (pool.Count() == 1) return pool.ElementAt(0);
+            
+            var targetWeight = Random.Range(0f, 1f);
+            var randomProvider = new System.Random();
+            var shuffledPool = pool.OrderBy(_ => randomProvider.Next()).ToArray();
+
+            var weightSum = 0f;
+            foreach (var item in shuffledPool)
+            {
+                weightSum += item.Weight;
+                if (weightSum >= targetWeight) return item;
+            }
+
+            return shuffledPool[0];
+        }
         
         [CanBeNull]
         public MixEssenceVisualData GetEssenceMixVisualData(List<(string id, int amount)> essences)
@@ -149,6 +190,11 @@ namespace _CodeBase
                 .ToDictionary(c => c.ID);
         }
 
+        private void CreateFarewellsCollections()
+        {
+            _goodCustomerFarewellWords = _customersConfiguration.FarewellWords.Where(f => f.IsGoodMes).ToArray();
+            _badCustomerFarewellWords = _customersConfiguration.FarewellWords.Where(f => f.IsGoodMes is false).ToArray();
+        }
     }
 
     public enum UniqItemsType

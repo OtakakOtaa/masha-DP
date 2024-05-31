@@ -23,20 +23,21 @@ namespace _CodeBase.Customers
 
         [SerializeField] private float _animationDuration;
 
-
+        
         private Tween _movementAnimTween;
 
-        public ReactiveCommand CustomerEnterEnded { get; private set; }
+
+        public ReactiveCommand<PotionConfig> GetPotionEvent { get; private set; } = new();
+        public ReactiveCommand CustomerEnterEnded { get; private set; } = new();
         public Order Order { get; private set; }
         public CustomerInfo CustomerInfo { get; private set; }
-
-
-        public readonly ReactiveCommand<PotionConfig> GetPotionEvent = new();
+        public CustomerFarewellWord GoodFarewellWord { get; private set; }
+        public CustomerFarewellWord BadFarewellWord { get; private set; }
         
         
-        protected override void OnAwake()
-        {
-        }
+        
+        
+        protected override void OnAwake() { }
 
         
         public async UniTask ExecuteEntering(CancellationToken token)
@@ -60,13 +61,16 @@ namespace _CodeBase.Customers
         }
 
 
-        public Customer Init(CustomerVisual visual, Order order, CustomerInfo data)
+        public Customer Init(CustomerVisual visual, Order order, CustomerInfo data, CustomerFarewellWord goodFarewellWord, CustomerFarewellWord badFarewellWord)
         {
             _spriteRenderer.sprite = visual.Sprite;
             _spriteRenderer.color = visual.MainColor;
+            
             Order = order;
             CustomerInfo = data;
-
+            GoodFarewellWord = goodFarewellWord;
+            BadFarewellWord = badFarewellWord;
+            
             return this;
         }
 

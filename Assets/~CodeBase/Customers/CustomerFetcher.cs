@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using _CodeBase.Customers._Data;
@@ -21,6 +22,8 @@ namespace _CodeBase.Customers
         private readonly Queue<string> _ordersRecordsList = new();
         private readonly Queue<string> _customersInfoRecordsList = new();
         private readonly Queue<string> _customerVisualRecordsList = new();
+        private readonly Queue<string> _customerGoodFarewellList = new();
+        private readonly Queue<string> _customerBadFarewellList = new();
 
         private Dictionary<string, bool> _availableOrdersMask;
 
@@ -49,10 +52,17 @@ namespace _CodeBase.Customers
         public async UniTask<Customer> GetNextCustomer()
         {
             var visual = await GetNextWithSimpleIDDel<CustomerVisual>(_customerVisualRecordsList, _gameConfigProvider.UniqVisualCount);
-            var data = await GetNextWithSimpleIDDel<CustomerInfo>(_customersInfoRecordsList, _gameConfigProvider.UniqCustomerInfo);
+            var data = await GetNextWithSimpleIDDel<CustomerInfo>(_customersInfoRecordsList, _gameConfigProvider.UniqCustomerInfoCount);
+            
+            var goodFarewell = await GetNextWithSimpleIDDel(_customerGoodFarewellList, _gameConfigProvider.GoodCustomerFarewells.Count(), 
+                () => _gameConfigProvider.GetRandomBasedOnWeightFarewell(true));
+            
+            var badFarewell = await GetNextWithSimpleIDDel(_customerBadFarewellList, _gameConfigProvider.BadCustomerFarewells.Count(), 
+                () => _gameConfigProvider.GetRandomBasedOnWeightFarewell(false));
+            
             var order = await GetNextOrder();
             
-            return _customer.Init(visual, order, data);
+            return _customer.Init(visual, order, data, goodFarewell, badFarewell);
         }
         
         private async UniTask<Order> GetNextOrder()
@@ -74,9 +84,9 @@ namespace _CodeBase.Customers
             return order;
         }
         
-        private async UniTask<TType> GetNextWithSimpleIDDel<TType>(Queue<string> recordList, int maxOriginalCapacity) where TType : PollEntity
+        private async UniTask<TType> GetNextWithSimpleIDDel<TType>(Queue<string> recordList, int maxOriginalCapacity, Func<TType> randomItemFunc = null) where TType : PollEntity
         {
-            var item = _gameConfigProvider.GetRandomBasedOnWeight<TType>();
+            var item = randomItemFunc == null ? _gameConfigProvider.GetRandomBasedOnWeight<TType>() : randomItemFunc.Invoke();
             if (recordList.Contains(item.ID) && maxOriginalCapacity > 1f)
             {
                 await UniTask.Yield();
