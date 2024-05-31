@@ -1,10 +1,12 @@
 using System;
 using _CodeBase.Infrastructure;
+using _CodeBase.Infrastructure.UI;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using TMPro;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _CodeBase.MainGameplay
@@ -24,6 +26,10 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private Image _customerIndicatorImage;
         [SerializeField] private TMP_Text _coinsFld;
 
+        [SerializeField] private AppearsAnimation _clientLeaveNotifyAppearAnim;
+        [SerializeField] private DisappearanceAnimation _clientLeaveNotifyDisappearAnim;
+
+        
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
         [SerializeField] private Sprite _goodCustomerEmj;
@@ -58,7 +64,7 @@ namespace _CodeBase.MainGameplay
             
             _gameplayService = gameplayService;
 
-            _gameplayService.Data.CoinsChanged
+            _gameplayService.Data.CoinsBalanceChangedEvent
                 .Subscribe(_ => UpdateCoins(_gameplayService.Data.Coins))
                 .AddTo(_compositeDisposable);
             
@@ -75,7 +81,7 @@ namespace _CodeBase.MainGameplay
                 .AddTo(_compositeDisposable);
 
             Observable.EveryUpdate()
-                .Subscribe(_ => UpdateTime(_gameplayService.GameTimer.TimeProgress))
+                .Subscribe(_ => UpdateTime(_gameplayService.GameTimer.TimeRatio))
                 .AddTo(_compositeDisposable);
             
             
@@ -146,6 +152,13 @@ namespace _CodeBase.MainGameplay
             }
             
             _customerIndicatorImage.sprite = _angryCustomerEmj;
+        }
+
+        public async UniTaskVoid ShowClientLeaveIndicator()
+        {
+            _clientLeaveNotifyAppearAnim.Play();
+            await UniTask.Delay(TimeSpan.FromSeconds(5f), cancellationToken: destroyCancellationToken);
+            _clientLeaveNotifyDisappearAnim.Play();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////// 

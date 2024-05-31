@@ -128,7 +128,7 @@ namespace _CodeBase.Potion
         {
             _mixMap = new Dictionary<PotionMixData, string>();
             
-            var allAccessedEssences = _gameplayService.Data.AllEssences.ToArray();
+            var allAccessedEssences = _gameplayService.Data.AccessibleEssences.ToArray();
             
             foreach (var potion in allAvailablePotions)
             {

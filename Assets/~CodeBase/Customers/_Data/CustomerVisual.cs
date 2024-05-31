@@ -10,8 +10,7 @@ namespace _CodeBase.Customers._Data
         [SerializeField] private Color _mainColor = Color.white;
         
         
-        public Sprite Sprite => _sprite;
-        
+        public override Sprite Sprite => _sprite;
         public override string ID => _id;
         public override string Name => _id;
         public Color MainColor => _mainColor;

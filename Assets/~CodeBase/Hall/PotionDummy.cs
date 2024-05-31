@@ -23,7 +23,7 @@ namespace _CodeBase.Hall
             Config = param;
             ID = param.ID;
             
-            _spriteRenderer.sprite = Config.StaticSprite;
+            _spriteRenderer.sprite = Config.Sprite;
         }
 
 

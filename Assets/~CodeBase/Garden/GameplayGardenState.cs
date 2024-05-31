@@ -1,5 +1,6 @@
 using System.Linq;
 using _CodeBase.Garden.Data;
+using _CodeBase.Garden.GardenBed;
 using _CodeBase.Infrastructure.GameStructs;
 using _CodeBase.MainGameplay;
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace _CodeBase.Garden
             _gameplayService.UI.GardenUI.gameObject.SetActive(true);
             _gameplayService.UI.GardenUI.HardResetPanelToDefault();
                 
-            var seeds = _gameplayService.Data.AvailablePlantsLanding.Select(id => _gameConfigProvider.GetByID<PlantConfig>(id)).ToArray();
+            var seeds = _gameplayService.Data.Seeds.Select(id => _gameConfigProvider.GetByID<PlantConfig>(id)).ToArray();
             _gameplayService.UI.GardenUI.FillData(seeds);
         }
 

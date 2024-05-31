@@ -1,4 +1,3 @@
-using System;
 using _CodeBase.Infrastructure.DI;
 using _CodeBase.MainGameplay;
 using UnityEngine;
@@ -10,13 +9,13 @@ namespace _CodeBase.DiScopes
 {
     public sealed class GameplayDiScope : LifetimeScope 
     {
-        [SerializeField] private GameplayUIBinder _uiBinder;
+        [FormerlySerializedAs("_uiBinder")] [SerializeField] private GameplayUIContainer _uiContainer;
         [SerializeField] private GameplayService _gameplayService;
         
         
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterInstance(_uiBinder);
+            builder.RegisterInstance(_uiContainer);
             builder.RegisterInstance(_gameplayService);
             
             Parent.Container.Resolve<DiContainer>().Scope = this;

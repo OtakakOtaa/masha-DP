@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using _CodeBase.Customers;
 using _CodeBase.Garden;
 using _CodeBase.Hall;
 using _CodeBase.Infrastructure;
@@ -18,38 +20,36 @@ namespace _CodeBase.MainGameplay
     {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private static readonly TimeSpan GameTime = new(0, 0, minutes: 4, 0);
-        
-        private GameService _gameService;
-        private InputManager _inputManager;
-        private GameConfigProvider _gameConfigProvider;
-
-        private readonly ReactiveCommand _statsChangedEvent = new();
-        
+        private static readonly TimeSpan DayDuration = new(0, 0, minutes: 4, 0);
         public static GameplayService Instance { get; private set; }
 
+        
+        [Inject] private GameService _gameService;
+        [Inject] private InputManager _inputManager;
+        [Inject] private GameConfigProvider _gameConfigProvider;
+        [Inject] private ShopConfigurationProvider _shopConfigurationProvider;
+
+        private readonly ReactiveCommand _statsChangedEvent = new();
+
+
+        [Inject] public GameplayUIContainer UI { get; private set; }
         public IReactiveCommand<Unit> StatsChangedEvent => _statsChangedEvent;
         public Timer GameTimer { get; private set; }
         public GameScene PreviousGameScene { get; private set; } = GameScene.None;
         public GameScene CurrentGameScene { get; private set; } = GameScene.None;
         public GameplayData Data { get; private set; } = new();
         public Camera Camera { get; private set; }
-        public GameplayUIBinder UI { get; private set; }
         public GameObject CurrentGameSceneMap { get; private set; }
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        [Inject]
-        public void Init(GameService gameService, InputManager inputManager, GameplayUIBinder uiBinder, GameConfigProvider gameConfigProvider)
+        private void Awake()
         {
             Instance = this;
-            _gameConfigProvider = gameConfigProvider;
-            UI = uiBinder;
-            _inputManager = inputManager;
-            _gameService = gameService;
         }
-
+        
+        
         public async void Enter()
         {
             FillGameplayData();
@@ -58,30 +58,60 @@ namespace _CodeBase.MainGameplay
             UI.MainCanvas.sortingLayerName = "UI";
             UI.MainCanvas.worldCamera = Camera;
             
-            UI.HudUI.Bind(this);
             _inputManager.IntractableInputFlag = true;
             _inputManager.SetCamera(Camera);
-            GameTimer = new Timer();
-            GameTimer.Run(GameTime);
-            ObserveGameEnd().Forget();
+            
+            UI.HudUI.gameObject.SetActive(false);
+            InitAndOpenShop();
+            await UniTask.WaitUntil(() => UI.ShopUI.ReturnToSignalFlag || UI.ShopUI.ContinueSignalFlag);
+            
+            if (UI.ShopUI.ReturnToSignalFlag)
+            {
+                await GoToMainMenu();
+                return;
+            }
+            if (UI.ShopUI.ContinueSignalFlag)
+            {
+                GameTimer = new Timer();
+                GameTimer.RunWithDuration(DayDuration);
+                ObserveGameEnd().Forget();
 
-
-            await GoToHallLac();
+                UI.HudUI.Bind(this);
+                UI.HudUI.gameObject.SetActive(true);
+                await GoToHallLac();
+                return;
+            }
         }
 
         private void FillGameplayData()
         {
-            foreach (var staticPlantSeeds in _gameConfigProvider.StaticPlantsForLanding)
+            foreach (var item in _gameService.PersistentGameData.Items)
             {
-                Data.AddPlantsToLandingPool(staticPlantSeeds, GameplayData.InfinityLandingValue);
-            }
+                var type = _gameConfigProvider.TryDefineTypeByID(item);
 
-            foreach (var staticEssence in _gameConfigProvider.StaticEssences)
-            {
-                Data.AddEssence(staticEssence);
+                switch (type)
+                {
+                    case UniqItemsType.None | UniqItemsType.Potion | UniqItemsType.CustomerInfo | UniqItemsType.CustomerVisual | UniqItemsType.Order:
+                        throw new Exception(nameof(FillGameplayData));
+                    case UniqItemsType.Essence:
+                    {
+                        if (item == _gameConfigProvider.MixerUniqId)
+                        {
+                            Data.AddUniqItem(item);
+                        }
+                        else
+                        {
+                            Data.AddEssence(item);
+                        }
+                    }
+                        break;
+                    case UniqItemsType.Plant:
+                        Data.AddPlantsToLandingPool(item, GameplayData.InfinityLandingValue);
+                        break;
+                }
             }
-
-            Data.AddUniqItem(_gameConfigProvider.MixerUniqId);
+            
+            Data.ChangeCoinBalance(_gameService.PersistentGameData.Coins);
         } 
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,6 +136,21 @@ namespace _CodeBase.MainGameplay
             await _gameService.TryLoadScene(GameScene.MainMenu);
             _gameService.GameStateMachine.Enter<MainMenuGameState>(ignoreExit: true);
         }
+
+        public void InitAndOpenShop()
+        {
+            DisableAllUI();
+            var nonPurchasedKeys = _shopConfigurationProvider.ShopItemData
+                .Select(d => d.ID)
+                .Except(_gameService.PersistentGameData.Items)
+                .ToArray();
+            
+            
+            UI.ShopUI.gameObject.SetActive(true);
+            UI.ShopUI.Init(nonPurchasedKeys);
+
+            UI.ShopUI.BuyBtnPressEvent.Subscribe(HandleBuyItemRequest).AddTo(destroyCancellationToken);
+        }
         
         public void UpdateCustomerInfo(float loyalty)
         {
@@ -116,7 +161,9 @@ namespace _CodeBase.MainGameplay
         {
             UI.PotionUI.gameObject.SetActive(false);
             UI.GardenUI.gameObject.SetActive(false);
+            UI.ShopUI.gameObject.SetActive(false);
         }
+
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -132,6 +179,37 @@ namespace _CodeBase.MainGameplay
         private async UniTaskVoid ObserveGameEnd()
         {
             await UniTask.WaitUntil(() => GameTimer.IsTimeUp);
+        }
+        
+        private void HandleBuyItemRequest(string id)
+        {
+            var data = _shopConfigurationProvider.GetDataByID(id);
+            if (data == null) throw new Exception(nameof(HandleBuyItemRequest));
+            
+            var operationFlag = Data.TryWithdrawCoins(data.Cost);
+            if (!operationFlag) return;
+
+
+            if (data.ID == _gameConfigProvider.MixerUniqId)
+            {
+                Data.AddUniqItem(data.ID);
+                return;
+            }
+            
+            var type = _gameConfigProvider.TryDefineTypeByID(data.ID);
+            switch (type)
+            {
+                case UniqItemsType.Essence:
+                    Data.AddEssence(data.ID);
+                    break;
+                case UniqItemsType.Plant:
+                    Data.AddPlantsToLandingPool(data.ID, GameplayData.InfinityLandingValue);
+                    break;
+                case UniqItemsType.Booster:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

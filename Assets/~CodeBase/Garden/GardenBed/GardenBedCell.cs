@@ -3,11 +3,10 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
-using UniRx;
 using UnityEngine;
 using VContainer;
 
-namespace _CodeBase.Garden
+namespace _CodeBase.Garden.GardenBed
 {
     [RequireComponent(typeof(Collider))]
     public sealed class GardenBedCell : InteractiveObject

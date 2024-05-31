@@ -16,5 +16,6 @@ namespace _CodeBase.Customers
         public abstract string ID { get; }
         public abstract string Name { get; }
         public abstract UniqItemsType Type { get; }
+        public abstract Sprite Sprite { get; }
     }
 }

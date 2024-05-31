@@ -1,5 +1,6 @@
 using System.Threading;
 using _CodeBase.Customers;
+using _CodeBase.Infrastructure;
 using _CodeBase.Infrastructure.GameStructs;
 using _CodeBase.MainGameplay;
 using _CodeBase.Potion.Data;
@@ -8,6 +9,7 @@ using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
 using VContainer;
+using Timer = _CodeBase.MainGameplay.Timer;
 
 namespace _CodeBase.Hall
 {
@@ -26,53 +28,47 @@ namespace _CodeBase.Hall
         
         
         private Customer _activeCustomer;
-        private bool _freeHallFlag;
+        private readonly Timer _customerExpectationTimer = new();
+        
+        public bool _freeHallFlag;
         private bool _customerExpectationFlag;
-        private float _customerReceivedTimePoint;
-        private float _customerLeaveTimePoint;
-        private bool _isNeededExpectation;
         private float _customerLoyalty;
-        private bool _isPotionDummyActive;
 
         
-        private void Awake()
-        {
-            GameService.GameUpdate.Subscribe(_ => OnUpdate()).AddTo(destroyCancellationToken);
-        }
-
         protected override void OnFirstEnter()
         {
             _potionDummy.gameObject.SetActive(false);
-            _isPotionDummyActive = false;
-            
             _customerFetcher.Init();
+            
+            GameService.GameUpdate.Subscribe(_ => OnUpdate()).AddTo(destroyCancellationToken);
+            _gameplayService.Data.CreatedPotionEvent.Subscribe(_ => UpdateCraftedPotion()).AddTo(destroyCancellationToken);
+            
             LaunchCustomer(stateProcess.Token).Forget();
         }
 
-        protected override void OnEnter()
-        {
-        }
+        protected override void OnEnter() { }
 
-        protected override void OnExit()
-        {
-        }
+        protected override void OnExit() { }
 
+        
+        
         private void OnUpdate()
         {
-            if (!_isPotionDummyActive && !string.IsNullOrEmpty(_gameplayService.Data.CraftedPotion))
-            {
-                _isPotionDummyActive = true;
-                _potionDummy.gameObject.SetActive(true);
-                _potionDummy.Init(_gameConfigProvider.GetByID<PotionConfig>(_gameplayService.Data.CraftedPotion));
-            }
-            
             if (!_customerExpectationFlag) return;
             
-            _customerLoyalty = _isNeededExpectation ? (_customerLeaveTimePoint - Time.time) / (_customerLeaveTimePoint - _customerReceivedTimePoint) : 100f;
+            _customerLoyalty = _customerExpectationFlag ? 1f - _customerExpectationTimer.TimeRatio : 1;
             if (_customerLoyalty <= 0.01f) _customerLoyalty = 0f;
             _gameplayService.UpdateCustomerInfo(_customerLoyalty);
         }
 
+        private void UpdateCraftedPotion()
+        {
+            if (string.IsNullOrEmpty(_gameplayService.Data.CraftedPotion)) return;
+            
+            _potionDummy.gameObject.SetActive(true);
+            _potionDummy.Init(_gameConfigProvider.GetByID<PotionConfig>(_gameplayService.Data.CraftedPotion));
+        } 
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         [Button(nameof(LaunchCustomer))]
@@ -91,35 +87,41 @@ namespace _CodeBase.Hall
             await UniTask.WaitUntil(() => _dialogueBubble.BubbleOpenedFlag is false, cancellationToken: token);
 
             
-            _isNeededExpectation = _activeCustomer.Order.NeedWaitTime;
-            
             if (_activeCustomer.Order.NeedWaitTime)
             {
-                _customerReceivedTimePoint = Time.time;
-                _customerLeaveTimePoint = Time.time + _activeCustomer.Order.TimeToReady - (float)_gameplayService.GameTimer.Value.TotalSeconds * 0.001f;
+                _customerExpectationTimer.RunWithDuration(_activeCustomer.Order.TimeToReady);
                 _customerExpectationFlag = true;   
             }
 
-            var givePotionFlag = false;
-            var subToPotionGive = _activeCustomer.GetPotionEvent.First().Subscribe(_ => givePotionFlag = true);
-
-            await UniTask.WaitUntil(() => (_customerExpectationFlag && (_customerLoyalty <= 0.01f)) || givePotionFlag, cancellationToken: token);
+            _customerLoyalty = 1f;
+            var giveAwayPotionFlag = false;
+            var subToPotionGive = _activeCustomer.GetPotionEvent.First().Subscribe(_ => giveAwayPotionFlag = true);
+            
+            await UniTask.WaitUntil(() => (_customerExpectationFlag && (_customerLoyalty <= 0.01f)) || giveAwayPotionFlag, cancellationToken: token);
             subToPotionGive?.Dispose();
 
-            if (givePotionFlag)
+            if (giveAwayPotionFlag)
             {
-                _isPotionDummyActive = false;
                 _potionDummy.gameObject.SetActive(false);
                 _gameplayService.Data.SetCraftedPotion(null);
             }
 
-            if (givePotionFlag && _activeCustomer.Order.RequestedItemID == _potionDummy.ID)
+            if (giveAwayPotionFlag && _activeCustomer.Order.RequestedItemID == _potionDummy.ID)
             {
                 _gameplayService.Data.ChangeCoinBalance(_gameplayService.Data.Coins + _activeCustomer.Order.Reward);
             }
-
+            
+            if (giveAwayPotionFlag is false)
+            {
+                if (_gameplayService.CurrentGameScene != GameScene.Hall)
+                {
+                    _gameplayService.UI.HudUI.ShowClientLeaveIndicator().Forget();
+                }
+            }
             
             ExecuteLeaveCustomer(token).Forget();
+
+            
         }
 
         [Button(nameof(ExecuteLeaveCustomer))]

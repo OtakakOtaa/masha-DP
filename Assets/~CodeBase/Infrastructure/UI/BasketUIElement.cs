@@ -1,5 +1,4 @@
-﻿using _CodeBase.Input.InteractiveObjsTypes;
-using _CodeBase.Input.Manager;
+﻿using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
 using TMPro;
 using UnityEngine;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using _CodeBase.Infrastructure;
 using _CodeBase.Infrastructure.GameStructs.FSM;
 using _CodeBase.Infrastructure.GameStructs.FSM.States;
@@ -15,6 +16,9 @@ namespace _CodeBase
 {
     public sealed class GameService : MonoBehaviour, IGameState
     {
+        private const string SavesId = "saves_1"; 
+        
+        
         [FormerlySerializedAs("_scenesConfiguration")] [SerializeField] private SceneResolver _sceneResolver;
 
         private static readonly ReactiveCommand GameUpdateSource = new();
@@ -26,8 +30,9 @@ namespace _CodeBase
         [Inject] private readonly GameConfigProvider _gameplayConfigProvider;
         
         private readonly HashSet<GameScene> _currentActiveAdditiveScenes = new();
-        
         public IEnumerable<GameScene> CurrentActiveAdditiveScenes => _currentActiveAdditiveScenes;
+        public GlobalStateMachine GameStateMachine => _gameStateMachine;
+        public PersistentGameData PersistentGameData { get; private set; }
 
 
         // EntryPoint //
@@ -40,7 +45,8 @@ namespace _CodeBase
         }
 
         public async void Enter()
-        {
+        { 
+            InitSaves();            
             await TryLoadScene(GameScene.MainMenu);
             _gameStateMachine.Enter<MainMenuGameState>();
         }
@@ -81,8 +87,11 @@ namespace _CodeBase
         {
             GameUpdateSource.Execute(); 
         }
-        
 
-        public GlobalStateMachine GameStateMachine => _gameStateMachine;
+        private void InitSaves()
+        {
+            var rawSaves = PlayerPrefs.GetString(SavesId, string.Empty);
+            PersistentGameData = string.IsNullOrEmpty(rawSaves) ? _gameplayConfigProvider.StaticData : JsonUtility.FromJson<PersistentGameData>(rawSaves);
+        }
     }
 }

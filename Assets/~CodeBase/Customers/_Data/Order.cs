@@ -30,6 +30,7 @@ namespace _CodeBase.Customers._Data
         public override string ID => _id;
         public override string Name => _id;
         public override UniqItemsType Type => UniqItemsType.Order;
+        public override Sprite Sprite => null;
         public bool NeedWaitTime => _needWaitTime;
 
 

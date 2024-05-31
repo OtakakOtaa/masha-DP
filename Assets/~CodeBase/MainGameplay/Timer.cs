@@ -8,16 +8,28 @@ namespace _CodeBase.MainGameplay
         private float _startTime;
         private float _targetDTime;
 
-        public bool IsTimeUp => _startTime + _targetDTime >= Time.time;
-
+        public bool IsTimeUp => Time.time >= _startTime + _targetDTime;
         public TimeSpan Value => TimeSpan.FromSeconds(Time.time - _startTime);
-        public float TimeProgress => (Time.time - _startTime) / (_startTime + _targetDTime);
+        public float TimeRatio => Mathf.Clamp01((Time.time - _startTime) / _targetDTime);
         
-        public void Run(TimeSpan target)
+        
+        public void RunWithDuration(TimeSpan duration)
         {
             _startTime = Time.time;
-            _targetDTime = (float)target.TotalSeconds;
+            _targetDTime = (float)duration.TotalSeconds;
+        }
+
+        public void RunWithDuration(float duration)
+        {
+            _startTime = Time.time;
+            _targetDTime = duration;
         }
         
+        
+        public void RunWithEndPoint(TimeSpan targetPoint)
+        {
+            _startTime = Time.time;
+            _targetDTime = (float)(targetPoint.TotalSeconds - Time.time);
+        }
     }
 }

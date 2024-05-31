@@ -133,7 +133,7 @@ namespace _CodeBase.Potion.UI
 
             var config = _gameConfigProvider.GetByID<PotionConfig>(potionID);
             
-            _potionPopupImage.sprite = config.StaticSprite;
+            _potionPopupImage.sprite = config.Sprite;
             _potionPopupImage.preserveAspect = true;
             _potionPopupName.text =  string.Format("{0:C}", config.Name);
             _potionPopupName.color = config.Color;
@@ -270,7 +270,7 @@ namespace _CodeBase.Potion.UI
 
 
                 recipe.Add((null, Color.white, EqualSign));
-                recipe.Add((potion.StaticSprite, Color.white, string.Empty));
+                recipe.Add((potion.Sprite, Color.white, string.Empty));
             }
 
 

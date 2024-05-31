@@ -1,5 +1,4 @@
-﻿using _CodeBase.Garden.Data;
-using _CodeBase.Input.InteractiveObjsTypes;
+﻿using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using UnityEngine;
 

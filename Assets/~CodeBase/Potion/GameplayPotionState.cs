@@ -57,7 +57,7 @@ namespace _CodeBase.Potion
             _gameplayService.UI.PotionUI.gameObject.SetActive(true);
             _gameplayService.UI.PotionUI.HardResetPanelToDefault();
             
-            var plants = _gameplayService.Data.AvailablePlantsStorage.Select(id => _gameConfigProvider.GetByID<PlantConfig>(id)).ToArray();
+            var plants = _gameplayService.Data.HarvestPlants.Select(id => _gameConfigProvider.GetByID<PlantConfig>(id)).ToArray();
             _gameplayService.UI.PotionUI.FillPlantData(plants);
         }
 
@@ -74,7 +74,7 @@ namespace _CodeBase.Potion
                 essenceBottle.gameObject.SetActive(false);
             }
 
-            var reachedEssencesIds = _gameplayService.Data.AllEssences.ToArray();
+            var reachedEssencesIds = _gameplayService.Data.AccessibleEssences.ToArray();
             
             for (var i = 0; i < reachedEssencesIds.Length; i++)
             {
@@ -94,7 +94,7 @@ namespace _CodeBase.Potion
         {
             var allPotions = _gameConfigProvider.Potions.ToArray();
             var availablePotionsForCraft = new List<PotionConfig>();
-            var accessedComponentsIDs = _gameplayService.Data.AvailablePlantsLanding.Concat(_gameplayService.Data.AllEssences);
+            var accessedComponentsIDs = _gameplayService.Data.Seeds.Concat(_gameplayService.Data.AccessibleEssences);
             
             if (_gameplayService.Data.UniqItems.Contains(_gameConfigProvider.MixerUniqId))
             {
@@ -127,7 +127,7 @@ namespace _CodeBase.Potion
         private void HandlePlantConsummation(string id)
         {
             _gameplayService.Data.TryRemovePlant(id);
-            var plants = _gameplayService.Data.AvailablePlantsStorage.Select(p => _gameConfigProvider.GetByID<PlantConfig>(p)).ToArray();
+            var plants = _gameplayService.Data.HarvestPlants.Select(p => _gameConfigProvider.GetByID<PlantConfig>(p)).ToArray();
             _gameplayService.UI.PotionUI.FillPlantData(plants);
         }
     }

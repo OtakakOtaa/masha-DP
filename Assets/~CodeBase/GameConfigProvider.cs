@@ -36,15 +36,8 @@ namespace _CodeBase
         [TabGroup("main")]
         [SerializeField] private CraftRowsData[] _craftRowsData;
         
-        
-        [TabGroup("PreGame Data")]
-        [Space] [ValueDropdown("@MashaEditorUtility.GetAllPlantsID()")]
-        [SerializeField] private string[] _staticPlantsForLanding;
-
-        [TabGroup("PreGame Data")]
-        [Space] [ValueDropdown("@MashaEditorUtility.GetAllEssenceID()")]
-        [SerializeField] private string[] _staticEssences;
-        
+        [TabGroup("PreGame Data")] 
+        [SerializeField] private PersistentGameData _staticData;
         
         
         private Dictionary<string, IUniq> _browser;
@@ -54,12 +47,7 @@ namespace _CodeBase
         public int UniqOrderCount => _customersConfiguration.Orders.GroupBy(c => c.RequestedItemID).Count();
         public int UniqVisualCount => _customersConfiguration.CustomerVisuals.Count();
         public int UniqCustomerInfo => _customersConfiguration.CustomerInfos.Count();
-        
-        
-        public string[] StaticPlantsForLanding => _staticPlantsForLanding;
-        public string[] StaticEssences => _staticEssences;
-
-
+        public PersistentGameData StaticData => PersistentGameData.Clone(_staticData);
         public IEnumerable<PotionConfig> Potions => _potionConfigs;
         public IEnumerable<string> AllEssencesIDs => _essenceConfigs.Select(e => e.ID);
         public IEnumerable<Order> Orders => _customersConfiguration.Orders;
@@ -141,6 +129,13 @@ namespace _CodeBase
             _craftRowsSpriteBrowser ??= _craftRowsData.ToDictionary(c => c.PotionID, c => c.Sprite);
             return _craftRowsSpriteBrowser.GetValueOrDefault(id);
         } 
+
+        [CanBeNull]
+        public Sprite GetSpriteByID(string id)
+        {
+            return _browser.GetValueOrDefault(id)?.Sprite;
+        } 
+        
         
         private void CreteBrowser()
         {
@@ -165,13 +160,16 @@ namespace _CodeBase
         CustomerVisual = 3, 
         CustomerInfo = 4,
         Order = 5,
+        Booster = 6,
+        CustomerFarewellWord = 7,
     }
     
     public interface IUniq
     {
         string ID { get; }
         string Name { get; }
-        UniqItemsType Type { get; }
+        UniqItemsType Type { get; } 
+        Sprite Sprite { get; }
     }
 
     [Serializable] public sealed class MixEssenceVisualData

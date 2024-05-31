@@ -11,8 +11,9 @@ namespace _CodeBase.Customers._Data
         public override string Name => _name;
         public override string ID => _id;
         public override UniqItemsType Type => UniqItemsType.CustomerInfo;
-        
-        
+        public override Sprite Sprite => null;
+
+
 #if UNITY_EDITOR
         public void SetID_EDITOR(string id)
         {

@@ -23,11 +23,20 @@ namespace _CodeBase.Customers
         [ListDrawerSettings(ShowPaging = true, Expanded = true)]
         [SerializeField] private List<CustomerInfo> _customerInfos;
 
+        [TabGroup("last_words")]
+        [ListDrawerSettings(ShowPaging = true, Expanded = true)]
+        [SerializeField] private List<string> _goodBueMes;
+
+        [TabGroup("last_words")]
+        [ListDrawerSettings(ShowPaging = true, Expanded = true)]
+        [SerializeField] private List<string> _badBueMes;
+        
         public IEnumerable<Order> Orders => _orders;
         public IEnumerable<CustomerVisual> CustomerVisuals => _customerVisuals;
         public IEnumerable<CustomerInfo> CustomerInfos => _customerInfos;
-        
-        
+        public List<string> BadBueMes => _badBueMes;
+        public List<string> GoodBueMes => _goodBueMes;
+
 #if UNITY_EDITOR
 
         [TabGroup("orders")] [Button("ClearAllTabs")]

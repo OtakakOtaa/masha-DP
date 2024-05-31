@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using _CodeBase.Garden.Data;
 using _CodeBase.Garden.UI;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
-using Cysharp.Threading.Tasks;
 using Sirenix.Utilities;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using VContainer;
 using Random = UnityEngine.Random;
+using Timer = _CodeBase.MainGameplay.Timer;
 
-namespace _CodeBase.Garden
+namespace _CodeBase.Garden.GardenBed
 {
-    public sealed class GardenBedArea : ObjectKeeper
+    public sealed class GardenBedArea : ObjectKeeper, IGardenBedAreaState
     {
         public enum State
         {
@@ -45,16 +46,25 @@ namespace _CodeBase.Garden
         [SerializeField] private bool _needConsedStartRandomOffset = false;
 
         [Inject] private GameConfigProvider _gameConfigProvider;
-        private TimeSpan _targetProblemPoint;
-        private float _startGrowTimePoint;
-        private Dictionary<State, GameObject> _maps;
-        private (State state, float chance)[] _problemsPool;
-        private float _currentProgress;
-        private PlantConfig _plantConfig;
-        private float _currentMaxGrowCellOffset;
         
-        public State CurrentState { get; private set; }
+        private Dictionary<State, GameObject> _maps;
+        private Dictionary<State, IGardenBedAreaState> _gardenBedAreaStates;
+        private (State state, float chance)[] _problemsPool;
 
+        
+        public Timer GrowTimer { get; } = new();
+        public Timer ProblemTimer { get; } = new();
+        public State CurrentState { get; private set; }
+        public IGardenBedAreaState StateBehavior { get; private set; }
+        public GardenBedCell[] Cells => _cells;
+        public GardenBedUI UI => _ui;
+        public CancellationToken DestroyCancellationToken => destroyCancellationToken;
+        public bool NeedConsedStartRandomOffset => _needConsedStartRandomOffset;
+        public Vector2 GrowingStartRandomOffsetRange => _growingStartRandomOffsetRange;
+        public PlantConfig PlantConfig { get; private set; }
+        
+
+        
         protected override void OnAwake()
         {
             _maps = new Dictionary<State, GameObject>()
@@ -75,6 +85,12 @@ namespace _CodeBase.Garden
                 (state: State.NeedBugResolver, chance: _bugsAttackChance / 100f)
             }.OrderByDescending(c => c.chance).ToArray();
 
+            _gardenBedAreaStates = new Dictionary<State, IGardenBedAreaState>()
+            {
+                [State.Growing] = new BedAreaGrowingState(this),
+                [State.NeedHarvest] = new HarvestBedAreaState(this),
+            };
+            
             var dis = GameService.GameUpdate.Subscribe(_ => UpdateState());
             gameObject.OnDestroyAsObservable().Subscribe(_ => dis.Dispose());
         }
@@ -86,55 +102,35 @@ namespace _CodeBase.Garden
             _maps[CurrentState].gameObject.SetActive(true);
             _ui.gameObject.SetActive(true);
             _ui.HideAll();
+            ProblemTimer.RunWithDuration(_problemTimerRange.y);
         }
 
+        
         public void UpdateState()
         {
-            if (CurrentState is State.Growing)
+            if (StateBehavior != null)
             {
-                foreach (var cell in _cells)
-                {
-                    if (cell.HasPlant)
-                    {
-                        cell.UpdateProgress();
-                    }
-                }
-
-                _currentProgress = (float)((Time.time - _startGrowTimePoint) / (_plantConfig.GrowTime + _currentMaxGrowCellOffset));
-                _ui.UpdateProgressBar(_currentProgress);
-
-                if (_cells.All(c => c.Progress >= 1f))
-                {
-                    SwitchState(State.NeedHarvest);
-                }
-                
+                StateBehavior.UpdateState();
                 return;
             }
-
-            if (CurrentState is State.NeedHarvest)
-            {
-                if (!_cells.All(c => c.HasPlant is false)) return;
-                if (Time.time < _targetProblemPoint.TotalSeconds)
-                {
-                    SwitchState(State.ReadyToUsing);
-                }
-                else
-                {
-                    ExecuteProblem();
-                }
-                return;
-            }
-
+            
             if (CurrentState is State.ReadyToUsing)
             {
-                if(Time.time < _targetProblemPoint.TotalSeconds) return;
+                if(ProblemTimer.IsTimeUp is false) return;
                 ExecuteProblem();
                 return;
             }
         }
+
         
         public override void ProcessInteractivity(InputManager.InputAction inputAction)
         {
+            if (StateBehavior != null)
+            {
+                StateBehavior.ProcessInteractivity(inputAction);
+                return;
+            }
+            
             var isGardenTool = _inputManager.GameplayCursor.HandleItem.TryGetComponent(out GardenTool gardenTool);
             if (CurrentState is State.NeedFertilizers or State.NeedWater or State.NeedBugResolver && isGardenTool && gardenTool.Resolve == CurrentState)
             {
@@ -146,13 +142,13 @@ namespace _CodeBase.Garden
             var isPantSeed = _inputManager.GameplayCursor.HandleItem.TryGetComponent<SeedDummy>(out var plantDummy);
             if (CurrentState is State.ReadyToUsing or State.ReadyToUsingWithoutRestrictions && isGardenTool is false && isPantSeed)
             {
-                _plantConfig = plantDummy.Config;
+                PlantConfig = plantDummy.Config;
                 SwitchState(State.Growing);
                 return;
             }
         }
 
-        private void ExecuteProblem()
+        public void ExecuteProblem()
         {
             var randomValue = Random.Range(0f, 1f);
             
@@ -160,62 +156,50 @@ namespace _CodeBase.Garden
             foreach (var problem in _problemsPool)
             {
                 totalWeight += problem.chance;
-                if (totalWeight >= randomValue)
-                {
-                    SwitchState(problem.state);
-                    return;
-                }
+                if (!(totalWeight >= randomValue)) continue;
+                
+                SwitchState(problem.state);
+                return;
             }
         }
 
-        private void SwitchState(State newState)
+        public void SwitchState(State newState)
         {
             _ui.HideAll();
 
-            
-            var isNewStateBeProblem = newState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver; 
-            if (isNewStateBeProblem)
-            {
-                _ui.ShowCareRequiredTag();
-            }
-            
+
             var nowIsProblemState = CurrentState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver; 
             if (nowIsProblemState)
             {
-                _targetProblemPoint = TimeSpan.FromSeconds(Time.time + Random.Range(_problemTimerRange.x, _problemTimerRange.y));
+                ProblemTimer.RunWithEndPoint(TimeSpan.FromSeconds(Time.time + Random.Range(_problemTimerRange.x, _problemTimerRange.y)));
             }
-
-            if (newState == State.NeedHarvest)
+            
+            StateBehavior = _gardenBedAreaStates.GetValueOrDefault(newState);
+            if (StateBehavior != null)
             {
-                _currentProgress = 1;
-                foreach (var cell in _cells)
+                StateBehavior.SwitchState(newState);
+            }
+            else
+            {
+                var isNewStateBeProblem = newState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver; 
+                if (isNewStateBeProblem)
                 {
-                    cell.LockFlag = false;
+                    _ui.ShowCareRequiredTag();
                 }
             }
             
-            if (newState == State.Growing)
-            {
-                _currentProgress = 0;
-                _currentMaxGrowCellOffset = 0f;
-                
-                foreach (var cell in _cells)
-                {
-                    cell.LockFlag = true;
-                    
-                    var growingTimeOffset = Random.Range(_growingStartRandomOffsetRange.x, _growingStartRandomOffsetRange.y);
-                    if (_currentMaxGrowCellOffset < growingTimeOffset) _currentMaxGrowCellOffset = growingTimeOffset; 
-                    
-                    UniTask.Delay((int)(growingTimeOffset * 1000), cancellationToken: destroyCancellationToken)
-                        .ContinueWith(() => cell.ApplyGrownPlantState(_plantConfig, _needConsedStartRandomOffset ? -growingTimeOffset : 0f));
-                }
-                _startGrowTimePoint = Time.time;
-                _ui.ShowProgressBar();
-            }
-
             _maps.ForEach(m => m.Value.gameObject.SetActive(false));
             _maps[newState].gameObject.SetActive(true);
             CurrentState = newState;
-        }
+         }
+    }
+
+    public interface IGardenBedAreaState
+    {
+        public GardenBedArea.State CurrentState { get; }
+        
+        void SwitchState(GardenBedArea.State newState);
+        void ProcessInteractivity(InputManager.InputAction inputAction);
+        void UpdateState();
     }
 }

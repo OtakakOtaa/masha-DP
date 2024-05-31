@@ -30,7 +30,7 @@ namespace _CodeBase.Customers
             _availableOrdersMask = new Dictionary<string, bool>();
             
             var orders = _gameConfigProvider.Orders.ToArray();
-            var accessedComponentsIDs = _gameplayService.Data.AvailablePlantsLanding.Concat(_gameplayService.Data.AllEssences);
+            var accessedComponentsIDs = _gameplayService.Data.Seeds.Concat(_gameplayService.Data.AccessibleEssences);
 
             if (_gameplayService.Data.UniqItems.Contains(_gameConfigProvider.MixerUniqId))
             {
