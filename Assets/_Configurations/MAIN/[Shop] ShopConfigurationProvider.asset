@@ -14,26 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shopItemData:
   - _id: "[Plant] {\u0440\u043E\u043C\u0430\u0448\u043A\u0430}"
-    _cost: 20
+    _cost: 30
     _name: "\u0420\u043E\u043C\u0430\u0448\u043A\u0430"
     _rect: {x: 168, y: 199}
   - _id: "[Plant] {\u0442\u0438\u043C\u044F\u043D}"
-    _cost: 20
+    _cost: 30
     _name: "\u0422\u0438\u043C\u044C\u044F\u043D"
     _rect: {x: 168, y: 199}
   - _id: "[Plant] {\u043A\u0430\u043B\u0435\u043D\u0434\u0443\u043B\u0430}"
-    _cost: 20
+    _cost: 30
     _name: "\u041A\u0430\u043B\u0435\u043D\u0434\u0443\u043B\u0430"
     _rect: {x: 168, y: 199}
   - _id: "[Plant] {\u043B\u0430\u0432\u0430\u043D\u0434\u0430}"
-    _cost: 20
+    _cost: 30
     _name: "\u041B\u0430\u0432\u0430\u043D\u0434\u0430"
     _rect: {x: 168, y: 199}
   - _id: "[Essense] \u0421\u041A\u041B\u042F\u041D\u041A\u0410"
-    _cost: 20
+    _cost: 40
     _name: "\u0421\u043A\u043B\u044F\u043D\u043A\u0430 \n\u0434\u043B\u044F \u0441\u043C\u0435\u0448\u0438\u0432\u0430\u043D\u0438\u044F"
     _rect: {x: 121, y: 169}
   - _id: '[Essense] WHITE'
-    _cost: 20
+    _cost: 60
     _name: "\u0411\u0435\u043B\u044B\u0439"
     _rect: {x: 101, y: 173}

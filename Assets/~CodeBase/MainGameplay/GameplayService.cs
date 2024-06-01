@@ -27,17 +27,15 @@ namespace _CodeBase.MainGameplay
         [Inject] private GameConfigProvider _gameConfigProvider;
         [Inject] private ShopConfigurationProvider _shopConfigurationProvider;
 
-        private readonly ReactiveCommand _statsChangedEvent = new();
+        private Func<bool> _gameEndRestrictions;
         
         [Inject] public GameplayUIContainer UI { get; private set; }
-        public IReactiveCommand<Unit> StatsChangedEvent => _statsChangedEvent;
         public Timer GameTimer { get; private set; }
         public GameScene PreviousGameScene { get; private set; } = GameScene.None;
         public GameScene CurrentGameScene { get; private set; } = GameScene.None;
         public GameplayData Data { get; private set; } = new();
         public Camera Camera { get; private set; }
         public GameObject CurrentGameSceneMap { get; private set; }
-        public int EarnedMoney { get; private set; }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -49,36 +47,82 @@ namespace _CodeBase.MainGameplay
         
         public async void Enter()
         {
-            FillGameplayData();
-            
+            _gameEndRestrictions = default;
             Camera = Camera.main;
             UI.MainCanvas.sortingLayerName = "UI";
             UI.MainCanvas.worldCamera = Camera;
-            
+
+            DisableAllUI();
+            FillGameplayData();
+
             _inputManager.IntractableInputFlag = true;
             _inputManager.SetCamera(Camera);
-            
-            UI.HudUI.gameObject.SetActive(false);
-            InitAndOpenShop();
-            await UniTask.WaitUntil(() => UI.ShopUI.ReturnToSignalFlag || UI.ShopUI.ContinueSignalFlag);
-            
-            if (UI.ShopUI.ReturnToSignalFlag)
+
+            if (_gameService.PersistentGameData.Day > 1)
             {
-                await GoToMainMenu();
-                return;
+                UI.HudUI.gameObject.SetActive(false);
+                InitAndOpenShop();
+                await UniTask.WaitUntil(() => UI.ShopUI.ReturnToSignalFlag || UI.ShopUI.ContinueSignalFlag,
+                    cancellationToken: destroyCancellationToken);
+
+                if (UI.ShopUI.ReturnToSignalFlag)
+                {
+                    await GoToMainMenu();
+                    return;
+                }
             }
-            if (UI.ShopUI.ContinueSignalFlag)
-            {
-                GameTimer = new Timer();
-                GameTimer.RunWithDuration(GameplayConfig.Instance.DayDuration);
-                HookGameEnd().Forget();
-                
-                UI.HudUI.Bind(this);
-                UI.HudUI.gameObject.SetActive(true);
-                await GoToHallLac();
-                return;
-            }
+            
+            GameTimer = new Timer();
+            GameTimer.RunWithDuration(GameplayConfig.Instance.DayDuration);
+            HookGameEnd().Forget();
+
+            UI.HudUI.Bind(this);
+            UI.HudUI.gameObject.SetActive(true);
+            await GoToHallLac();
         }
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public async UniTask GoToPotionLac()
+        {
+            await SwitchLocation<GameplayPotionState>(GameScene.Laboratory);
+        }
+
+        public async UniTask GoToHallLac()
+        {
+            await SwitchLocation<GameplayHallState>(GameScene.Hall);
+        }
+
+        public async UniTask GoToGardenLac()
+        {
+            await SwitchLocation<GameplayGardenState>(GameScene.Garden);
+        }
+
+        public async UniTask GoToMainMenu()
+        {
+            await _gameService.TryLoadScene(GameScene.MainMenu);
+            _gameService.GameStateMachine.Enter<MainMenuGameState>(ignoreExit: true);
+        }
+        
+        public void UpdateCustomerInfo(float loyalty)
+        {
+            UI.HudUI.UpdateCustomerIndicator(loyalty);
+        }
+        
+        public void DisableAllUI()
+        {
+            UI.PotionUI.gameObject.SetActive(false);
+            UI.GardenUI.gameObject.SetActive(false);
+            UI.ShopUI.gameObject.SetActive(false);
+            UI.DayResultsUI.gameObject.SetActive(false);
+        }
+
+        public void BindGameEndAdditionalRestriction(Func<bool> restriction)
+        {
+            _gameEndRestrictions += restriction;
+        }
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void FillGameplayData()
         {
@@ -111,32 +155,8 @@ namespace _CodeBase.MainGameplay
             Data.ChangeGlobalCoinBalance(_gameService.PersistentGameData.Coins);
         } 
         
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        public async UniTask GoToPotionLac()
+        private void InitAndOpenShop()
         {
-            await SwitchLocation<GameplayPotionState>(GameScene.Laboratory);
-        }
-
-        public async UniTask GoToHallLac()
-        {
-            await SwitchLocation<GameplayHallState>(GameScene.Hall);
-        }
-
-        public async UniTask GoToGardenLac()
-        {
-            await SwitchLocation<GameplayGardenState>(GameScene.Garden);
-        }
-
-        public async UniTask GoToMainMenu()
-        {
-            await _gameService.TryLoadScene(GameScene.MainMenu);
-            _gameService.GameStateMachine.Enter<MainMenuGameState>(ignoreExit: true);
-        }
-
-        public void InitAndOpenShop()
-        {
-            DisableAllUI();
             var nonPurchasedKeys = _shopConfigurationProvider.ShopItemData
                 .Select(d => d.ID)
                 .Except(_gameService.PersistentGameData.Items)
@@ -149,21 +169,6 @@ namespace _CodeBase.MainGameplay
             UI.ShopUI.BuyBtnPressEvent.Subscribe(HandleBuyItemRequest).AddTo(destroyCancellationToken);
         }
         
-        public void UpdateCustomerInfo(float loyalty)
-        {
-            UI.HudUI.UpdateCustomerIndicator(loyalty);
-        }
-        
-        public void DisableAllUI()
-        {
-            UI.PotionUI.gameObject.SetActive(false);
-            UI.GardenUI.gameObject.SetActive(false);
-            UI.ShopUI.gameObject.SetActive(false);
-            UI.DayResultsUI.gameObject.SetActive(false);
-        }
-        
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         private async UniTask SwitchLocation<TState>(GameScene scene) where TState : class, IGameState
         {
             DisableAllUI();
@@ -175,13 +180,14 @@ namespace _CodeBase.MainGameplay
 
         private async UniTaskVoid HookGameEnd()
         {
-            await UniTask.WaitUntil(() => GameTimer.IsTimeUp);
+            await UniTask.WaitUntil(() => GameTimer.IsTimeUp && (_gameEndRestrictions?.Invoke() is false), cancellationToken: destroyCancellationToken);
+            
             UI.DayResultsUI.gameObject.SetActive(true);
             UI.DayResultsUI.Init(Data.EarnedCoins);
             await UniTask.WaitUntil(() => UI.DayResultsUI.ContinueEventFlag, cancellationToken: destroyCancellationToken);
 
             SaveGameplayData();
-            GoToMainMenu();
+            await GoToMainMenu();
         }
         
         private void HandleBuyItemRequest(string id)

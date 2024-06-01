@@ -29,7 +29,11 @@ namespace _CodeBase.Hall
         
         public bool _freeHallFlag;
         private bool _customerExpectationFlag;
+        private bool _correctCraftedPotionFlag;
         private float _customerLoyalty;
+        private bool _tookOrderFlag;
+        private bool _potionDeliveryFlag = false;
+
 
         
         protected override async void OnFirstEnter()
@@ -39,9 +43,15 @@ namespace _CodeBase.Hall
             
             GameService.GameUpdate.Subscribe(_ => OnUpdate()).AddTo(destroyCancellationToken);
             _gameplayService.Data.CreatedPotionEvent.Subscribe(_ => UpdateCraftedPotion()).AddTo(destroyCancellationToken);
-
-            await UniTask.WaitForSeconds(GameplayConfig.Instance.FirstCustomerEnterDelay);
-            LaunchCustomer(stateProcess.Token).Forget();
+            _gameplayService.BindGameEndAdditionalRestriction(() => _tookOrderFlag);
+            
+            await UniTask.WaitForSeconds(GameplayConfig.Instance.FirstCustomerEnterDelay, cancellationToken: destroyCancellationToken);
+            while (StateLiveToken.IsCancellationRequested is false && _gameplayService.GameTimer.IsTimeUp is false)
+            {
+                await LaunchCustomer(StateLiveToken);
+                await ExecuteLeaveCustomer(StateLiveToken, _correctCraftedPotionFlag, !(_gameplayService.GameTimer.IsTimeUp && _potionDeliveryFlag is false));
+                await UniTask.WaitForSeconds(GameplayConfig.Instance.GetDelayBetweenCustomers(_gameplayService.GameTimer.TimeRatio), cancellationToken: StateLiveToken);
+            }
         }
 
         protected override void OnEnter() { }
@@ -68,50 +78,34 @@ namespace _CodeBase.Hall
         } 
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        
+        
         [Button(nameof(LaunchCustomer))]
         private async UniTask LaunchCustomer(CancellationToken token)
         {
+            _correctCraftedPotionFlag = false;
             _freeHallFlag = false;
             _customerExpectationFlag = false;
+            _tookOrderFlag = false;
+            _potionDeliveryFlag = false;
+            
             _activeCustomer = await _customerFetcher.GetNextCustomer();
+            await ExecuteCustomerEntering(token);
+            if (_gameplayService.GameTimer.IsTimeUp) return;
             
-            await _activeCustomer.ExecuteEntering(token);
-            _gameplayService.UpdateCustomerInfo(1f);
+            _potionDeliveryFlag = false;
+            var subToPotionDelivery = _activeCustomer.GetPotionEvent.First().Subscribe(_ => _potionDeliveryFlag= true);
+            await UniTask.WaitUntil(() => (_customerExpectationFlag && (_customerLoyalty <= 0.01f)) || _potionDeliveryFlag, cancellationToken: token);
+            subToPotionDelivery?.Dispose();
             
-            await UniTask.WaitUntil(() => ActiveFlag, cancellationToken: token);
-            await UniTask.WaitForSeconds(GameplayConfig.Instance.BubblePassDelay, cancellationToken: token);
-            _dialogueBubble.Activate(_activeCustomer.Order).Forget();
-            await UniTask.WaitUntil(() => _dialogueBubble.BubbleOpenedFlag is false, cancellationToken: token);
-
+            _correctCraftedPotionFlag = _potionDeliveryFlag && _activeCustomer.Order.RequestedItemID == _potionDummy.ID; 
             
-            if (_activeCustomer.Order.NeedWaitTime)
-            {
-                _customerExpectationTimer.RunWithDuration(_activeCustomer.Order.TimeToReady);
-                _customerExpectationFlag = true;   
-            }
-
-            _customerLoyalty = 1f;
-            var giveAwayPotionFlag = false;
-            var subToPotionGive = _activeCustomer.GetPotionEvent.First().Subscribe(_ => giveAwayPotionFlag = true);
-            
-            await UniTask.WaitUntil(() => (_customerExpectationFlag && (_customerLoyalty <= 0.01f)) || giveAwayPotionFlag, cancellationToken: token);
-            subToPotionGive?.Dispose();
-
-            var isCorrectResult = giveAwayPotionFlag && _activeCustomer.Order.RequestedItemID == _potionDummy.ID; 
-            
-            if (giveAwayPotionFlag)
+            if (_potionDeliveryFlag)
             {
                 _potionDummy.gameObject.SetActive(false);
                 _gameplayService.Data.SetCraftedPotion(null);
             }
-
-            if (isCorrectResult)
-            {
-                _gameplayService.Data.AddCustomerCoinToBalance(_activeCustomer.Order.Reward);
-            }
-            
-            if (giveAwayPotionFlag is false)
+            else
             {
                 if (_gameplayService.CurrentGameScene != GameScene.Hall)
                 {
@@ -119,27 +113,58 @@ namespace _CodeBase.Hall
                 }
             }
             
-            await UniTask.WaitForSeconds(GameplayConfig.Instance.BubblePassDelay, cancellationToken: token);
-            _dialogueBubble.Activate(showButtons: false);
-            await _dialogueBubble.FillTextFld(isCorrectResult ? _activeCustomer.GoodFarewellWord.Mess : _activeCustomer.BadFarewellWord.Mess, token)
-                .ContinueWith(() => _dialogueBubble.Deactivate());
-            
-            await UniTask.WaitUntil(() => _dialogueBubble.BubbleOpenedFlag is false, cancellationToken: token);
-            
-            ExecuteLeaveCustomer(token).Forget();
+            if (_correctCraftedPotionFlag)
+            {
+                _gameplayService.Data.AddCustomerCoinToBalance(_activeCustomer.Order.Reward);
+            }
         }
 
         [Button(nameof(ExecuteLeaveCustomer))]
-        private async UniTask ExecuteLeaveCustomer(CancellationToken token)
+        private async UniTask ExecuteLeaveCustomer(CancellationToken token, bool isCorrectPotion, bool needBubble = true)
         {
+            if (needBubble)
+            {
+                await UniTask.WaitForSeconds(GameplayConfig.Instance.BubblePassDelay, cancellationToken: token);
+                _dialogueBubble.Activate(showButtons: false);
+                await _dialogueBubble.ExecuteMessFill(isCorrectPotion ? _activeCustomer.GoodFarewellWord.Mess : _activeCustomer.BadFarewellWord.Mess, token);
+                await UniTask.WaitForSeconds(1f, cancellationToken: token);
+                _dialogueBubble.Deactivate();
+            }
+            
             _customerExpectationFlag = false;
             await _activeCustomer.ExecuteLeaving(token);
             
             _activeCustomer = null;
             _freeHallFlag = true;
+            _tookOrderFlag = false;
+            _potionDeliveryFlag = false;
+        }
+
+        private async UniTask ExecuteCustomerEntering(CancellationToken token)
+        {
+            await _activeCustomer.ExecuteEntering(token);
+            _gameplayService.UpdateCustomerInfo(1f);
+            _tookOrderFlag = false;
             
-            await UniTask.WaitForSeconds(GameplayConfig.Instance.GetDelayBetweenCustomers(_gameplayService.GameTimer.TimeRatio), cancellationToken: stateProcess.Token);
-            LaunchCustomer(stateProcess.Token).Forget();
+            await UniTask.WaitUntil(() => ActiveFlag, cancellationToken: token);
+            await UniTask.WaitForSeconds(GameplayConfig.Instance.BubblePassDelay, cancellationToken: token);
+            _dialogueBubble.Activate(_activeCustomer.Order).Forget();
+            await UniTask.WaitUntil(() => _dialogueBubble.BubbleOpenedFlag is false || _gameplayService.GameTimer.IsTimeUp, cancellationToken: token);
+            if (_gameplayService.GameTimer.IsTimeUp)
+            {
+                _dialogueBubble.Deactivate();
+                return;
+            }
+            _tookOrderFlag = true;
+            
+            _customerExpectationFlag = false;
+            if (_activeCustomer.Order.NeedWaitTime)
+            {
+                _customerExpectationTimer.RunWithDuration(_activeCustomer.Order.TimeToReady);
+                _customerExpectationFlag = true;   
+            }
+            
+            _customerLoyalty = 1f;
         }
     }
 } 

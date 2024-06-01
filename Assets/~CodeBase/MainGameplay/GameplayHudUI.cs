@@ -46,6 +46,7 @@ namespace _CodeBase.MainGameplay
         
         [SerializeField] private float _startDayHTime = 12;
         [SerializeField] private float _endDatHTime = 18;
+        [SerializeField] private float _timeStep;
         
         
         private readonly CompositeDisposable _compositeDisposable = new();
@@ -128,8 +129,11 @@ namespace _CodeBase.MainGameplay
         {
             _timeSignImage.fillAmount = progress;
             var h = Mathf.Lerp(_startDayHTime, _endDatHTime, progress);
+            int stepCounts = (int)((h % 1) / (_timeStep * 0.01f * 10f / 6f));
+
+            h = (float)(Math.Floor(h) + (_timeStep * 0.01f * 10f / 6f) * stepCounts); 
             
-            _timeFld.text = TimeSpan.FromHours(h).ToString(@"\hh\:mm");
+            _timeFld.text = TimeSpan.FromHours(h).ToString(@"\hh\:mm")[1..];
         }
 
         [Button]

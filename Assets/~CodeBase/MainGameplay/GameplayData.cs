@@ -24,7 +24,7 @@ namespace _CodeBase.MainGameplay
         private readonly HashSet<string> _uniqItems = new();
         
         public readonly ReactiveCommand<string> DataAddedEvent = new();
-        public readonly ReactiveCommand<int> CreatedPotionEvent = new();
+        public readonly ReactiveCommand<string> CreatedPotionEvent = new();
         public readonly ReactiveCommand<int> CoinsBalanceChangedEvent = new();
         public readonly ReactiveCommand<int> ServedCustomersAmountChangedEvent = new();
         public readonly ReactiveCommand<(string type, int amount)> PlantWasAddedEvent = new();
@@ -145,6 +145,7 @@ namespace _CodeBase.MainGameplay
         public void SetCraftedPotion(string potionID)
         {
             _craftedPotion = potionID;
+            CreatedPotionEvent?.Execute(potionID);
         }
     }
 }

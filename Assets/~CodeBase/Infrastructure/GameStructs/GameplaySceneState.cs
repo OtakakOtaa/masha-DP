@@ -10,13 +10,13 @@ namespace _CodeBase.Infrastructure.GameStructs
         [SerializeField] protected GameObject sceneMapObjHolder;
         
         private bool _firstStartFlag;
+        private readonly CancellationTokenSource _stateLiveTokenSource = new();
 
         protected bool ActiveFlag { get; private set; }
 
-        protected readonly CancellationTokenSource stateProcess = new();
         protected event Action StateDisposeHandler;
 
-
+        protected CancellationToken StateLiveToken => _stateLiveTokenSource.Token;
         public GameObject SceneMap => sceneMapObjHolder; 
         
         
@@ -56,7 +56,7 @@ namespace _CodeBase.Infrastructure.GameStructs
         {
             StateDisposeHandler?.Invoke();
             StateDisposeHandler = null;
-            stateProcess?.Cancel();
+            _stateLiveTokenSource?.Cancel();
         }
     }
 }

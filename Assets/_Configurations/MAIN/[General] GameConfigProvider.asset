@@ -109,9 +109,7 @@ MonoBehaviour:
     - '[Essense] BLUE'
     - '[Essense] RED'
     - '[Essense] YELLOW'
-    - "[Plant] {\u0437\u0432\u0435\u0440\u0430\u0431\u043E\u0439}"
-    - "[Plant] {\u043B\u0430\u0432\u0430\u043D\u0434\u0430}"
-    - "[Plant] {\u043A\u0430\u043B\u0435\u043D\u0434\u0443\u043B\u0430}"
     - "[Plant] {\u044D\u0445\u0438\u043D\u0430\u0446\u0438\u044F}"
-    - "[Plant] {\u0442\u0438\u043C\u044F\u043D}"
-    _coins: 1000
+    - "[Plant] {\u043C\u044F\u0442\u0430}"
+    - "[Plant] {\u0437\u0432\u0435\u0440\u0430\u0431\u043E\u0439}"
+    _coins: 0

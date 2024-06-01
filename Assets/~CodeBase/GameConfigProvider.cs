@@ -40,10 +40,16 @@ namespace _CodeBase
         [TabGroup("PreGame Data")] 
         [SerializeField] private PersistentGameData _staticData;
         
-        
+        [NonSerialized]
         private Dictionary<string, IUniq> _browser;
+        
+        [NonSerialized]
         private Dictionary<string, Sprite> _craftRowsSpriteBrowser;
+        
+        [NonSerialized]
         private CustomerFarewellWord[] _goodCustomerFarewellWords;
+        
+        [NonSerialized]
         private CustomerFarewellWord[] _badCustomerFarewellWords;
         
         
@@ -59,7 +65,8 @@ namespace _CodeBase
         {
             get
             {
-                if (_goodCustomerFarewellWords.IsNullOrEmpty()) CreateFarewellsCollections();
+                // if (_goodCustomerFarewellWords.IsNullOrEmpty())
+                CreateFarewellsCollections();
                 return _goodCustomerFarewellWords;
             }
         }
@@ -68,7 +75,8 @@ namespace _CodeBase
         {
             get
             {
-                if (_badCustomerFarewellWords.IsNullOrEmpty()) CreateFarewellsCollections();
+                // if (_badCustomerFarewellWords.IsNullOrEmpty())
+                CreateFarewellsCollections();
                 return _badCustomerFarewellWords;
             }
         }

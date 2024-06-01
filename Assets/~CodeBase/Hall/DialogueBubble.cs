@@ -27,10 +27,10 @@ namespace _CodeBase.Hall
         private void Awake()
         {
             _canvas.worldCamera = Camera.main;
-            Deactivate().Forget();
+            Deactivate();
             
             _confirmBtn.OnClickAsObservable()
-                .Subscribe(_ => Deactivate().Forget())
+                .Subscribe(_ => Deactivate())
                 .AddTo(_compositeDisposable);
             
             _concreteHintBtn.OnClickAsObservable()
@@ -39,7 +39,7 @@ namespace _CodeBase.Hall
                     _concreteHintBtn.gameObject.SetActive(false);
                     _messAnimProcess?.Cancel();
                     _messAnimProcess = new CancellationTokenSource();
-                    FillTextFld(_activeOrder.ConcreteMessage, _messAnimProcess.Token).Forget();
+                    ExecuteMessFill(_activeOrder.ConcreteMessage, _messAnimProcess.Token).Forget();
                 })
                 .AddTo(_compositeDisposable);
         }
@@ -55,7 +55,7 @@ namespace _CodeBase.Hall
         {
             Activate(showButtons: true);
             _activeOrder = order;
-            await FillTextFld(order.Message, _messAnimProcess.Token);
+            await ExecuteMessFill(order.Message, _messAnimProcess.Token);
         }
 
         public void Activate(bool showButtons = true)
@@ -70,14 +70,14 @@ namespace _CodeBase.Hall
             BubbleOpenedFlag = true;
         }
         
-        public async UniTask Deactivate()
+        public void Deactivate()
         {
             _messAnimProcess?.Cancel();
             gameObject.SetActive(false);
             BubbleOpenedFlag = false;
         }
 
-        public async UniTask FillTextFld(string mess, CancellationToken cancellationToken)
+        public async UniTask ExecuteMessFill(string mess, CancellationToken cancellationToken)
         {
             const float delayDelta = 0.2f;
             const float spaceSignDelta = 0.5f;
@@ -90,8 +90,7 @@ namespace _CodeBase.Hall
                 var @char = mess[i];
                 var currentDelay = GameplayConfig.Instance.GetTextAppearsTemp(i / (float)(mess.Length - 1)) / (float)(mess.Length + 1);
                 _messageFld.text = textSource.Append(@char).ToString();
-                await UniTask.WaitForSeconds(currentDelay * (@char == ' ' ? spaceSignDelta : delayDelta),
-                    cancellationToken: cancellationToken);
+                await UniTask.WaitForSeconds(currentDelay * (@char == ' ' ? spaceSignDelta : delayDelta), cancellationToken: cancellationToken);
             }
         } 
     }

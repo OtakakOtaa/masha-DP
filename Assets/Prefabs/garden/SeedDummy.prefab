@@ -98,4 +98,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 5615894224946828989}
-  _scale: {x: 0.5, y: 0.5, z: 0.5}
+  _scale: {x: 0.4, y: 0.4, z: 0.4}

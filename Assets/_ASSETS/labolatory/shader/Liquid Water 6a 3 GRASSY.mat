@@ -64,7 +64,7 @@ Material:
     m_Floats:
     - Boolean_7937B813: 1
     - FrontRender: 1
-    - IndexOfRefraction: 1
+    - IndexOfRefraction: 0
     - Vector1_4296D34C: -0.14
     - Vector1_817FF511: 28.96
     - Vector1_AB3A3EBC: 9.54
@@ -78,8 +78,8 @@ Material:
     - _QueueOffset: 0
     - _fill_Level: 0.2
     m_Colors:
-    - Color_17C6C3C7: {r: 0, g: 0.11764707, b: 0.14117648, a: 0.6666667}
-    - Color_FB35205B: {r: 1, g: 1, b: 1, a: 0.27058825}
+    - Color_17C6C3C7: {r: 0, g: 0.13668135, b: 0.990566, a: 0.6666667}
+    - Color_FB35205B: {r: 0, g: 0.03724375, b: 0.4150943, a: 1}
     - SmoothOclusMetalic: {r: 0.5, g: 1, b: 0, a: 0}
     - TilingOffsetNormals: {r: -0.59, g: 1.53, b: 0, a: 0}
     - TilingOffsetNormals_1: {r: 1, g: 0, b: 0.002, a: 1.62}
