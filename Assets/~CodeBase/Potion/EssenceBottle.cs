@@ -12,19 +12,18 @@ namespace _CodeBase.Potion
 {
     public sealed class EssenceBottle : InteractiveObject
     {
+        
         [SerializeField] private EssenceBottleShader _essenceBottleShader;
         [SerializeField] private Slider _amountViewer;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private SpriteRenderer _neckOfVessel;
-        [SerializeField] private float _regenDuration = 5f; 
-        [SerializeField] private int _sipCount = 4; 
         [SerializeField] private GameObject _kernel;
         
         
         [ValueDropdown("@MashaEditorUtility.GetAllEssenceID()")]
         [SerializeField] private string _essenceID;
-        
-        
+
+
         private string _originalLayerName;
         private Vector3 _originalPos;
         private EssenceConfig _essenceConfig;
@@ -35,12 +34,14 @@ namespace _CodeBase.Potion
 
 
         public string EssenceID => _essenceID;
-        public bool IsRegenerateNow => (Time.time - _startRegenPoint) < _regenDuration;
-        public int MaxAvailableSipsCount => _sipCount;
+        public bool IsRegenerateNow => (Time.time - _startRegenPoint) <  _essenceConfig.RegenDuration;
+        public int MaxAvailableSipsCount => _essenceConfig.SipCount;
         
 
         protected override void OnAwake()
         {
+            
+            
             _originalPos = transform.position;
             InitSupportedActionsList(InputManager.InputAction.Hold);
 
@@ -52,9 +53,9 @@ namespace _CodeBase.Potion
         {
             _essenceConfig = essenceConfig;
             _availableSipsCounter = startSipsAmount;
-            _essenceBottleShader.SetProgress(startSipsAmount / (float)_sipCount);
+            _essenceBottleShader.SetProgress(startSipsAmount / (float)MaxAvailableSipsCount);
             _essenceBottleShader.SetColor(_essenceConfig.Color);
-            _startRegenPoint = -_regenDuration;
+            _startRegenPoint = -_essenceConfig.RegenDuration;
             
             if (startSipsAmount == 0) _needRegenFlag = true;
         }
@@ -62,11 +63,13 @@ namespace _CodeBase.Potion
         
         private void UpdateRegen()
         {
+            if (_essenceConfig == null) return;
+            
             _amountViewer.gameObject.SetActive(false);
             if (!IsRegenerateNow) return;
 
             _amountViewer.gameObject.SetActive(true);
-            _amountRat = Mathf.Clamp01((Time.time - _startRegenPoint) / _regenDuration);
+            _amountRat = Mathf.Clamp01((Time.time - _startRegenPoint) / _essenceConfig.RegenDuration);
             _amountViewer.value = _amountRat;
             _essenceBottleShader.SetProgress(_amountRat);
         }
@@ -77,7 +80,7 @@ namespace _CodeBase.Potion
             if (IsRegenerateNow || _needRegenFlag) return false;
 
             _availableSipsCounter--;
-            _essenceBottleShader.SetProgress(_availableSipsCounter / (float)_sipCount);
+            _essenceBottleShader.SetProgress(_availableSipsCounter / (float)MaxAvailableSipsCount);
             
             if (_availableSipsCounter > 0) return true;
             _needRegenFlag = true;
@@ -88,7 +91,7 @@ namespace _CodeBase.Potion
         {
             _needRegenFlag = false;
             _startRegenPoint = Time.time;
-            _availableSipsCounter = _sipCount;
+            _availableSipsCounter = MaxAvailableSipsCount;
         }
 
 

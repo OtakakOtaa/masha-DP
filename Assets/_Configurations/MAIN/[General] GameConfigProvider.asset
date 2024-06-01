@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f1bf53553f04e33b4a4d2149cf4bf81, type: 3}
-  m_Name: GameConfigProvider
+  m_Name: '[General] GameConfigProvider'
   m_EditorClassIdentifier: 
   _potionConfigs:
   - {fileID: 11400000, guid: d43267418f954e6409b7d148aa00d90e, type: 2}

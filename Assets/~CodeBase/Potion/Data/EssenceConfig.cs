@@ -13,6 +13,8 @@ namespace _CodeBase.Potion.Data
         [SerializeField] private string _name;
         [SerializeField] private Sprite _sprite;
         
+        [SerializeField] private float _regenDuration = 5f; 
+        [SerializeField] private int _sipCount = 4;
         
 #if UNITY_EDITOR
 
@@ -29,5 +31,9 @@ namespace _CodeBase.Potion.Data
         public UniqItemsType Type => UniqItemsType.Essence;
         public Color Color => _color;
         public Sprite Sprite => _sprite;
+        
+        public float RegenDuration => _regenDuration;
+        public int SipCount => _sipCount;
+        
     }
 }

@@ -21,6 +21,7 @@ namespace _CodeBase.DiScopes
         [SerializeField] private GameplayCursor _cursor;
         [SerializeField] private GameConfigProvider _gameConfigProvider;
         [SerializeField] private ShopConfigurationProvider _shopConfigurationProvider;
+        [SerializeField] private GameplayConfig _gameplayConfig;
         
         
         protected override void Configure(IContainerBuilder builder)
@@ -32,6 +33,7 @@ namespace _CodeBase.DiScopes
             builder.RegisterInstance(_cursor);
             builder.RegisterInstance(_gameConfigProvider);
             builder.RegisterInstance(_shopConfigurationProvider);
+            builder.RegisterInstance(_gameplayConfig);
             
             ConfigureGameStateMachine(builder);
         }

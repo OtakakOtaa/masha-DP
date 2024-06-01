@@ -29,6 +29,28 @@ namespace _CodeBase.Garden.GardenBed
             Growing,
             NeedHarvest
         }
+
+        [Serializable] public sealed class GardenBedAreaSettings
+        {
+            [SerializeField] private Vector2 _problemTimerRange = new Vector2(5,10);
+            [SerializeField] private int _waterRequestChance = 50;
+            [SerializeField] private int _fertilizeRequestChance = 15;
+            [SerializeField] private int _bugsAttackChance = 35;
+            [SerializeField] private Vector2 _growingStartRandomOffsetRange = new Vector2(0,1);
+            [SerializeField] private bool _needConsedStartRandomOffset = true;
+            [SerializeField] private State _startState = State.ReadyToUsingWithoutRestrictions;
+            
+            [SerializeField] private GardenBugsSurface.GardenBugsSurfaceSettings _bugsSurfaceSettings;
+
+            public Vector2 ProblemTimerRange => _problemTimerRange;
+            public int WaterRequestChance => _waterRequestChance;
+            public int FertilizeRequestChance => _fertilizeRequestChance;
+            public int BugsAttackChance => _bugsAttackChance;
+            public Vector2 GrowingStartRandomOffsetRange => _growingStartRandomOffsetRange;
+            public bool NeedConsedStartRandomOffset => _needConsedStartRandomOffset;
+            public GardenBugsSurface.GardenBugsSurfaceSettings BugsSurfaceSettings => _bugsSurfaceSettings;
+            public State StartState => _startState;
+        }
         
         [SerializeField] private GardenBedCell[] _cells;
         [SerializeField] private GardenBedUI _ui;
@@ -37,16 +59,12 @@ namespace _CodeBase.Garden.GardenBed
         [SerializeField] private GameObject _noWaterMap;
         [SerializeField] private GameObject _noFertilizerMap;
         [SerializeField] private GameObject _bugsAttackedMap;
-        [Space]
-        [SerializeField] private Vector2 _problemTimerRange;
-        [SerializeField] private int _waterRequestChance = 50;
-        [SerializeField] private int _fertilizeRequestChance = 15;
-        [SerializeField] private int _bugsAttackChance = 35;
-        [SerializeField] private Vector2 _growingStartRandomOffsetRange;
-        [SerializeField] private bool _needConsedStartRandomOffset = false;
-
-        [Inject] private GameConfigProvider _gameConfigProvider;
         
+        
+        
+        [Inject] private GameConfigProvider _gameConfigProvider;
+
+        private GardenBedAreaSettings _settings; 
         private Dictionary<State, GameObject> _maps;
         private Dictionary<State, IGardenBedAreaState> _gardenBedAreaStates;
         private (State state, float chance)[] _problemsPool;
@@ -59,14 +77,19 @@ namespace _CodeBase.Garden.GardenBed
         public GardenBedCell[] Cells => _cells;
         public GardenBedUI UI => _ui;
         public CancellationToken DestroyCancellationToken => destroyCancellationToken;
-        public bool NeedConsedStartRandomOffset => _needConsedStartRandomOffset;
-        public Vector2 GrowingStartRandomOffsetRange => _growingStartRandomOffsetRange;
+        public bool NeedConsedStartRandomOffset => _settings.NeedConsedStartRandomOffset;
+        public Vector2 GrowingStartRandomOffsetRange => _settings.GrowingStartRandomOffsetRange;
         public PlantConfig PlantConfig { get; private set; }
         
 
         
-        protected override void OnAwake()
+        protected override void OnAwake() { }
+
+        public void Init(GardenBedAreaSettings settings)
         {
+            _settings = settings;
+            _bugsAttackedMap.GetComponentInChildren<GardenBugsSurface>().Init(settings.BugsSurfaceSettings);
+             
             _maps = new Dictionary<State, GameObject>()
             {
                 [State.NeedWater] = _noWaterMap,
@@ -76,13 +99,13 @@ namespace _CodeBase.Garden.GardenBed
                 [State.ReadyToUsingWithoutRestrictions] = _normalMap,
                 [State.Growing] = _normalMap,
                 [State.NeedHarvest] = _normalMap,
-            };
+            }; 
 
             _problemsPool = new[]
             {
-                (state: State.NeedWater, chance: _waterRequestChance / 100f),
-                (state: State.NeedFertilizers, chance: _fertilizeRequestChance / 100f),
-                (state: State.NeedBugResolver, chance: _bugsAttackChance / 100f)
+                (state: State.NeedWater, chance: _settings.WaterRequestChance / 100f),
+                (state: State.NeedFertilizers, chance: _settings.FertilizeRequestChance / 100f),
+                (state: State.NeedBugResolver, chance: _settings.BugsAttackChance / 100f)
             }.OrderByDescending(c => c.chance).ToArray();
 
             _gardenBedAreaStates = new Dictionary<State, IGardenBedAreaState>()
@@ -93,16 +116,14 @@ namespace _CodeBase.Garden.GardenBed
             
             var dis = GameService.GameUpdate.Subscribe(_ => UpdateState());
             gameObject.OnDestroyAsObservable().Subscribe(_ => dis.Dispose());
-        }
-
-        public void Init(State startState)
-        {
-            CurrentState = startState;
+            
+            
+            CurrentState = settings.StartState;
             _maps.ForEach(m => m.Value.gameObject.SetActive(false));
             _maps[CurrentState].gameObject.SetActive(true);
             _ui.gameObject.SetActive(true);
             _ui.HideAll();
-            ProblemTimer.RunWithDuration(_problemTimerRange.y);
+            ProblemTimer.RunWithDuration(_settings.ProblemTimerRange.y);
         }
 
         
@@ -171,7 +192,7 @@ namespace _CodeBase.Garden.GardenBed
             var nowIsProblemState = CurrentState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver; 
             if (nowIsProblemState)
             {
-                ProblemTimer.RunWithEndPoint(TimeSpan.FromSeconds(Time.time + Random.Range(_problemTimerRange.x, _problemTimerRange.y)));
+                ProblemTimer.RunWithEndPoint(TimeSpan.FromSeconds(Time.time + Random.Range(_settings.ProblemTimerRange.x, _settings.ProblemTimerRange.y)));
             }
             
             StateBehavior = _gardenBedAreaStates.GetValueOrDefault(newState);

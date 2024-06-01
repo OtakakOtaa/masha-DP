@@ -19,10 +19,11 @@ namespace _CodeBase.Garden
         protected override void OnFirstEnter()
         {
             _gameplayService.UI.GardenUI.Init();
-            
-            foreach (var gardenBedArea in _gardenBedAreas)
+
+            for (var i = 0; i < _gardenBedAreas.Length; i++)
             {
-                gardenBedArea.Init(GardenBedArea.State.ReadyToUsingWithoutRestrictions);
+                var gardenBedArea = _gardenBedAreas[i];
+                gardenBedArea.Init(GameplayConfig.Instance.AreaSettings[i]);
             }
         }
 

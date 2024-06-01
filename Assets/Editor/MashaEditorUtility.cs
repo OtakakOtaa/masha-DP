@@ -3,6 +3,7 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Potion.Data;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 
 namespace Editor
 {
@@ -18,7 +19,14 @@ namespace Editor
             EditorApplication.isPlaying = true;
         }
         
+        
+        [MenuItem("Custom/zClearPrefs")]
+        private static void ClearPrefs()
+        {
+            PlayerPrefs.DeleteAll();
+        }
 
+        
         public static string[] GetAllPlantsID()
         {
             return AssetDatabase.FindAssets($"t:{nameof(PlantConfig)}")

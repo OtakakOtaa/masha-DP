@@ -22,12 +22,11 @@ namespace _CodeBase.Potion
 
         
         
-        [SerializeField] private Color _trashColor;
-        
         
         [Inject] protected GameConfigProvider _gameConfigProvider;
         [Inject] protected GameplayService _gameplayService;
         
+        protected Color _trashColor;
         protected Dictionary<PotionMixData, string> _mixMap = new(); 
         protected PotionMixData _currentPotionMix = new();
         protected string _targetMix;

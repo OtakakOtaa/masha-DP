@@ -360,6 +360,7 @@ MonoBehaviour:
   _cursor: {fileID: 973776404}
   _gameConfigProvider: {fileID: 11400000, guid: 41049668df47a534daee10392c3139bb, type: 2}
   _shopConfigurationProvider: {fileID: 11400000, guid: 9d0dfd3402a395c4ca52c3542a5cfc9c, type: 2}
+  _gameplayConfig: {fileID: 11400000, guid: 3961bb89d1f85e849b95149f4e41ef6e, type: 2}
 --- !u!114 &1736020352
 MonoBehaviour:
   m_ObjectHideFlags: 0

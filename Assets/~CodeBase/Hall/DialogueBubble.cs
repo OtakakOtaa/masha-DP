@@ -17,9 +17,6 @@ namespace _CodeBase.Hall
         [SerializeField] private Canvas _canvas;
         
         
-        [SerializeField] private float _textAppearTemp = 1f;
-        
-        
         private readonly CompositeDisposable _compositeDisposable = new();
         private CancellationTokenSource _messAnimProcess;
         private Order _activeOrder;
@@ -86,13 +83,15 @@ namespace _CodeBase.Hall
             const float spaceSignDelta = 0.5f;
 
             var textSource = new StringBuilder();
-            var delay = _textAppearTemp / (mess.Length + 1);
-            
-            
-            foreach (var @char in mess)
+
+
+            for (var i = 0; i < mess.Length; i++)
             {
+                var @char = mess[i];
+                var currentDelay = GameplayConfig.Instance.GetTextAppearsTemp(i / (float)(mess.Length - 1)) / (float)(mess.Length + 1);
                 _messageFld.text = textSource.Append(@char).ToString();
-                await UniTask.WaitForSeconds(delay * (@char == ' ' ? spaceSignDelta : delayDelta), cancellationToken: cancellationToken);
+                await UniTask.WaitForSeconds(currentDelay * (@char == ' ' ? spaceSignDelta : delayDelta),
+                    cancellationToken: cancellationToken);
             }
         } 
     }

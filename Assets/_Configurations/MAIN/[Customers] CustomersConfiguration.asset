@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b4a90e5f2094149b9888073217588ce, type: 3}
-  m_Name: CustomersConfiguration
+  m_Name: '[Customers] CustomersConfiguration'
   m_EditorClassIdentifier: 
   _orders:
   - _weight: 1

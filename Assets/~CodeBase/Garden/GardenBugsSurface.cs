@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using _CodeBase.Infrastructure;
 using _CodeBase.Input;
 using UniRx;
@@ -19,19 +20,31 @@ namespace _CodeBase.Garden
             public int rotationDirection;
             public bool returningToAreaFlag;
         }
+
+        [Serializable] public sealed class GardenBugsSurfaceSettings
+        {
+            [SerializeField] private AnimationCurve _movementCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+            [SerializeField] private float _movementCurveTimeFactor = 2;
+            [SerializeField] private float _movementCurveSpeedFactor = 1;
+            [SerializeField] private float _randomRotationOffsetAfterLeaveOut = 5f;
+            [SerializeField] private float _rotationAlignFactor = 6f;
+            [SerializeField] private Vector2 _perspectiveScale = new Vector2(0.1f, 0.4f);
+
+            public AnimationCurve MovementCurve => _movementCurve;
+            public float MovementCurveTimeFactor => _movementCurveTimeFactor;
+            public float MovementCurveSpeedFactor => _movementCurveSpeedFactor;
+            public float RandomRotationOffsetAfterLeaveOut => _randomRotationOffsetAfterLeaveOut;
+            public float RotationAlignFactor => _rotationAlignFactor;
+            public Vector2 PerspectiveScale => _perspectiveScale;
+        }
+        
         
         [SerializeField] private Transform[] _bugs;
-        [SerializeField] private AnimationCurve _movementCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-        [SerializeField] private float _movementCurveTimeFactor = 1;
-        [SerializeField] private float _movementCurveSpeedFactor = 1;
-        [SerializeField] private float _randomRotationOffsetAfterLeaveOut = 0f;
-        [SerializeField] private float _rotationAlignFactor = 1f;
-        [SerializeField] private Vector2 _perspectiveScale = new Vector2(0.1f, 0.4f);
         [SerializeField] private Transform _perspectiveScaleStart;
         [SerializeField] private Transform _perspectiveScaleEnd;
-        
-        
-        
+
+
+        private GardenBugsSurfaceSettings _bugsSurfaceSettings;
         private bool _activeFlag = false;
         private (Transform bug, BugDeltaData data)[] _bugsHandler;
         
@@ -48,6 +61,11 @@ namespace _CodeBase.Garden
             _bugsHandler = _bugs.Select(c => (c, new BugDeltaData { direction = c.up, rotationFactor = 1f})).ToArray();
         }
 
+
+        public void Init(GardenBugsSurfaceSettings surfaceSettings)
+        {
+            _bugsSurfaceSettings = surfaceSettings;
+        }
         
         
 #if UNITY_EDITOR
@@ -65,7 +83,7 @@ namespace _CodeBase.Garden
         
         private void UpdateBugsMovement()
         {
-            if(_activeFlag is false) return;
+            if(_activeFlag is false || _bugsSurfaceSettings == null) return;
             
             for (var i = 0; i < _bugsHandler.Length; i++)
             {
@@ -77,7 +95,7 @@ namespace _CodeBase.Garden
                 
                 var perspective = ((Vector2)position - topPerspectivePoint).magnitude / ((Vector2)_perspectiveScaleEnd.position - (Vector2)_perspectiveScaleStart.position).magnitude;
                 
-                item.bug.localScale = Vector3.one * Mathf.Lerp(_perspectiveScale.x, _perspectiveScale.y, perspective);
+                item.bug.localScale = Vector3.one * Mathf.Lerp(_bugsSurfaceSettings.PerspectiveScale.x, _bugsSurfaceSettings.PerspectiveScale.y, perspective);
                 
                 var isPlacedOnSurface = CheckPlaceIntoSurface(position);
                 if (isPlacedOnSurface && item.data.returningToAreaFlag) item.data.returningToAreaFlag = false;
@@ -87,7 +105,7 @@ namespace _CodeBase.Garden
                 var needSwitchToReturn = isPlacedOnSurface is false && item.data.returningToAreaFlag is false; 
                 if (needSwitchToReturn)
                 {
-                    item.data.direction = Quaternion.Euler(0, 0, Random.Range(0, _randomRotationOffsetAfterLeaveOut)) * -item.data.direction;
+                    item.data.direction = Quaternion.Euler(0, 0, Random.Range(0, _bugsSurfaceSettings.RandomRotationOffsetAfterLeaveOut)) * -item.data.direction;
                     item.data.returningToAreaFlag = true;
                 }
                 
@@ -105,9 +123,9 @@ namespace _CodeBase.Garden
                     item.data.direction = Quaternion.Euler(0, 0, item.data.rotationDirection * item.data.rotationFactor) * item.data.direction;
                 }
                 
-                item.bug.rotation = Quaternion.Slerp(item.bug.rotation, Quaternion.LookRotation(Vector3.forward, item.data.direction), Time.deltaTime * _rotationAlignFactor);
+                item.bug.rotation = Quaternion.Slerp(item.bug.rotation, Quaternion.LookRotation(Vector3.forward, item.data.direction), Time.deltaTime * _bugsSurfaceSettings.RotationAlignFactor);
                 
-                var translationSpeed = Time.deltaTime * _movementCurve.Evaluate(item.data.movementDelta / _movementCurveTimeFactor) * _movementCurveSpeedFactor;
+                var translationSpeed = Time.deltaTime * _bugsSurfaceSettings.MovementCurve.Evaluate(item.data.movementDelta / _bugsSurfaceSettings.MovementCurveTimeFactor) * _bugsSurfaceSettings.MovementCurveSpeedFactor;
                 item.data.movementDelta = item.data.movementDelta > 1f ? 0f : item.data.movementDelta + Time.deltaTime;
                 item.bug.position += new Vector3(item.data.direction.x, item.data.direction.y) * translationSpeed;
             }

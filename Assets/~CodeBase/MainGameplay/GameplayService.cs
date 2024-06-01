@@ -19,8 +19,6 @@ namespace _CodeBase.MainGameplay
     public sealed class GameplayService : MonoBehaviour, IGameState
     {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        private static readonly TimeSpan DayDuration = new(0, 0, minutes: 4, 0);
         public static GameplayService Instance { get; private set; }
 
         
@@ -30,8 +28,6 @@ namespace _CodeBase.MainGameplay
         [Inject] private ShopConfigurationProvider _shopConfigurationProvider;
 
         private readonly ReactiveCommand _statsChangedEvent = new();
-        private int _startMoney; 
-        
         
         [Inject] public GameplayUIContainer UI { get; private set; }
         public IReactiveCommand<Unit> StatsChangedEvent => _statsChangedEvent;
@@ -74,7 +70,7 @@ namespace _CodeBase.MainGameplay
             if (UI.ShopUI.ContinueSignalFlag)
             {
                 GameTimer = new Timer();
-                GameTimer.RunWithDuration(DayDuration);
+                GameTimer.RunWithDuration(GameplayConfig.Instance.DayDuration);
                 HookGameEnd().Forget();
                 
                 UI.HudUI.Bind(this);
@@ -92,8 +88,6 @@ namespace _CodeBase.MainGameplay
 
                 switch (type)
                 {
-                    case UniqItemsType.None | UniqItemsType.Potion | UniqItemsType.CustomerInfo | UniqItemsType.CustomerVisual | UniqItemsType.Order:
-                        throw new Exception(nameof(FillGameplayData));
                     case UniqItemsType.Essence:
                     {
                         if (item == _gameConfigProvider.MixerUniqId)
@@ -109,6 +103,8 @@ namespace _CodeBase.MainGameplay
                     case UniqItemsType.Plant:
                         Data.AddPlantsToLandingPool(item, GameplayData.InfinityLandingValue);
                         break;
+                    default:
+                        throw new Exception(nameof(FillGameplayData));
                 }
             }
             

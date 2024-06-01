@@ -28,6 +28,8 @@ namespace _CodeBase
         [Inject] private readonly GlobalStateMachine _gameStateMachine;
         [Inject] private readonly GameplayCursor _gameplayCursor;
         [Inject] private readonly GameConfigProvider _gameplayConfigProvider;
+        [Inject] private readonly GameplayConfig _gameplayConfig;
+        
         
         private readonly HashSet<GameScene> _currentActiveAdditiveScenes = new();
         public IEnumerable<GameScene> CurrentActiveAdditiveScenes => _currentActiveAdditiveScenes;
@@ -51,6 +53,7 @@ namespace _CodeBase
 
         public async void Enter()
         { 
+            _gameplayConfig.InitInstance();
             InitSaves();            
             await TryLoadScene(GameScene.MainMenu);
             _gameStateMachine.Enter<MainMenuGameState>();
@@ -91,6 +94,7 @@ namespace _CodeBase
         public void SaveGameData()
         {
             PlayerPrefs.SetString(SavesId, JsonUtility.ToJson(PersistentGameData));
+            PlayerPrefs.Save();
         }
         
         private void InitSaves()

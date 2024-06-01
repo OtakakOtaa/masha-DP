@@ -18,10 +18,7 @@ namespace _CodeBase.Hall
         [SerializeField] private PotionDummy _potionDummy;
         [SerializeField] private CustomerFetcher _customerFetcher;
         [SerializeField] private DialogueBubble _dialogueBubble;
-
-        [SerializeField] private float _spanBetweenCustomers = 1;
-        [SerializeField] private float _bubblePassTime = 1;
-
+        
 
         [Inject] private GameplayService _gameplayService;
         [Inject] private GameConfigProvider _gameConfigProvider;
@@ -35,14 +32,15 @@ namespace _CodeBase.Hall
         private float _customerLoyalty;
 
         
-        protected override void OnFirstEnter()
+        protected override async void OnFirstEnter()
         {
             _potionDummy.gameObject.SetActive(false);
             _customerFetcher.Init();
             
             GameService.GameUpdate.Subscribe(_ => OnUpdate()).AddTo(destroyCancellationToken);
             _gameplayService.Data.CreatedPotionEvent.Subscribe(_ => UpdateCraftedPotion()).AddTo(destroyCancellationToken);
-            
+
+            await UniTask.WaitForSeconds(GameplayConfig.Instance.FirstCustomerEnterDelay);
             LaunchCustomer(stateProcess.Token).Forget();
         }
 
@@ -82,7 +80,7 @@ namespace _CodeBase.Hall
             _gameplayService.UpdateCustomerInfo(1f);
             
             await UniTask.WaitUntil(() => ActiveFlag, cancellationToken: token);
-            await UniTask.WaitForSeconds(_bubblePassTime, cancellationToken: token);
+            await UniTask.WaitForSeconds(GameplayConfig.Instance.BubblePassDelay, cancellationToken: token);
             _dialogueBubble.Activate(_activeCustomer.Order).Forget();
             await UniTask.WaitUntil(() => _dialogueBubble.BubbleOpenedFlag is false, cancellationToken: token);
 
@@ -121,7 +119,7 @@ namespace _CodeBase.Hall
                 }
             }
             
-            await UniTask.WaitForSeconds(_bubblePassTime, cancellationToken: token);
+            await UniTask.WaitForSeconds(GameplayConfig.Instance.BubblePassDelay, cancellationToken: token);
             _dialogueBubble.Activate(showButtons: false);
             await _dialogueBubble.FillTextFld(isCorrectResult ? _activeCustomer.GoodFarewellWord.Mess : _activeCustomer.BadFarewellWord.Mess, token)
                 .ContinueWith(() => _dialogueBubble.Deactivate());
@@ -140,7 +138,7 @@ namespace _CodeBase.Hall
             _activeCustomer = null;
             _freeHallFlag = true;
             
-            await UniTask.WaitForSeconds(_spanBetweenCustomers, cancellationToken: stateProcess.Token);
+            await UniTask.WaitForSeconds(GameplayConfig.Instance.GetDelayBetweenCustomers(_gameplayService.GameTimer.TimeRatio), cancellationToken: stateProcess.Token);
             LaunchCustomer(stateProcess.Token).Forget();
         }
     }

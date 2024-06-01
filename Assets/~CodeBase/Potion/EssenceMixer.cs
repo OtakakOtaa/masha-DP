@@ -22,6 +22,7 @@ namespace _CodeBase.Potion
         
         protected override void OnAwake()
         {
+            _trashColor = GameplayConfig.Instance.MixerTrashColor;
             _originPos = transform.position;
             
             _originSpritesLayers = new string[_allSprites.Length];

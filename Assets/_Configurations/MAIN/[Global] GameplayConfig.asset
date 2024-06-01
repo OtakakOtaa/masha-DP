@@ -1,0 +1,262 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ac39857cf946cd801254d5e4f1a8b7, type: 3}
+  m_Name: '[Global] GameplayConfig'
+  m_EditorClassIdentifier: 
+  _dayDuration:
+    _min: 4
+    _sec: 0
+    _milSec: 0
+  _delayBetweenCustomers:
+    _value: 1
+    _curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  _firstCustomerEnterDelay:
+    _range: {x: 0, y: 1}
+  _bubblePassDelay:
+    _range: {x: 0, y: 1}
+  _textAppearsTemp:
+    _value: 4
+    _curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  _areaSettings:
+  - _problemTimerRange: {x: 5, y: 10}
+    _waterRequestChance: 50
+    _fertilizeRequestChance: 15
+    _bugsAttackChance: 35
+    _growingStartRandomOffsetRange: {x: 0, y: 1}
+    _needConsedStartRandomOffset: 0
+    _startState: 5
+    _bugsSurfaceSettings:
+      _movementCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.9058533
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _movementCurveTimeFactor: 2
+      _movementCurveSpeedFactor: 1
+      _randomRotationOffsetAfterLeaveOut: 5
+      _rotationAlignFactor: 6
+      _perspectiveScale: {x: 0.1, y: 0.4}
+  - _problemTimerRange: {x: 5, y: 10}
+    _waterRequestChance: 50
+    _fertilizeRequestChance: 15
+    _bugsAttackChance: 35
+    _growingStartRandomOffsetRange: {x: 0, y: 1}
+    _needConsedStartRandomOffset: 0
+    _startState: 5
+    _bugsSurfaceSettings:
+      _movementCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.9058533
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _movementCurveTimeFactor: 2
+      _movementCurveSpeedFactor: 1
+      _randomRotationOffsetAfterLeaveOut: 5
+      _rotationAlignFactor: 6
+      _perspectiveScale: {x: 0.1, y: 0.4}
+  - _problemTimerRange: {x: 5, y: 10}
+    _waterRequestChance: 50
+    _fertilizeRequestChance: 15
+    _bugsAttackChance: 35
+    _growingStartRandomOffsetRange: {x: 0, y: 1}
+    _needConsedStartRandomOffset: 0
+    _startState: 5
+    _bugsSurfaceSettings:
+      _movementCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.9058533
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _movementCurveTimeFactor: 2
+      _movementCurveSpeedFactor: 1
+      _randomRotationOffsetAfterLeaveOut: 5
+      _rotationAlignFactor: 6
+      _perspectiveScale: {x: 0.1, y: 0.4}
+  - _problemTimerRange: {x: 5, y: 10}
+    _waterRequestChance: 50
+    _fertilizeRequestChance: 15
+    _bugsAttackChance: 35
+    _growingStartRandomOffsetRange: {x: 0, y: 1}
+    _needConsedStartRandomOffset: 0
+    _startState: 5
+    _bugsSurfaceSettings:
+      _movementCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.9058533
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _movementCurveTimeFactor: 2
+      _movementCurveSpeedFactor: 1
+      _randomRotationOffsetAfterLeaveOut: 5
+      _rotationAlignFactor: 6
+      _perspectiveScale: {x: 0.1, y: 0.4}
+  - _problemTimerRange: {x: 5, y: 10}
+    _waterRequestChance: 50
+    _fertilizeRequestChance: 15
+    _bugsAttackChance: 35
+    _growingStartRandomOffsetRange: {x: 0, y: 1}
+    _needConsedStartRandomOffset: 0
+    _startState: 5
+    _bugsSurfaceSettings:
+      _movementCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.9058533
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _movementCurveTimeFactor: 2
+      _movementCurveSpeedFactor: 1
+      _randomRotationOffsetAfterLeaveOut: 5
+      _rotationAlignFactor: 6
+      _perspectiveScale: {x: 0.1, y: 0.4}
+  _cauldronTrashColor: {r: 0, g: 0, b: 0, a: 1}
+  _mixerTrashColor: {r: 0, g: 0, b: 0, a: 1}

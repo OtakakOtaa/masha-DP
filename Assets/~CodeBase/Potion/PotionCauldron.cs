@@ -15,9 +15,12 @@ namespace _CodeBase.Potion
 
         public readonly ReactiveCommand<string> PotionCreatedEvent = new();
         public readonly ReactiveCommand<string> AddPlantEvent = new();
-        
-        
-        protected override void OnAwake() { }
+
+
+        protected override void OnAwake()
+        {
+            _trashColor = GameplayConfig.Instance.CauldronTrashColor;
+        }
 
         
         public override void Init(ICollection<PotionConfig> allAvailablePotions)
