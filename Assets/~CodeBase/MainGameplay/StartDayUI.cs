@@ -33,7 +33,7 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private DisappearanceAnimation _disappearanceAnimation;
         
             
-        public void InitAndShow(int day)
+        public void InitAndShow(int day, bool needAnimation = true)
         {
             var currentVariant = _visualVariants[Random.Range(0, _visualVariants.Length)];
             _bg.sprite = currentVariant.Background;
@@ -57,8 +57,9 @@ namespace _CodeBase.MainGameplay
             {
                 graphic.color = currentVariant.SammyColor;
             }
-            
-            _appearsAnimation.Play();
+
+            if (needAnimation) _appearsAnimation.Play();
+            else gameObject.SetActive(true);
         }
 
         public void Close()

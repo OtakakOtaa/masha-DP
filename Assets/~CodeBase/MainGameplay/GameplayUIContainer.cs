@@ -14,7 +14,6 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private ShopUI _shopUI;
         [SerializeField] private DayResultsUI _dayResultsUI;
         [SerializeField] private StartDayUI _startDayUI;
-        
 
         
         public DayResultsUI DayResultsUI => _dayResultsUI;

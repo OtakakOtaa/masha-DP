@@ -12,23 +12,25 @@ namespace _CodeBase.Infrastructure.UI
         [SerializeField] private float _duration;
         [SerializeField] private Ease _ease;
 
-        private Tween _tween;
+        public Tween Tween { get; private set; }
         
         
-        public void Play()
+        public void Play(float? duration = null)
         {
-            _tween?.Kill();
+            duration ??= _duration;
+            
+            Tween?.Kill();
             gameObject.SetActive(true);
 
             if (_canvasGroup != null)
             {
                 _canvasGroup.alpha = 0;
-                _tween = _canvasGroup.DOFade(1f, _duration).SetEase(_ease);
+                Tween = _canvasGroup.DOFade(1f, duration.Value).SetEase(_ease);
                 return;
             }
 
             _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, 0f);
-            _tween = _image.DOFade(1f, _duration).SetEase(_ease);
+            Tween = _image.DOFade(1f, duration.Value).SetEase(_ease);
         }
     }
 }

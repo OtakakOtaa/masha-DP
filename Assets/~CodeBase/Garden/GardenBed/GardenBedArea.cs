@@ -5,15 +5,14 @@ using System.Threading;
 using _CodeBase.DATA;
 using _CodeBase.Garden.Data;
 using _CodeBase.Garden.UI;
-using _CodeBase.Infrastructure;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
+using JetBrains.Annotations;
 using Sirenix.Utilities;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VContainer;
 using Random = UnityEngine.Random;
 using Timer = _CodeBase.MainGameplay.Timer;
@@ -34,7 +33,8 @@ namespace _CodeBase.Garden.GardenBed
             NeedHarvest
         }
 
-        [Serializable] public sealed class GardenBedAreaSettings : ICanBoosted<(float decreaseFactor, State target)>, ICanBoosted<bool> 
+        [Serializable] public sealed class GardenBedAreaSettings
+            : ICanBoosted<(Dictionary<State, int> chances, float problemSpanFactor)>, ICanBoosted<bool> 
         {
             [SerializeField] private Vector2 _problemTimerRange = new Vector2(5,10);
             [SerializeField] private int _waterRequestChance = 50;
@@ -43,69 +43,49 @@ namespace _CodeBase.Garden.GardenBed
             [SerializeField] private Vector2 _growingStartRandomOffsetRange = new Vector2(0,1);
             [SerializeField] private bool _needConsedStartRandomOffset = true;
             [SerializeField] private State _startState = State.ReadyToUsingWithoutRestrictions;
-            [SerializeField] private bool _quickHarvestFlag = false;
             
             [SerializeField] private GardenBugsSurface.GardenBugsSurfaceSettings _bugsSurfaceSettings;
 
+            [NonSerialized] private Dictionary<State, int> _problemChanceBrowser; 
+            [NonSerialized] private float _problemSpanRangeFactor = 1f; 
+            [NonSerialized] private bool _quickHarvestFlag = false;
             
-            public Vector2 ProblemTimerRange => _problemTimerRange;
-            public int WaterRequestChance => _waterRequestChance;
-            public int FertilizeRequestChance => _fertilizeRequestChance;
-            public int BugsAttackChance => _bugsAttackChance;
+            public Vector2 ProblemTimerRange => _problemTimerRange * _problemSpanRangeFactor;
             public bool QuickHarvestFlag => _quickHarvestFlag;
             public Vector2 GrowingStartRandomOffsetRange => _growingStartRandomOffsetRange;
             public bool NeedConsedStartRandomOffset => _needConsedStartRandomOffset;
             public GardenBugsSurface.GardenBugsSurfaceSettings BugsSurfaceSettings => _bugsSurfaceSettings;
             public State StartState => _startState;
             
-            public void Boost((float decreaseFactor, State target) param)
+            public IDictionary<State, int> ProblemChanceBrowser => _problemChanceBrowser ??= CreateBrowser();
+
+            [CanBeNull] public float? GetProblemChance(State type)
             {
-                switch (param.target)
-                {
-                    case State.NeedWater:
-                    {
-                        var startValue = _waterRequestChance;
-                        _waterRequestChance = (int)(_waterRequestChance / param.decreaseFactor);
-
-                        var additionToOthersProblems = (int)((startValue - _waterRequestChance) / 2f);
-                        _fertilizeRequestChance += additionToOthersProblems;
-                        _bugsAttackChance += additionToOthersProblems;
-                        
-                        _problemTimerRange *= (1 + ((startValue - _waterRequestChance) / 100f));
-                    }
-                        break;
-                    case State.NeedFertilizers:
-                    {
-                        var startValue = _fertilizeRequestChance;
-                        _fertilizeRequestChance = (int)(_fertilizeRequestChance / param.decreaseFactor);
-
-                        var additionToOthersProblems = (int)((startValue - _fertilizeRequestChance) / 2f);
-                        _waterRequestChance += additionToOthersProblems;
-                        _bugsAttackChance += additionToOthersProblems;
-                        
-                        _problemTimerRange *= (1 + ((startValue - _fertilizeRequestChance) / 100f));
-                    }
-                        break;
-                    case State.NeedBugResolver:
-                    {
-                        var startValue = _bugsAttackChance;
-                        _bugsAttackChance = (int)(_bugsAttackChance / param.decreaseFactor);
-
-                        var additionToOthersProblems = (int)((startValue - _bugsAttackChance) / 2f);
-                        _waterRequestChance += additionToOthersProblems;
-                        _fertilizeRequestChance += additionToOthersProblems;
-
-                        _problemTimerRange *= (1 + ((startValue - _bugsAttackChance) / 100f));
-                    }
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }             
+                _problemChanceBrowser ??= CreateBrowser();
+                
+                return _problemChanceBrowser.TryGetValue(type, out var value) ? value / 100f : null; 
+            }
+            
+            
+            public void Boost((Dictionary<State, int> chances, float problemSpanFactor) param)
+            {
+                _problemChanceBrowser = param.chances;
+                _problemSpanRangeFactor = param.problemSpanFactor;
             }
 
             public void Boost(bool param)
             {
                 _quickHarvestFlag = param;
+            }
+
+            private Dictionary<State, int> CreateBrowser()
+            {
+                return new Dictionary<State, int>
+                {
+                    [State.NeedBugResolver] = _bugsAttackChance,
+                    [State.NeedFertilizers] = _fertilizeRequestChance,
+                    [State.NeedWater] = _waterRequestChance
+                };
             }
         }
 
@@ -125,7 +105,7 @@ namespace _CodeBase.Garden.GardenBed
         private GardenBedAreaSettings _settings; 
         private Dictionary<State, GameObject> _maps;
         private Dictionary<State, IGardenBedAreaState> _gardenBedAreaStates;
-        private (State state, float chance)[] _problemsPool;
+        private (State type, float chance)[] _problemsPool;
 
         public Timer GrowTimer { get; } = new();
         public Timer ProblemTimer { get; } = new();
@@ -158,15 +138,13 @@ namespace _CodeBase.Garden.GardenBed
                 [State.ReadyToUsingWithoutRestrictions] = _normalMap,
                 [State.Growing] = _normalMap,
                 [State.NeedHarvest] = _normalMap,
-            }; 
+            };
 
-            _problemsPool = new[]
-            {
-                (state: State.NeedWater, chance: _settings.WaterRequestChance / 100f),
-                (state: State.NeedFertilizers, chance: _settings.FertilizeRequestChance / 100f),
-                (state: State.NeedBugResolver, chance: _settings.BugsAttackChance / 100f)
-            }.OrderByDescending(c => c.chance).ToArray();
-
+            _problemsPool = _settings.ProblemChanceBrowser
+                .Select(i => (type: i.Key, chance: i.Value / 100f))
+                .OrderByDescending(c => c.chance)
+                .ToArray();
+            
             _gardenBedAreaStates = new Dictionary<State, IGardenBedAreaState>()
             {
                 [State.Growing] = new BedAreaGrowingState(this),
@@ -246,7 +224,7 @@ namespace _CodeBase.Garden.GardenBed
                 totalWeight += problem.chance;
                 if (!(totalWeight >= randomValue)) continue;
                 
-                SwitchState(problem.state);
+                SwitchState(problem.type);
                 return;
             }
         }

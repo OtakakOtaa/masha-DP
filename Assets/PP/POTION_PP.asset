@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 221518ef91623a7438a71fef23660601, type: 3}
   m_Name: WhiteBalance
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   temperature:
     m_OverrideState: 1
     m_Value: 1
@@ -37,7 +37,7 @@ MonoBehaviour:
     m_Value: 3
   threshold:
     m_OverrideState: 1
-    m_Value: 1.15
+    m_Value: 0.94
   intensity:
     m_OverrideState: 1
     m_Value: 4.19
@@ -193,16 +193,16 @@ MonoBehaviour:
   active: 1
   type:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 10
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.03
   response:
     m_OverrideState: 1
     m_Value: 1
   texture:
-    m_OverrideState: 0
-    m_Value: {fileID: 0}
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: aa31808b06fb60741accd1b5297257d7, type: 3}
 --- !u!114 &1354638243446407455
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -215,13 +215,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e1dc532bcb41949b58bc4f2abfbb7e, type: 3}
   m_Name: LensDistortion
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.096
+    m_Value: -0.244
   xMultiplier:
     m_OverrideState: 1
-    m_Value: 0.494
+    m_Value: 1
   yMultiplier:
     m_OverrideState: 1
     m_Value: 1
@@ -230,7 +230,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   scale:
     m_OverrideState: 1
-    m_Value: 0.72
+    m_Value: 1
 --- !u!114 &2748408866614353243
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -246,13 +246,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.5849056, g: 0.49882516, b: 0.49882516, a: 1}
+    m_Value: {r: 0.496351, g: 0.531577, b: 0.6226415, a: 1}
   highlights:
     m_OverrideState: 1
-    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    m_Value: {r: 0.07342471, g: 0.07342471, b: 0.20754719, a: 1}
   balance:
     m_OverrideState: 1
-    m_Value: -8
+    m_Value: -82
 --- !u!114 &4438359847004656831
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -268,10 +268,10 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.07944389}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.019818736}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.01986097}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.036896743}
   highlights:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0.05958291}

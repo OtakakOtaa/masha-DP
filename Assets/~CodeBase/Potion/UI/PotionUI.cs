@@ -28,7 +28,12 @@ namespace _CodeBase.Potion.UI
 
         [SerializeField] private ScrollPanel _scrollPanel;
         [SerializeField] private GameObject _craftPanel;
+        [SerializeField] private AppearsAnimation _craftPanelAppearsAnimation;
+        [SerializeField] private DisappearanceAnimation _craftPanelDisappearanceAnimation;
+        
         [SerializeField] private GameObject _potionPopup;
+        [SerializeField] private AppearsAnimation _potionPopupAppearsAnimation;
+        [SerializeField] private DisappearanceAnimation _potionPopupDisappearanceAnimation;
         [SerializeField] private RectTransform _craftPanelRec;
         [SerializeField] private Transform _container;
         [SerializeField] private PotionRecipeUIItem _potionRecipePrefab;
@@ -115,7 +120,7 @@ namespace _CodeBase.Potion.UI
         private void OpenCraftInfoPanel()
         {
             DisableAll();
-            _craftPanel.gameObject.SetActive(true);
+            _craftPanelAppearsAnimation.Play();
             HideTopRenderingElements();
             
             InputManager.Instance.ClickEvent
@@ -129,7 +134,7 @@ namespace _CodeBase.Potion.UI
         private void OpenPotionPopup(string potionID)
         {
             DisableAll();
-            _potionPopup.gameObject.SetActive(true); 
+            _potionPopupAppearsAnimation.Play(); 
             HideTopRenderingElements();
 
             var config = _gameConfigProvider.GetByID<PotionConfig>(potionID);
@@ -151,6 +156,7 @@ namespace _CodeBase.Potion.UI
         private void CloseCraftInfoPanel()
         {
             DisableAll();
+            _craftPanelDisappearanceAnimation.Play();
             ShowAllBtns();
             RestoreTopRenderingElements();
             
@@ -159,6 +165,7 @@ namespace _CodeBase.Potion.UI
         private void ClosePotionPopup(bool acceptFlag)
         {
             DisableAll();
+            _potionPopupDisappearanceAnimation.Play(); 
             ShowAllBtns();
             RestoreTopRenderingElements();
             AcceptCreatedPotionEvent?.Execute(acceptFlag);

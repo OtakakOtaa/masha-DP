@@ -1,5 +1,6 @@
 ﻿using System;
 using _CodeBase.DATA;
+using _CodeBase.MainGameplay;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine;
 namespace _CodeBase.Potion.Data
 {
     [CreateAssetMenu(menuName = "Create EssenceConfig", fileName = "EssenceConfig", order = 0)]
-    [Serializable] public sealed class EssenceConfig : ScriptableObject, IUniq 
+    [Serializable] public sealed class EssenceConfig : ScriptableObject, IUniq, ICanBoosted<float> 
     {
         [SerializeField] private string _id;
         [SerializeField] private Color _color;
@@ -16,6 +17,8 @@ namespace _CodeBase.Potion.Data
         
         [SerializeField] private float _regenDuration = 5f; 
         [SerializeField] private int _sipCount = 4;
+        
+        [NonSerialized] private float _regenEssencesMultiplayer = 1;
         
 #if UNITY_EDITOR
 
@@ -33,8 +36,12 @@ namespace _CodeBase.Potion.Data
         public Color Color => _color;
         public Sprite Sprite => _sprite;
         
-        public float RegenDuration => _regenDuration;
+        public float RegenDuration => _regenDuration * _regenEssencesMultiplayer;
         public int SipCount => _sipCount;
-        
+
+        public void Boost(float param)
+        {
+            _regenEssencesMultiplayer = param;
+        }
     }
 }

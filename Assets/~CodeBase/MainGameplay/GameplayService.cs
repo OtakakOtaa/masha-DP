@@ -65,6 +65,7 @@ namespace _CodeBase.MainGameplay
             {
                 UI.HudUI.gameObject.SetActive(false);
                 InitAndOpenShop();
+                await _gameService.Curtain.PlayDisappearance(0.3f);
                 await UniTask.WaitUntil(() => UI.ShopUI.ReturnToSignalFlag || UI.ShopUI.ContinueSignalFlag,
                     cancellationToken: destroyCancellationToken);
 
@@ -73,19 +74,25 @@ namespace _CodeBase.MainGameplay
                     await GoToMainMenu();
                     return;
                 }
+                
+                await _gameService.Curtain.PlayAppears(0.7f);
             }
             
-            BoosterProcessor.ProcessBoosters(Data.UniqItems, _gameConfigProvider);
+            BoosterProcessor.ProcessBoosters(boosters: Data.UniqItems, _gameConfigProvider, Data);
             GameTimer = new Timer();
             GameTimer.RunWithDuration(GameSettingsConfiguration.Instance.DayDuration);
             HookGameEnd().Forget();
 
             UI.HudUI.Bind(this);
             UI.HudUI.gameObject.SetActive(true);
-            UI.StartDayUI.InitAndShow(_gameService.PersistentGameData.Day);
+            UI.StartDayUI.InitAndShow(_gameService.PersistentGameData.Day, needAnimation: false);
+            await _gameService.Curtain.PlayDisappearance(0.2f);
             await UniTask.WaitForSeconds(GameSettingsConfiguration.Instance.StartGameCurtainLifeDuration, cancellationToken: destroyCancellationToken);
-            GoToHallLac().Forget();
-            UI.StartDayUI.Close();
+            
+            await _gameService.Curtain.PlayAppears(0.7f);
+            await GoToHallLac();
+            UI.StartDayUI.gameObject.SetActive(false);
+            await _gameService.Curtain.PlayDisappearance(0.3f);
         }
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,8 +114,10 @@ namespace _CodeBase.MainGameplay
 
         public async UniTask GoToMainMenu()
         {
+            await _gameService.Curtain.PlayAppears(0.9f);
             await _gameService.TryLoadScene(GameScene.MainMenu);
             _gameService.GameStateMachine.Enter<MainMenuGameState>(ignoreExit: true);
+            await _gameService.Curtain.PlayAppears(0.2f);
         }
         
         public void UpdateCustomerInfo(float loyalty)
@@ -192,9 +201,9 @@ namespace _CodeBase.MainGameplay
         private async UniTaskVoid HookGameEnd()
         {
             await UniTask.WaitUntil(() => GameTimer.IsTimeUp && (_gameEndRestrictions?.Invoke() is false), cancellationToken: destroyCancellationToken);
-            
-            UI.DayResultsUI.gameObject.SetActive(true);
+
             UI.DayResultsUI.Init(Data.EarnedCoins);
+            UI.DayResultsUI.Show();
             await UniTask.WaitUntil(() => UI.DayResultsUI.ContinueEventFlag, cancellationToken: destroyCancellationToken);
 
             SaveGameplayData();

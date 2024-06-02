@@ -1,7 +1,11 @@
-﻿namespace _CodeBase.Infrastructure.UI
+﻿using DG.Tweening;
+
+namespace _CodeBase.Infrastructure.UI
 {
     public interface IAnimation
     {
-        void Play();
+        void Play(float? duration = null);
+
+        Tween Tween { get; }
     }
 }

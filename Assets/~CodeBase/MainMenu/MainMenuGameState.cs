@@ -31,6 +31,7 @@ namespace _CodeBase.MainMenu
 
         public async UniTaskVoid StartGame()
         {
+            await _gameService.Curtain.PlayAppears(0.9f);
             await _gameService.TryLoadScene(GameScene.Gameplay);
             _gameService.GameStateMachine.Enter<GameplayService>();
         }

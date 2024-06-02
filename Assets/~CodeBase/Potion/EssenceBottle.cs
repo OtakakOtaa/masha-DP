@@ -35,15 +35,13 @@ namespace _CodeBase.Potion
 
 
         public string EssenceID => _essenceID;
-        public float RegenerationDuration => _essenceConfig.RegenDuration * GameSettingsConfiguration.Instance.RegenEssencesMultiplayer;
+        public float RegenerationDuration => _essenceConfig.RegenDuration;
         public bool IsRegenerateNow => (Time.time - _startRegenPoint) <  RegenerationDuration;
         public int MaxAvailableSipsCount => _essenceConfig.SipCount;
 
 
         protected override void OnAwake()
         {
-            
-            
             _originalPos = transform.position;
             InitSupportedActionsList(InputManager.InputAction.Hold);
 

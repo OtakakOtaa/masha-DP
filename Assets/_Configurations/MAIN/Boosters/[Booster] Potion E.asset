@@ -15,4 +15,4 @@ MonoBehaviour:
   _id: '[Booster] Potion E'
   _sprite: {fileID: 21300000, guid: e48e8b299f771f34fbc6cddf46a543b7, type: 3}
   _name: 
-  _value: 2
+  _value: 0.5

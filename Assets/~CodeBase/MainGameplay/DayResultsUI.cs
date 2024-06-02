@@ -1,4 +1,5 @@
 ﻿using System;
+using _CodeBase.Infrastructure.UI;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UniRx;
@@ -14,6 +15,7 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private TMP_Text _earnedCoinTMP;
         [SerializeField] private Button _continueBtn;
         [SerializeField] private Sprite[] _mainIconsSprites;
+        [SerializeField] private AppearsAnimation _appearsAnimation;
         
         
         public IObservable<Unit> ContinueClickedEvent => _continueBtn.OnClickAsObservable();
@@ -33,7 +35,11 @@ namespace _CodeBase.MainGameplay
             _mainIcon.sprite = randomizedSprite;
             _mainIcon.SetNativeSize();
             _earnedCoinTMP.text = earnedCoinsAmount.ToString();
-            
+        }
+
+        public void Show()
+        {
+            _appearsAnimation.Play();
         }
     }
 }
