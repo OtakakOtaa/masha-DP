@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using _CodeBase.DATA;
 using _CodeBase.Garden.Data;
 using _CodeBase.Garden.UI;
+using _CodeBase.Infrastructure;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
+using _CodeBase.MainGameplay;
 using Sirenix.Utilities;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 using Random = UnityEngine.Random;
 using Timer = _CodeBase.MainGameplay.Timer;
@@ -30,7 +34,7 @@ namespace _CodeBase.Garden.GardenBed
             NeedHarvest
         }
 
-        [Serializable] public sealed class GardenBedAreaSettings
+        [Serializable] public sealed class GardenBedAreaSettings : ICanBoosted<(float decreaseFactor, State target)>, ICanBoosted<bool> 
         {
             [SerializeField] private Vector2 _problemTimerRange = new Vector2(5,10);
             [SerializeField] private int _waterRequestChance = 50;
@@ -39,18 +43,72 @@ namespace _CodeBase.Garden.GardenBed
             [SerializeField] private Vector2 _growingStartRandomOffsetRange = new Vector2(0,1);
             [SerializeField] private bool _needConsedStartRandomOffset = true;
             [SerializeField] private State _startState = State.ReadyToUsingWithoutRestrictions;
+            [SerializeField] private bool _quickHarvestFlag = false;
             
             [SerializeField] private GardenBugsSurface.GardenBugsSurfaceSettings _bugsSurfaceSettings;
 
+            
             public Vector2 ProblemTimerRange => _problemTimerRange;
             public int WaterRequestChance => _waterRequestChance;
             public int FertilizeRequestChance => _fertilizeRequestChance;
             public int BugsAttackChance => _bugsAttackChance;
+            public bool QuickHarvestFlag => _quickHarvestFlag;
             public Vector2 GrowingStartRandomOffsetRange => _growingStartRandomOffsetRange;
             public bool NeedConsedStartRandomOffset => _needConsedStartRandomOffset;
             public GardenBugsSurface.GardenBugsSurfaceSettings BugsSurfaceSettings => _bugsSurfaceSettings;
             public State StartState => _startState;
+            
+            public void Boost((float decreaseFactor, State target) param)
+            {
+                switch (param.target)
+                {
+                    case State.NeedWater:
+                    {
+                        var startValue = _waterRequestChance;
+                        _waterRequestChance = (int)(_waterRequestChance / param.decreaseFactor);
+
+                        var additionToOthersProblems = (int)((startValue - _waterRequestChance) / 2f);
+                        _fertilizeRequestChance += additionToOthersProblems;
+                        _bugsAttackChance += additionToOthersProblems;
+                        
+                        _problemTimerRange *= (1 + ((startValue - _waterRequestChance) / 100f));
+                    }
+                        break;
+                    case State.NeedFertilizers:
+                    {
+                        var startValue = _fertilizeRequestChance;
+                        _fertilizeRequestChance = (int)(_fertilizeRequestChance / param.decreaseFactor);
+
+                        var additionToOthersProblems = (int)((startValue - _fertilizeRequestChance) / 2f);
+                        _waterRequestChance += additionToOthersProblems;
+                        _bugsAttackChance += additionToOthersProblems;
+                        
+                        _problemTimerRange *= (1 + ((startValue - _fertilizeRequestChance) / 100f));
+                    }
+                        break;
+                    case State.NeedBugResolver:
+                    {
+                        var startValue = _bugsAttackChance;
+                        _bugsAttackChance = (int)(_bugsAttackChance / param.decreaseFactor);
+
+                        var additionToOthersProblems = (int)((startValue - _bugsAttackChance) / 2f);
+                        _waterRequestChance += additionToOthersProblems;
+                        _fertilizeRequestChance += additionToOthersProblems;
+
+                        _problemTimerRange *= (1 + ((startValue - _bugsAttackChance) / 100f));
+                    }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }             
+            }
+
+            public void Boost(bool param)
+            {
+                _quickHarvestFlag = param;
+            }
         }
+
         
         [SerializeField] private GardenBedCell[] _cells;
         [SerializeField] private GardenBedUI _ui;
@@ -59,7 +117,7 @@ namespace _CodeBase.Garden.GardenBed
         [SerializeField] private GameObject _noWaterMap;
         [SerializeField] private GameObject _noFertilizerMap;
         [SerializeField] private GameObject _bugsAttackedMap;
-        
+        [SerializeField] private BoxCollider _allHarvestArea;
         
         
         [Inject] private GameConfigProvider _gameConfigProvider;
@@ -69,7 +127,6 @@ namespace _CodeBase.Garden.GardenBed
         private Dictionary<State, IGardenBedAreaState> _gardenBedAreaStates;
         private (State state, float chance)[] _problemsPool;
 
-        
         public Timer GrowTimer { get; } = new();
         public Timer ProblemTimer { get; } = new();
         public State CurrentState { get; private set; }
@@ -80,10 +137,12 @@ namespace _CodeBase.Garden.GardenBed
         public bool NeedConsedStartRandomOffset => _settings.NeedConsedStartRandomOffset;
         public Vector2 GrowingStartRandomOffsetRange => _settings.GrowingStartRandomOffsetRange;
         public PlantConfig PlantConfig { get; private set; }
-        
 
-        
-        protected override void OnAwake() { }
+
+        protected override void OnAwake()
+        {
+            InitSupportedActionsList(InputManager.InputAction.Click, InputManager.InputAction.SomeItemDropped);
+        }
 
         public void Init(GardenBedAreaSettings settings)
         {
@@ -123,6 +182,9 @@ namespace _CodeBase.Garden.GardenBed
             _maps[CurrentState].gameObject.SetActive(true);
             _ui.gameObject.SetActive(true);
             _ui.HideAll();
+
+            _allHarvestArea.enabled = settings.QuickHarvestFlag;
+            
             ProblemTimer.RunWithDuration(_settings.ProblemTimerRange.y);
         }
 
@@ -143,7 +205,7 @@ namespace _CodeBase.Garden.GardenBed
             }
         }
 
-        
+
         public override void ProcessInteractivity(InputManager.InputAction inputAction)
         {
             if (StateBehavior != null)
@@ -152,19 +214,24 @@ namespace _CodeBase.Garden.GardenBed
                 return;
             }
             
-            var isGardenTool = _inputManager.GameplayCursor.HandleItem.TryGetComponent(out GardenTool gardenTool);
-            if (CurrentState is State.NeedFertilizers or State.NeedWater or State.NeedBugResolver && isGardenTool && gardenTool.Resolve == CurrentState)
+            if(inputAction is InputManager.InputAction.SomeItemDropped)
             {
-                SwitchState(State.ReadyToUsing);
-                return;
-            }
+                var isGardenTool = _inputManager.GameplayCursor.HandleItem.TryGetComponent(out GardenTool gardenTool);
+                if (CurrentState is State.NeedFertilizers or State.NeedWater or State.NeedBugResolver && isGardenTool && gardenTool.Resolve == CurrentState)
+                {
+                    SwitchState(State.ReadyToUsing);
+                    return;
+                }
 
             
-            var isPantSeed = _inputManager.GameplayCursor.HandleItem.TryGetComponent<SeedDummy>(out var plantDummy);
-            if (CurrentState is State.ReadyToUsing or State.ReadyToUsingWithoutRestrictions && isGardenTool is false && isPantSeed)
-            {
-                PlantConfig = plantDummy.Config;
-                SwitchState(State.Growing);
+                var isPantSeed = _inputManager.GameplayCursor.HandleItem.TryGetComponent<SeedDummy>(out var plantDummy);
+                if (CurrentState is State.ReadyToUsing or State.ReadyToUsingWithoutRestrictions && isGardenTool is false && isPantSeed)
+                {
+                    PlantConfig = plantDummy.Config;
+                    SwitchState(State.Growing);
+                    return;
+                }   
+                
                 return;
             }
         }

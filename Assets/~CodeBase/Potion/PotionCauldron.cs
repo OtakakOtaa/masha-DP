@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using _CodeBase.DATA;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Potion.Data;
 using UniRx;
@@ -19,7 +20,7 @@ namespace _CodeBase.Potion
 
         protected override void OnAwake()
         {
-            _trashColor = GameplayConfig.Instance.CauldronTrashColor;
+            _trashColor = GameSettingsConfiguration.Instance.CauldronTrashColor;
         }
 
         

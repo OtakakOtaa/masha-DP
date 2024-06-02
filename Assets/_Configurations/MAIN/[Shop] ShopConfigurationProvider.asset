@@ -37,3 +37,23 @@ MonoBehaviour:
     _cost: 60
     _name: "\u0411\u0435\u043B\u044B\u0439"
     _rect: {x: 101, y: 173}
+  - _id: '[Booster] Garden B'
+    _cost: 100
+    _name: "\u041C\u0435\u043D\u044C\u0448\u0435\n\u0436\u0443\u043A\u043E\u0432"
+    _rect: {x: 204, y: 201}
+  - _id: '[Booster] Garden F'
+    _cost: 100
+    _name: "\u0411\u043E\u043B\u0435\u0435 \u0440\u0435\u0434\u043A\u043E\u0435\n\u0443\u0434\u043E\u0431\u0440\u0435\u043D\u0438\u0435"
+    _rect: {x: 209, y: 196}
+  - _id: '[Booster] Garden Q'
+    _cost: 100
+    _name: "\u0411\u044B\u0441\u0442\u0440\u044B\u0439 \u0441\u0431\u043E\u0440"
+    _rect: {x: 230, y: 233}
+  - _id: '[Booster] Garden W'
+    _cost: 100
+    _name: "\u0411\u043E\u043B\u0435\u0435 \u0440\u0435\u0434\u043A\u0438\u0439\n\u043F\u043E\u043B\u0438\u0432"
+    _rect: {x: 209, y: 196}
+  - _id: '[Booster] Potion E'
+    _cost: 100
+    _name: "\u0411\u044B\u0441\u0442\u0440\u043E\u0435\n\u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435"
+    _rect: {x: 168, y: 175}

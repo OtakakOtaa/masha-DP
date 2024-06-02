@@ -1,4 +1,5 @@
 ﻿using System;
+using _CodeBase.DATA;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.Potion.Data;
@@ -34,9 +35,10 @@ namespace _CodeBase.Potion
 
 
         public string EssenceID => _essenceID;
-        public bool IsRegenerateNow => (Time.time - _startRegenPoint) <  _essenceConfig.RegenDuration;
+        public float RegenerationDuration => _essenceConfig.RegenDuration * GameSettingsConfiguration.Instance.RegenEssencesMultiplayer;
+        public bool IsRegenerateNow => (Time.time - _startRegenPoint) <  RegenerationDuration;
         public int MaxAvailableSipsCount => _essenceConfig.SipCount;
-        
+
 
         protected override void OnAwake()
         {
@@ -55,7 +57,7 @@ namespace _CodeBase.Potion
             _availableSipsCounter = startSipsAmount;
             _essenceBottleShader.SetProgress(startSipsAmount / (float)MaxAvailableSipsCount);
             _essenceBottleShader.SetColor(_essenceConfig.Color);
-            _startRegenPoint = -_essenceConfig.RegenDuration;
+            _startRegenPoint = -RegenerationDuration;
             
             if (startSipsAmount == 0) _needRegenFlag = true;
         }
@@ -69,7 +71,7 @@ namespace _CodeBase.Potion
             if (!IsRegenerateNow) return;
 
             _amountViewer.gameObject.SetActive(true);
-            _amountRat = Mathf.Clamp01((Time.time - _startRegenPoint) / _essenceConfig.RegenDuration);
+            _amountRat = Mathf.Clamp01((Time.time - _startRegenPoint) / RegenerationDuration);
             _amountViewer.value = _amountRat;
             _essenceBottleShader.SetProgress(_amountRat);
         }

@@ -71,7 +71,7 @@ namespace _CodeBase.Infrastructure.UI
         {
             if (_isExecuted || enabled is false) return;
 
-            var cam = GameplayService.Instance.Camera;
+            var cam = GameplayService.Instance.UICamera;
 
             var mousePos = (Vector2)cam.ScreenToViewportPoint(InputManager.Instance.ScreenMousePos) - (Vector2)cam.WorldToViewportPoint(_rectTransform.transform.position);;
             var delta = mousePos * Time.deltaTime * _sensitivity;

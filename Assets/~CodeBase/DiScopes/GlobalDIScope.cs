@@ -1,4 +1,5 @@
 using _CodeBase.Customers;
+using _CodeBase.DATA;
 using _CodeBase.Garden;
 using _CodeBase.Hall;
 using _CodeBase.Infrastructure.DI;
@@ -9,6 +10,7 @@ using _CodeBase.MainGameplay;
 using _CodeBase.MainMenu;
 using _CodeBase.Potion;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
 
@@ -21,7 +23,7 @@ namespace _CodeBase.DiScopes
         [SerializeField] private GameplayCursor _cursor;
         [SerializeField] private GameConfigProvider _gameConfigProvider;
         [SerializeField] private ShopConfigurationProvider _shopConfigurationProvider;
-        [SerializeField] private GameplayConfig _gameplayConfig;
+        [FormerlySerializedAs("_gameplayConfig")] [SerializeField] private GameSettingsConfiguration _gameSettingsConfiguration;
         
         
         protected override void Configure(IContainerBuilder builder)
@@ -33,7 +35,7 @@ namespace _CodeBase.DiScopes
             builder.RegisterInstance(_cursor);
             builder.RegisterInstance(_gameConfigProvider);
             builder.RegisterInstance(_shopConfigurationProvider);
-            builder.RegisterInstance(_gameplayConfig);
+            builder.RegisterInstance(_gameSettingsConfiguration);
             
             ConfigureGameStateMachine(builder);
         }

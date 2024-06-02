@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using _CodeBase.DATA;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.Potion.Data;
@@ -22,7 +23,7 @@ namespace _CodeBase.Potion
         
         protected override void OnAwake()
         {
-            _trashColor = GameplayConfig.Instance.MixerTrashColor;
+            _trashColor = GameSettingsConfiguration.Instance.MixerTrashColor;
             _originPos = transform.position;
             
             _originSpritesLayers = new string[_allSprites.Length];

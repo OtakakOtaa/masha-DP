@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using _CodeBase.Customers;
+using _CodeBase.DATA;
 using _CodeBase.Garden;
 using _CodeBase.Hall;
 using _CodeBase.Infrastructure;
@@ -18,6 +19,9 @@ namespace _CodeBase.MainGameplay
 {
     public sealed class GameplayService : MonoBehaviour, IGameState
     {
+        [SerializeField] private Camera _uiCamera;
+        
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public static GameplayService Instance { get; private set; }
 
@@ -34,7 +38,7 @@ namespace _CodeBase.MainGameplay
         public GameScene PreviousGameScene { get; private set; } = GameScene.None;
         public GameScene CurrentGameScene { get; private set; } = GameScene.None;
         public GameplayData Data { get; private set; } = new();
-        public Camera Camera { get; private set; }
+        public Camera UICamera { get; private set; }
         public GameObject CurrentGameSceneMap { get; private set; }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,15 +52,14 @@ namespace _CodeBase.MainGameplay
         public async void Enter()
         {
             _gameEndRestrictions = default;
-            Camera = Camera.main;
+            UICamera = Camera.main;
             UI.MainCanvas.sortingLayerName = "UI";
-            UI.MainCanvas.worldCamera = Camera;
+            UI.MainCanvas.worldCamera = _uiCamera;
 
             DisableAllUI();
             FillGameplayData();
-
             _inputManager.IntractableInputFlag = true;
-            _inputManager.SetCamera(Camera);
+            _inputManager.SetCamera(UICamera);
 
             if (_gameService.PersistentGameData.Day > 1)
             {
@@ -72,13 +75,17 @@ namespace _CodeBase.MainGameplay
                 }
             }
             
+            BoosterProcessor.ProcessBoosters(Data.UniqItems, _gameConfigProvider);
             GameTimer = new Timer();
-            GameTimer.RunWithDuration(GameplayConfig.Instance.DayDuration);
+            GameTimer.RunWithDuration(GameSettingsConfiguration.Instance.DayDuration);
             HookGameEnd().Forget();
 
             UI.HudUI.Bind(this);
             UI.HudUI.gameObject.SetActive(true);
-            await GoToHallLac();
+            UI.StartDayUI.InitAndShow(_gameService.PersistentGameData.Day);
+            await UniTask.WaitForSeconds(GameSettingsConfiguration.Instance.StartGameCurtainLifeDuration, cancellationToken: destroyCancellationToken);
+            GoToHallLac().Forget();
+            UI.StartDayUI.Close();
         }
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,6 +122,7 @@ namespace _CodeBase.MainGameplay
             UI.GardenUI.gameObject.SetActive(false);
             UI.ShopUI.gameObject.SetActive(false);
             UI.DayResultsUI.gameObject.SetActive(false);
+            UI.StartDayUI.gameObject.SetActive(false);
         }
 
         public void BindGameEndAdditionalRestriction(Func<bool> restriction)
@@ -146,6 +154,9 @@ namespace _CodeBase.MainGameplay
                         break;
                     case UniqItemsType.Plant:
                         Data.AddPlantsToLandingPool(item, GameplayData.InfinityLandingValue);
+                        break;
+                    case UniqItemsType.Booster:
+                    Data.AddUniqItem(item);
                         break;
                     default:
                         throw new Exception(nameof(FillGameplayData));
@@ -215,6 +226,7 @@ namespace _CodeBase.MainGameplay
                     Data.AddPlantsToLandingPool(data.ID, GameplayData.InfinityLandingValue);
                     break;
                 case UniqItemsType.Booster:
+                    Data.AddUniqItem(data.ID);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -223,7 +235,7 @@ namespace _CodeBase.MainGameplay
 
         private void SaveGameplayData()
         {
-            _gameService.PersistentGameData.UpdateItems(Data.Seeds.Union(Data.AccessibleEssences).Union(Data.UniqItems));
+            _gameService.PersistentGameData.UpdateItems(Enumerable.Union(Data.Seeds, Data.AccessibleEssences).Union(Data.UniqItems));
 
             var hasPursuance = _gameService.PersistentGameData.Coins > Data.GlobalCoins;
             if (hasPursuance)

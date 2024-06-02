@@ -1,5 +1,6 @@
 using System.Threading;
 using _CodeBase.Customers;
+using _CodeBase.DATA;
 using _CodeBase.Infrastructure;
 using _CodeBase.Infrastructure.GameStructs;
 using _CodeBase.MainGameplay;
@@ -45,12 +46,12 @@ namespace _CodeBase.Hall
             _gameplayService.Data.CreatedPotionEvent.Subscribe(_ => UpdateCraftedPotion()).AddTo(destroyCancellationToken);
             _gameplayService.BindGameEndAdditionalRestriction(() => _tookOrderFlag);
             
-            await UniTask.WaitForSeconds(GameplayConfig.Instance.FirstCustomerEnterDelay, cancellationToken: destroyCancellationToken);
+            await UniTask.WaitForSeconds(GameSettingsConfiguration.Instance.FirstCustomerEnterDelay, cancellationToken: destroyCancellationToken);
             while (StateLiveToken.IsCancellationRequested is false && _gameplayService.GameTimer.IsTimeUp is false)
             {
                 await LaunchCustomer(StateLiveToken);
                 await ExecuteLeaveCustomer(StateLiveToken, _correctCraftedPotionFlag, !(_gameplayService.GameTimer.IsTimeUp && _potionDeliveryFlag is false));
-                await UniTask.WaitForSeconds(GameplayConfig.Instance.GetDelayBetweenCustomers(_gameplayService.GameTimer.TimeRatio), cancellationToken: StateLiveToken);
+                await UniTask.WaitForSeconds(GameSettingsConfiguration.Instance.GetDelayBetweenCustomers(_gameplayService.GameTimer.TimeRatio), cancellationToken: StateLiveToken);
             }
         }
 
@@ -124,7 +125,7 @@ namespace _CodeBase.Hall
         {
             if (needBubble)
             {
-                await UniTask.WaitForSeconds(GameplayConfig.Instance.BubblePassDelay, cancellationToken: token);
+                await UniTask.WaitForSeconds(GameSettingsConfiguration.Instance.BubblePassDelay, cancellationToken: token);
                 _dialogueBubble.Activate(showButtons: false);
                 await _dialogueBubble.ExecuteMessFill(isCorrectPotion ? _activeCustomer.GoodFarewellWord.Mess : _activeCustomer.BadFarewellWord.Mess, token);
                 await UniTask.WaitForSeconds(1f, cancellationToken: token);
@@ -147,7 +148,7 @@ namespace _CodeBase.Hall
             _tookOrderFlag = false;
             
             await UniTask.WaitUntil(() => ActiveFlag, cancellationToken: token);
-            await UniTask.WaitForSeconds(GameplayConfig.Instance.BubblePassDelay, cancellationToken: token);
+            await UniTask.WaitForSeconds(GameSettingsConfiguration.Instance.BubblePassDelay, cancellationToken: token);
             _dialogueBubble.Activate(_activeCustomer.Order).Forget();
             await UniTask.WaitUntil(() => _dialogueBubble.BubbleOpenedFlag is false || _gameplayService.GameTimer.IsTimeUp, cancellationToken: token);
             if (_gameplayService.GameTimer.IsTimeUp)

@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Threading;
 using _CodeBase.Customers._Data;
+using _CodeBase.DATA;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UniRx;
@@ -88,7 +89,7 @@ namespace _CodeBase.Hall
             for (var i = 0; i < mess.Length; i++)
             {
                 var @char = mess[i];
-                var currentDelay = GameplayConfig.Instance.GetTextAppearsTemp(i / (float)(mess.Length - 1)) / (float)(mess.Length + 1);
+                var currentDelay = GameSettingsConfiguration.Instance.GetTextAppearsTemp(i / (float)(mess.Length - 1)) / (float)(mess.Length + 1);
                 _messageFld.text = textSource.Append(@char).ToString();
                 await UniTask.WaitForSeconds(currentDelay * (@char == ' ' ? spaceSignDelta : delayDelta), cancellationToken: cancellationToken);
             }

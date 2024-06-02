@@ -8,7 +8,7 @@ namespace _CodeBase.Garden.GardenBed
         private readonly GardenBedArea _gardenBedArea;
 
         
-        public GardenBedArea.State CurrentState =>GardenBedArea.State.NeedHarvest;
+        public GardenBedArea.State CurrentState => GardenBedArea.State.NeedHarvest;
 
 
         public HarvestBedAreaState(GardenBedArea gardenBedArea)
@@ -28,6 +28,22 @@ namespace _CodeBase.Garden.GardenBed
         
         public void ProcessInteractivity(InputManager.InputAction inputAction)
         {
+            if (inputAction is InputManager.InputAction.Click)
+            {
+                foreach (var cell in _gardenBedArea.Cells)
+                {
+                    cell.ApplyNoPlantState();
+                }
+            }
+            
+            if (_gardenBedArea.ProblemTimer.IsTimeUp is false)
+            {
+                _gardenBedArea.SwitchState(GardenBedArea.State.ReadyToUsing);
+            }
+            else
+            {
+                _gardenBedArea.ExecuteProblem();
+            }
         }
 
         

@@ -1,4 +1,5 @@
 using System.Linq;
+using _CodeBase.DATA;
 using _CodeBase.Garden.Data;
 using _CodeBase.Garden.GardenBed;
 using _CodeBase.Infrastructure.GameStructs;
@@ -23,7 +24,7 @@ namespace _CodeBase.Garden
             for (var i = 0; i < _gardenBedAreas.Length; i++)
             {
                 var gardenBedArea = _gardenBedAreas[i];
-                gardenBedArea.Init(GameplayConfig.Instance.AreaSettings[i]);
+                gardenBedArea.Init(GameSettingsConfiguration.Instance.AreaSettings[i]);
             }
         }
 

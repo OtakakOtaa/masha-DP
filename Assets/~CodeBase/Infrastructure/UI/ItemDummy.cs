@@ -1,4 +1,5 @@
-﻿using _CodeBase.Input.InteractiveObjsTypes;
+﻿using _CodeBase.DATA;
+using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using UnityEngine;
 

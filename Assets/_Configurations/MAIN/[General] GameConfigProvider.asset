@@ -36,8 +36,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 27e2bce9bae51254daaae18148568942, type: 2}
   - {fileID: 11400000, guid: e87a7db82e16e734599edd0b95fa07d5, type: 2}
   - {fileID: 11400000, guid: f1f98aa68c6365047a344532be5d1224, type: 2}
+  _boosterConfigs:
+  - {fileID: 11400000, guid: 7e1c71fd44a486c49ac8b572ce1dd9e7, type: 2}
+  - {fileID: 11400000, guid: 8fd1e3d08206d3e45bb4eb3628c73fb1, type: 2}
+  - {fileID: 11400000, guid: b12187b58f681d94687db32c447eccee, type: 2}
+  - {fileID: 11400000, guid: 63da3d0431e741c40b9d14ca79263c17, type: 2}
+  - {fileID: 11400000, guid: e6ce8fee001e1534d85bc35ad418b9c4, type: 2}
   _customersConfiguration: {fileID: 11400000, guid: 72b9a0d9cefdab34e839437c32b0d224, type: 2}
-  _mixerUniqId: "[Essense] \u0421\u041A\u041B\u042F\u041D\u041A\u0410"
   _mixEssenceDictionary:
   - _compoundData:
     - _id: '[Essense] YELLOW'
@@ -104,7 +109,7 @@ MonoBehaviour:
   - _potionID: "[Potion] \u042D\u041D\u0415\u0420\u0413\u0418\u0418"
     _sprite: {fileID: 21300000, guid: bea60e79e3e0c8046b6ce7627a8da1d2, type: 3}
   _staticData:
-    _day: 1
+    _day: 2
     _items:
     - '[Essense] BLUE'
     - '[Essense] RED'
@@ -112,4 +117,10 @@ MonoBehaviour:
     - "[Plant] {\u044D\u0445\u0438\u043D\u0430\u0446\u0438\u044F}"
     - "[Plant] {\u043C\u044F\u0442\u0430}"
     - "[Plant] {\u0437\u0432\u0435\u0440\u0430\u0431\u043E\u0439}"
-    _coins: 0
+    _coins: 10000
+  _mixerUniqId: "[Essense] \u0421\u041A\u041B\u042F\u041D\u041A\u0410"
+  _gardenBugsBoosterId: '[Booster] Garden B'
+  _gardenWaterBoosterId: '[Booster] Garden W'
+  _gardenFertilizersBoosterId: '[Booster] Garden F'
+  _potionEssenceRestoreBoosterId: '[Booster] Potion E'
+  _gardenQuickHarvestBoosterId: '[Booster] Garden Q'

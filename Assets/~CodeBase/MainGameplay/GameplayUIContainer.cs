@@ -1,5 +1,4 @@
 ﻿using _CodeBase.Garden.UI;
-using _CodeBase.Hall;
 using _CodeBase.Potion.UI;
 using _CodeBase.Shop;
 using UnityEngine;
@@ -14,7 +13,8 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private PotionUI _potionUI;
         [SerializeField] private ShopUI _shopUI;
         [SerializeField] private DayResultsUI _dayResultsUI;
-
+        [SerializeField] private StartDayUI _startDayUI;
+        
 
         
         public DayResultsUI DayResultsUI => _dayResultsUI;
@@ -23,5 +23,6 @@ namespace _CodeBase.MainGameplay
         public PotionUI PotionUI => _potionUI;
         public ShopUI ShopUI => _shopUI;
         public Canvas MainCanvas => _mainCanvas;
+        public StartDayUI StartDayUI => _startDayUI;
     }
 }

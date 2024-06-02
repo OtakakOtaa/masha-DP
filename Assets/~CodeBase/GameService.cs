@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using _CodeBase.DATA;
 using _CodeBase.Infrastructure;
 using _CodeBase.Infrastructure.GameStructs.FSM;
 using _CodeBase.Infrastructure.GameStructs.FSM.States;
@@ -28,7 +29,7 @@ namespace _CodeBase
         [Inject] private readonly GlobalStateMachine _gameStateMachine;
         [Inject] private readonly GameplayCursor _gameplayCursor;
         [Inject] private readonly GameConfigProvider _gameplayConfigProvider;
-        [Inject] private readonly GameplayConfig _gameplayConfig;
+        [Inject] private readonly GameSettingsConfiguration _gameSettingsConfiguration;
         
         
         private readonly HashSet<GameScene> _currentActiveAdditiveScenes = new();
@@ -53,7 +54,7 @@ namespace _CodeBase
 
         public async void Enter()
         { 
-            _gameplayConfig.InitInstance();
+            _gameSettingsConfiguration.InitInstance();
             InitSaves();            
             await TryLoadScene(GameScene.MainMenu);
             _gameStateMachine.Enter<MainMenuGameState>();

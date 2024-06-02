@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-namespace _CodeBase.Hall
+namespace _CodeBase.MainGameplay
 {
     public sealed class DayResultsUI : MonoBehaviour
     {
@@ -19,6 +19,7 @@ namespace _CodeBase.Hall
         public IObservable<Unit> ContinueClickedEvent => _continueBtn.OnClickAsObservable();
         public bool ContinueEventFlag { get; private set; }
 
+        
         private void Awake()
         {
             _continueBtn.OnClickAsObservable().Subscribe(_ => ContinueEventFlag = true).AddTo(destroyCancellationToken);

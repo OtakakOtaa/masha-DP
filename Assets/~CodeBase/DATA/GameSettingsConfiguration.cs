@@ -2,17 +2,21 @@
 using System.Linq;
 using _CodeBase.Garden.GardenBed;
 using _CodeBase.Infrastructure;
+using _CodeBase.MainGameplay;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace _CodeBase
+namespace _CodeBase.DATA
 {
-    [CreateAssetMenu(fileName = nameof(GameplayConfig))]
-    public sealed class GameplayConfig : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(GameSettingsConfiguration))]
+    public sealed class GameSettingsConfiguration : ScriptableObject, ICanBoosted<float>
     {
         [TabGroup("Main")]
         [SerializeField] private STimeSpan _dayDuration = new(new TimeSpan(0, 0, minutes: 4, 0));
+
+        [TabGroup("Main")]
+        [SerializeField] private float _startGameCurtainLifeDuration = 5f;
         
         /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
@@ -39,14 +43,16 @@ namespace _CodeBase
         
         [TabGroup("POTIONS")] 
         [SerializeField] private Color _cauldronTrashColor = Color.black;
+        
         [TabGroup("POTIONS")] 
         [SerializeField] private Color _mixerTrashColor = Color.black;
 
-        
+        [TabGroup("POTIONS")] 
+        [SerializeField] private float _regenEssencesMultiplayer = 1;
         
         
         [HideInInspector]
-        public static GameplayConfig Instance { get; private set; }
+        public static GameSettingsConfiguration Instance { get; private set; }
         public void InitInstance() => Instance = this;
 
         
@@ -59,6 +65,14 @@ namespace _CodeBase
 
         public Color MixerTrashColor => _mixerTrashColor;
         public Color CauldronTrashColor => _cauldronTrashColor;
+        public float StartGameCurtainLifeDuration => _startGameCurtainLifeDuration;
+        public float RegenEssencesMultiplayer => _regenEssencesMultiplayer;
+
+        
+        public void Boost(float param)
+        {
+            _regenEssencesMultiplayer = param;
+        }
     }
     
     

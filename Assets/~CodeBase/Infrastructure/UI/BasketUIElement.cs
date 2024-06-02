@@ -1,4 +1,5 @@
-﻿using _CodeBase.Input.Manager;
+﻿using _CodeBase.DATA;
+using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
 using TMPro;
 using UnityEngine;

@@ -30,7 +30,7 @@ namespace _CodeBase.Customers
     
     [Serializable] public sealed class ShopItemData
     {
-        [ValueDropdown("@MashaEditorUtility.GetAllEssencesAndPlantsID()")]
+        [ValueDropdown("@MashaEditorUtility.GetAllEssencesAndPlantsAndBoostersID()")]
         [SerializeField] private string _id;
         
         [SerializeField] private int _cost;

@@ -67,16 +67,16 @@ Material:
     - IndexOfRefraction: 0
     - Vector1_4296D34C: -0.14
     - Vector1_817FF511: 28.96
-    - Vector1_AB3A3EBC: 9.54
+    - Vector1_AB3A3EBC: 28.66
     - Vector1_ACE54085: 1.55
     - Vector1_B30B07BF: 0.709
     - Vector1_D45DB484: 0.23
     - Vector1_F2BB55D7: 61.3
     - Vector1_F51841FD: 1
-    - _AmpOffset: 11
+    - _AmpOffset: 16.3
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _fill_Level: 0.2
+    - _fill_Level: 0.15
     m_Colors:
     - Color_17C6C3C7: {r: 0, g: 0.13668135, b: 0.990566, a: 0.6666667}
     - Color_FB35205B: {r: 0, g: 0.03724375, b: 0.4150943, a: 1}

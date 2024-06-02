@@ -7,7 +7,7 @@ using _CodeBase.Potion.Data;
 using Sirenix.OdinInspector;
 using UnityEditor;
 
-namespace _CodeBase
+namespace _CodeBase.DATA
 {
     public sealed partial class GameConfigProvider
     {

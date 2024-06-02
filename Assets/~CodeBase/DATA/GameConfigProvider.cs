@@ -7,11 +7,11 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Potion.Data;
 using JetBrains.Annotations;
 using Sirenix.OdinInspector;
-using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-namespace _CodeBase
+namespace _CodeBase.DATA
 {
     [CreateAssetMenu(fileName = nameof(GameConfigProvider), menuName = nameof(GameConfigProvider))]
     public sealed partial class GameConfigProvider : ScriptableObject
@@ -26,10 +26,10 @@ namespace _CodeBase
         [SerializeField] private EssenceConfig[] _essenceConfigs;
         
         [TabGroup("main")]
-        [SerializeField] private CustomersConfiguration _customersConfiguration;
+        [SerializeField] private BoosterConfigs[] _boosterConfigs;
         
         [TabGroup("main")]
-        [SerializeField] private string _mixerUniqId;
+        [SerializeField] private CustomersConfiguration _customersConfiguration;
         
         [TabGroup("main")]
         [SerializeField] private MixEssenceVisualData[] _mixEssenceDictionary;
@@ -52,6 +52,31 @@ namespace _CodeBase
         [NonSerialized]
         private CustomerFarewellWord[] _badCustomerFarewellWords;
         
+        [Space]
+        [TabGroup("main")]
+        [ValueDropdown("@MashaEditorUtility.GetAllBoostersID()")]
+        [SerializeField] private string _mixerUniqId;
+        
+        [TabGroup("main")]
+        [ValueDropdown("@MashaEditorUtility.GetAllBoostersID()")]
+        [SerializeField] private string _gardenBugsBoosterId;
+
+        [TabGroup("main")]
+        [ValueDropdown("@MashaEditorUtility.GetAllBoostersID()")]
+        [SerializeField] private string _gardenWaterBoosterId;
+
+        [TabGroup("main")]
+        [ValueDropdown("@MashaEditorUtility.GetAllBoostersID()")]
+        [SerializeField] private string _gardenFertilizersBoosterId;
+
+        [TabGroup("main")]
+        [ValueDropdown("@MashaEditorUtility.GetAllBoostersID()")]
+        [SerializeField] private string _potionEssenceRestoreBoosterId;
+        
+        [TabGroup("main")]
+        [ValueDropdown("@MashaEditorUtility.GetAllBoostersID()")]
+        [SerializeField] private string _gardenQuickHarvestBoosterId;
+        
         
         public int UniqOrderCount => _customersConfiguration.Orders.GroupBy(c => c.RequestedItemID).Count();
         public int UniqVisualCount => _customersConfiguration.CustomerVisuals.Count();
@@ -60,7 +85,7 @@ namespace _CodeBase
         public IEnumerable<PotionConfig> Potions => _potionConfigs;
         public IEnumerable<string> AllEssencesIDs => _essenceConfigs.Select(e => e.ID);
         public IEnumerable<Order> Orders => _customersConfiguration.Orders;
-        public string MixerUniqId => _mixerUniqId;
+
         public IEnumerable<CustomerFarewellWord> GoodCustomerFarewells
         {
             get
@@ -81,8 +106,16 @@ namespace _CodeBase
             }
         }
 
+        public string MixerUniqId => _mixerUniqId;
+        public string GardenBugsBoosterId => _gardenBugsBoosterId;
+        public string GardenWaterBoosterId => _gardenWaterBoosterId;
+        public string GardenFertilizersBoosterId => _gardenFertilizersBoosterId;
+        public string PotionEssenceRestoreBoosterId => _potionEssenceRestoreBoosterId;
+        public string GardenQuickHarvestBoosterId => _gardenQuickHarvestBoosterId;
 
-        public TType GetByID<TType>(string id) where TType : IUniq
+        
+
+        [CanBeNull] public TType GetByID<TType>(string id) where TType : IUniq
         {
             if (_browser is null) CreteBrowser();
 
@@ -194,6 +227,8 @@ namespace _CodeBase
                 .Concat(_customersConfiguration.CustomerInfos)
                 .Concat(_customersConfiguration.Orders)
                 .Concat(_customersConfiguration.CustomerVisuals)
+                .Concat(_boosterConfigs)
+                .Concat(_customersConfiguration.FarewellWords)
                 .Where(c => !string.IsNullOrEmpty(c.ID))
                 .ToDictionary(c => c.ID);
         }

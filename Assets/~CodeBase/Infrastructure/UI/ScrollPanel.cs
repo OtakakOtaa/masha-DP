@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _CodeBase.DATA;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;

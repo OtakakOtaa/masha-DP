@@ -1,4 +1,5 @@
 using System.Linq;
+using _CodeBase.DATA;
 using _CodeBase.Garden.Data;
 using _CodeBase.Potion.Data;
 using UnityEditor;
@@ -49,6 +50,10 @@ namespace Editor
         {
             return GetAllEssenceID().Concat(GetAllPlantsID()).ToArray();
         }
+        public static string[] GetAllEssencesAndPlantsAndBoostersID()
+        {
+            return GetAllEssenceID().Concat(GetAllPlantsID()).Concat(GetAllBoostersID()).ToArray();
+        }
         
         public static PlantConfig[] GetAllPlants()
         {
@@ -63,6 +68,15 @@ namespace Editor
             return AssetDatabase.FindAssets($"t:{nameof(PotionConfig)}")
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<PotionConfig>)
+                .Select(p => p.ID)
+                .ToArray();
+        }
+
+        public static string[] GetAllBoostersID()
+        {
+            return AssetDatabase.FindAssets($"t:{nameof(BoosterConfigs)}")
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<BoosterConfigs>)
                 .Select(p => p.ID)
                 .ToArray();
         }

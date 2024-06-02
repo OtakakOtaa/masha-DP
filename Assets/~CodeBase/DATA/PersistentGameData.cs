@@ -4,13 +4,13 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace _CodeBase
+namespace _CodeBase.DATA
 {
     [Serializable] public sealed class PersistentGameData
     {
         [SerializeField] private int _day = 1;
         
-        [ValueDropdown("@MashaEditorUtility.GetAllEssencesAndPlantsID()")]
+        [ValueDropdown("@MashaEditorUtility.GetAllEssencesAndPlantsAndBoostersID()")]
         [SerializeField] private List<string> _items = new();
         [SerializeField] private int _coins;
 
