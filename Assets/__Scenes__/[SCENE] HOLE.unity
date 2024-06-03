@@ -607,7 +607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1dda3cb26ad48afbad7f4f76cccd127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _valueFactor: 20.25
+  _valueFactor: 100
   _axis: {x: 0, y: 0, z: -1}
   _curve:
     serializedVersion: 2
@@ -622,8 +622,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.13629459
     - serializedVersion: 3
-      time: 0.4827586
-      value: 0
+      time: 0.56896317
+      value: -0.00032043457
       inSlope: -0.401104
       outSlope: -0.401104
       tangentMode: 0
@@ -642,7 +642,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _speedFactor: 0.5
+  _speedFactor: 0.2
 --- !u!65 &419134355
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -677,11 +677,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _duration: 1
-  _strength: 10
-  _vibrationsCounter: 20
-  _rotationFactor: 1
-  _scaleFactor: 0.1
-  _positionFactor: 0
+  _strength: 2
+  _vibrationsCounter: 9
+  _rotationFactor: 0.669
+  _scaleFactor: 0.056
+  _positionFactor: 0.012
 --- !u!1 &514095349
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,9 +866,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _duration: 1
   _strength: 10
-  _vibrationsCounter: 20
+  _vibrationsCounter: 10
   _rotationFactor: 1
-  _scaleFactor: 0.1
+  _scaleFactor: 0.006
   _positionFactor: 0
 --- !u!1 &567239985
 GameObject:

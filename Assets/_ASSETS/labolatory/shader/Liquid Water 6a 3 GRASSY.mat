@@ -65,13 +65,13 @@ Material:
     - Boolean_7937B813: 1
     - FrontRender: 1
     - IndexOfRefraction: 0
-    - Vector1_4296D34C: -0.14
+    - Vector1_4296D34C: 0.001
     - Vector1_817FF511: 28.96
     - Vector1_AB3A3EBC: 28.66
     - Vector1_ACE54085: 1.55
     - Vector1_B30B07BF: 0.709
     - Vector1_D45DB484: 0.23
-    - Vector1_F2BB55D7: 61.3
+    - Vector1_F2BB55D7: 125.6
     - Vector1_F51841FD: 1
     - _AmpOffset: 16.3
     - _QueueControl: 0
@@ -83,5 +83,5 @@ Material:
     - SmoothOclusMetalic: {r: 0.5, g: 1, b: 0, a: 0}
     - TilingOffsetNormals: {r: -0.59, g: 1.53, b: 0, a: 0}
     - TilingOffsetNormals_1: {r: 1, g: 0, b: 0.002, a: 1.62}
-    - _Speed: {r: 0.2, g: 0.2, b: 0, a: 0}
+    - _Speed: {r: 0.0002, g: 0.07, b: 0, a: 0}
   m_BuildTextureStacks: []
