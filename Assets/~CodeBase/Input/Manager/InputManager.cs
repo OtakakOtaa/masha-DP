@@ -13,6 +13,7 @@ namespace _CodeBase.Input.Manager
     {
         public enum InputAction
         {
+            DoubleClick,
             Click,
             Hold,
             SomeItemDropped
@@ -44,12 +45,14 @@ namespace _CodeBase.Input.Manager
             _playerInput = new PlayerInput();
             _playerInput.gameplay.DRAG.performed += OnDrag;
             _playerInput.gameplay.Click.performed += OnClick;
+            _playerInput.gameplay.DoubleClick.performed += OnDoubleClick;
             _playerInput.Enable();
 
             GameService.GameUpdate.Subscribe(_ => UpdateInput()).AddTo(compositeDisposable);
             
             Disposable.Create(() => _playerInput.gameplay.DRAG.performed -= OnDrag).AddTo(compositeDisposable);
             Disposable.Create(() => _playerInput.gameplay.Click.performed -= OnClick).AddTo(compositeDisposable);
+            Disposable.Create(() => _playerInput.gameplay.DoubleClick.performed -= OnDoubleClick).AddTo(compositeDisposable);
         }
 
         public void OnDrawGizmos()
@@ -122,7 +125,7 @@ namespace _CodeBase.Input.Manager
                 else
                 {
                     var hasHit = Physics.Raycast(_ray, out var hit, _camera.farClipPlane, _layerMask);
-                    if (hasHit && hit.collider.TryGetComponent<InteractiveObject>(out var interactiveObject) && interactiveObject.SupportedActions.Contains(InputAction.Hold))
+                    if (hasHit && hit.collider.TryGetComponent<InteractiveObject>(out var interactiveObject) && interactiveObject.CanInteractiveNow && interactiveObject.SupportedActions.Contains(InputAction.Hold))
                     {
                         AttachItemToCursor(interactiveObject);
                     }   
@@ -173,6 +176,28 @@ namespace _CodeBase.Input.Manager
             }
         }
         
+        private void OnDoubleClick(UnityEngine.InputSystem.InputAction.CallbackContext inputContext)
+        {
+            if (!IntractableInputFlag) return;
+            
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                var uiItem = EventSystem.current.currentSelectedGameObject;
+                
+                if (uiItem != null && uiItem.TryGetComponent<InteractiveObject>(out var uiInteractiveObject) && uiInteractiveObject.SupportedActions.Contains(InputAction.DoubleClick))
+                {
+                    uiInteractiveObject.ProcessInteractivity(InputAction.DoubleClick);
+                }
+                return;
+            }
+            
+            
+            var hasHit = Physics.Raycast(_ray, out var hit, _camera.farClipPlane, _layerMask);
+            if (hasHit && hit.collider.TryGetComponent<InteractiveObject>(out var interactiveObject) && interactiveObject.SupportedActions.Contains(InputAction.DoubleClick))
+            {
+                interactiveObject.ProcessInteractivity(InputAction.DoubleClick);
+            }
+        }
         
         private void AttachItemToCursor(InteractiveObject interactiveObject)
         {

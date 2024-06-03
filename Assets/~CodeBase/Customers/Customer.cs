@@ -11,7 +11,6 @@ using UnityEngine;
 
 namespace _CodeBase.Customers
 {
-    [RequireComponent(typeof(SpriteRenderer))]
     public sealed class Customer : ObjectKeeper
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;

@@ -53,6 +53,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""DoubleClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""6baea0a9-257f-476e-800f-18432a122181"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -99,6 +108,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Hold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c16f735-b9bc-49f7-8169-227e562096ea"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""MultiTap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DoubleClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -110,6 +130,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_gameplay_DRAG = m_gameplay.FindAction("DRAG", throwIfNotFound: true);
         m_gameplay_Click = m_gameplay.FindAction("Click", throwIfNotFound: true);
         m_gameplay_Hold = m_gameplay.FindAction("Hold", throwIfNotFound: true);
+        m_gameplay_DoubleClick = m_gameplay.FindAction("DoubleClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -174,6 +195,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_gameplay_DRAG;
     private readonly InputAction m_gameplay_Click;
     private readonly InputAction m_gameplay_Hold;
+    private readonly InputAction m_gameplay_DoubleClick;
     public struct GameplayActions
     {
         private @PlayerInput m_Wrapper;
@@ -181,6 +203,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @DRAG => m_Wrapper.m_gameplay_DRAG;
         public InputAction @Click => m_Wrapper.m_gameplay_Click;
         public InputAction @Hold => m_Wrapper.m_gameplay_Hold;
+        public InputAction @DoubleClick => m_Wrapper.m_gameplay_DoubleClick;
         public InputActionMap Get() { return m_Wrapper.m_gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -199,6 +222,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Hold.started += instance.OnHold;
             @Hold.performed += instance.OnHold;
             @Hold.canceled += instance.OnHold;
+            @DoubleClick.started += instance.OnDoubleClick;
+            @DoubleClick.performed += instance.OnDoubleClick;
+            @DoubleClick.canceled += instance.OnDoubleClick;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -212,6 +238,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Hold.started -= instance.OnHold;
             @Hold.performed -= instance.OnHold;
             @Hold.canceled -= instance.OnHold;
+            @DoubleClick.started -= instance.OnDoubleClick;
+            @DoubleClick.performed -= instance.OnDoubleClick;
+            @DoubleClick.canceled -= instance.OnDoubleClick;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -234,5 +263,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnDRAG(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
         void OnHold(InputAction.CallbackContext context);
+        void OnDoubleClick(InputAction.CallbackContext context);
     }
 }

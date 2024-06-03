@@ -98,6 +98,7 @@ namespace _CodeBase.Garden.GardenBed
         [SerializeField] private GameObject _noFertilizerMap;
         [SerializeField] private GameObject _bugsAttackedMap;
         [SerializeField] private BoxCollider _allHarvestArea;
+        [SerializeField] private ParticleSystem _harvestEffect;
         
         
         [Inject] private GameConfigProvider _gameConfigProvider;
@@ -117,11 +118,12 @@ namespace _CodeBase.Garden.GardenBed
         public bool NeedConsedStartRandomOffset => _settings.NeedConsedStartRandomOffset;
         public Vector2 GrowingStartRandomOffsetRange => _settings.GrowingStartRandomOffsetRange;
         public PlantConfig PlantConfig { get; private set; }
-
+        public ParticleSystem HarvestEffect => _harvestEffect;
 
         protected override void OnAwake()
         {
             InitSupportedActionsList(InputManager.InputAction.Click, InputManager.InputAction.SomeItemDropped);
+            _harvestEffect.Stop();
         }
 
         public void Init(GardenBedAreaSettings settings)
@@ -232,6 +234,7 @@ namespace _CodeBase.Garden.GardenBed
         public void SwitchState(State newState)
         {
             _ui.HideAll();
+            HarvestEffect.Stop();
 
 
             var nowIsProblemState = CurrentState is State.NeedWater or State.NeedFertilizers or State.NeedBugResolver; 

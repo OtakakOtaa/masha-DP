@@ -109,7 +109,7 @@ MonoBehaviour:
   - _potionID: "[Potion] \u042D\u041D\u0415\u0420\u0413\u0418\u0418"
     _sprite: {fileID: 21300000, guid: bea60e79e3e0c8046b6ce7627a8da1d2, type: 3}
   _staticData:
-    _day: 2
+    _day: 1
     _items:
     - '[Essense] BLUE'
     - '[Essense] RED'
@@ -117,7 +117,7 @@ MonoBehaviour:
     - "[Plant] {\u044D\u0445\u0438\u043D\u0430\u0446\u0438\u044F}"
     - "[Plant] {\u043C\u044F\u0442\u0430}"
     - "[Plant] {\u0437\u0432\u0435\u0440\u0430\u0431\u043E\u0439}"
-    _coins: 10000
+    _coins: 0
   _mixerUniqId: "[Essense] \u0421\u041A\u041B\u042F\u041D\u041A\u0410"
   _gardenBugsBoosterId: '[Booster] Garden B'
   _gardenWaterBoosterId: '[Booster] Garden W'

@@ -19,6 +19,8 @@ namespace _CodeBase.Garden.GardenBed
         
         public void SwitchState(GardenBedArea.State newState)
         {
+            _gardenBedArea.HarvestEffect.Play();
+            
             foreach (var cell in _gardenBedArea.Cells)
             {
                 cell.LockFlag = false;

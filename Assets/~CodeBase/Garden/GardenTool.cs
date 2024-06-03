@@ -1,4 +1,5 @@
 ﻿using _CodeBase.Garden.GardenBed;
+using _CodeBase.Infrastructure;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using UnityEngine;
@@ -9,12 +10,14 @@ namespace _CodeBase.Garden
     {
         [SerializeField] private GardenBedArea.State _resolveState;
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private GifAnimation _gifAnimation;
         
         
         private Vector3 _originPosition;
         private Vector3 _originScale;
         private Quaternion _originRotation;
         private int _originDrawLayerID;
+        private bool _activeHoldFlag;
         
         public GardenBedArea.State Resolve => _resolveState;
 
@@ -34,6 +37,8 @@ namespace _CodeBase.Garden
         public override void ProcessStartInteractivity(InputManager.InputAction inputAction)
         {
             _spriteRenderer.sortingLayerID = _inputManager.GameplayCursor.TargetSpriteLayerOrder;
+
+            _activeHoldFlag = true;
         }
         
         public override void ProcessInteractivity(InputManager.InputAction inputAction)
@@ -41,15 +46,17 @@ namespace _CodeBase.Garden
             transform.position = _inputManager.WorldPosition;
         }
 
-        public override void ProcessEndInteractivity(InputManager.InputAction inputAction)
-        {
+        public override async void ProcessEndInteractivity(InputManager.InputAction inputAction)
+        { 
+            await _gifAnimation.Play(); 
             _spriteRenderer.sortingLayerID = _originDrawLayerID;
-            
             transform.position = _originPosition;
             transform.rotation = _originRotation;
             transform.localScale = _originScale;
+            _activeHoldFlag = false;
         }
 
         public override InteractiveObject GetHandleTarget() => this;
+        public override bool CanInteractiveNow => !_activeHoldFlag;
     }
 }

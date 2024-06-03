@@ -38,7 +38,7 @@ namespace _CodeBase.Potion
         public float RegenerationDuration => _essenceConfig.RegenDuration;
         public bool IsRegenerateNow => (Time.time - _startRegenPoint) <  RegenerationDuration;
         public int MaxAvailableSipsCount => _essenceConfig.SipCount;
-
+        public Color Color => _essenceConfig.Color;
 
         protected override void OnAwake()
         {

@@ -44,6 +44,7 @@ namespace _CodeBase.Input.InteractiveObjsTypes
         public virtual InteractiveObject GetHandleTarget() => this;
 
         public virtual string GetTargetID() => null;
+        public virtual bool CanInteractiveNow => true;
 
         protected abstract void OnAwake();
     }
