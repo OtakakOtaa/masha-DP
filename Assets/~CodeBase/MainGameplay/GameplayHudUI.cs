@@ -65,8 +65,9 @@ namespace _CodeBase.MainGameplay
             
             _gameplayService = gameplayService;
 
+            UpdateCoins(_gameplayService.Data.GlobalCoins);
             _gameplayService.Data.EarnedCoinsBalanceChangedEvent
-                .Subscribe(UpdateCoins)
+                .Subscribe(f => UpdateCoins(f + _gameplayService.Data.GlobalCoins))
                 .AddTo(_compositeDisposable);
             
             _locationBtn1.OnClickAsObservable()
@@ -86,7 +87,7 @@ namespace _CodeBase.MainGameplay
                 .AddTo(_compositeDisposable);
             
             
-            UpdateCoins(amount: 0);
+          
             UpdateCustomerIndicator(customerLoyalty: 1);
         }
 

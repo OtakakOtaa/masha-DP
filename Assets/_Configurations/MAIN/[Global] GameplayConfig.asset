@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: '[Global] GameplayConfig'
   m_EditorClassIdentifier: 
   _dayDuration:
-    _min: 8
-    _sec: 5
+    _min: 0
+    _sec: 30
     _milSec: 0
   _startGameCurtainLifeDuration: 5
   _delayBetweenCustomers:
