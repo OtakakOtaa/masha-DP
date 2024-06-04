@@ -138,10 +138,7 @@ namespace _CodeBase.DATA
         {
             TType[] pool = null;
 
-            if (typeof(TType) == typeof(Order)) pool = _customersConfiguration.Orders.Cast<TType>().ToArray();
-            if (typeof(TType) == typeof(CustomerInfo)) pool = _customersConfiguration.CustomerInfos.Cast<TType>().ToArray();
-            if (typeof(TType) == typeof(CustomerVisual)) pool = _customersConfiguration.CustomerVisuals.Cast<TType>().ToArray();
-            
+            pool = _browser.Where(i => i.Value is TType).Select(i => i.Value).Cast<TType>().ToArray();
             
             if (pool.Length == 0) throw new Exception($"CRITICAL ERROR : Orders list is empty");
             if (pool.Length == 1) return pool[0];

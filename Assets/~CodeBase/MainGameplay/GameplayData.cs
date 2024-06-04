@@ -25,7 +25,8 @@ namespace _CodeBase.MainGameplay
         
         public readonly ReactiveCommand<string> DataAddedEvent = new();
         public readonly ReactiveCommand<string> CreatedPotionEvent = new();
-        public readonly ReactiveCommand<int> CoinsBalanceChangedEvent = new();
+        public readonly ReactiveCommand<int> GlobalCoinsBalanceChangedEvent = new();
+        public readonly ReactiveCommand<int> EarnedCoinsBalanceChangedEvent = new();
         public readonly ReactiveCommand<int> ServedCustomersAmountChangedEvent = new();
         public readonly ReactiveCommand<(string type, int amount)> PlantWasAddedEvent = new();
         public readonly ReactiveCommand<(string type, int amount)> PlantWasRemovedEvent = new();
@@ -75,7 +76,7 @@ namespace _CodeBase.MainGameplay
             if (finalValue < 0) throw new Exception($"{typeof(GameplayData).FullName} : {nameof(ChangeGlobalCoinBalance)} try set as 0 or less");
 
             _globalCoins = finalValue;
-            CoinsBalanceChangedEvent.Execute(finalValue);
+            GlobalCoinsBalanceChangedEvent.Execute(finalValue);
         }
 
         public bool TryWithdrawGlobalCoins(int amount)
@@ -83,7 +84,7 @@ namespace _CodeBase.MainGameplay
             if (amount <= 0 || _globalCoins < amount) return false;
 
             _globalCoins -= amount; 
-            CoinsBalanceChangedEvent.Execute(_globalCoins);
+            GlobalCoinsBalanceChangedEvent.Execute(_globalCoins);
             return true;
         }
         
@@ -91,6 +92,7 @@ namespace _CodeBase.MainGameplay
         {
             if (amount < 0) throw new Exception($"{typeof(GameplayData).FullName} : {nameof(AddCustomerCoinToBalance)} try set as 0 or less");
             _earnedCoins += amount;
+            EarnedCoinsBalanceChangedEvent.Execute(_earnedCoins);
         }
         
         public void IncreaseServedCustomers()

@@ -1588,7 +1588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _customer: {fileID: 1794927777}
-  _noRepeatableIndex: 4
+  _noRepeatableIndex: 2
 --- !u!4 &1282822855
 Transform:
   m_ObjectHideFlags: 0

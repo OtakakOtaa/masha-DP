@@ -14,7 +14,9 @@ namespace _CodeBase.Customers
     public sealed class CustomerFetcher : MonoBehaviour
     {
         [SerializeField] private Customer _customer;
-        [SerializeField] private int _noRepeatableIndex = 4;
+        [SerializeField] private int _noRepeatableIndex = 3;
+        
+        private const int ReRandomMaxCount = 50;
 
 
         [Inject] private GameplayService _gameplayService;
@@ -66,13 +68,13 @@ namespace _CodeBase.Customers
             return _customer.Init(visual, order, data, goodFarewell, badFarewell);
         }
         
-        private async UniTask<Order> GetNextOrder()
+        private async UniTask<Order> GetNextOrder(int callCounter = 0)
         {
             var order = _gameConfigProvider.GetRandomBasedOnWeight<Order>();
-            if ((_ordersRecordsList.Contains(order.RequestedItemID) && _gameConfigProvider.UniqOrderCount > 1f) || (_availableOrdersMask[order.ID] is false))
+            if ((_ordersRecordsList.Contains(order.RequestedItemID) && _gameConfigProvider.UniqOrderCount > 1f) || (_availableOrdersMask[order.ID] is false) && callCounter < ReRandomMaxCount)
             {
                 await UniTask.Yield();
-                return await GetNextOrder();
+                return await GetNextOrder(++callCounter);
             }
 
             if (_ordersRecordsList.Count >= _noRepeatableIndex || _ordersRecordsList.Count >= _gameConfigProvider.UniqOrderCount)
@@ -85,13 +87,13 @@ namespace _CodeBase.Customers
             return order;
         }
         
-        private async UniTask<TType> GetNextWithSimpleIDDel<TType>(Queue<string> recordList, int maxOriginalCapacity, Func<TType> randomItemFunc = null) where TType : PollEntity
+        private async UniTask<TType> GetNextWithSimpleIDDel<TType>(Queue<string> recordList, int maxOriginalCapacity, Func<TType> randomItemFunc = null, int callCounter = 0) where TType : PollEntity
         {
             var item = randomItemFunc == null ? _gameConfigProvider.GetRandomBasedOnWeight<TType>() : randomItemFunc.Invoke();
-            if (recordList.Contains(item.ID) && maxOriginalCapacity > 1f)
+            if (recordList.Contains(item.ID) && maxOriginalCapacity > 1f && callCounter < ReRandomMaxCount)
             {
                 await UniTask.Yield();
-                return await GetNextWithSimpleIDDel<TType>(recordList, maxOriginalCapacity);
+                return await GetNextWithSimpleIDDel<TType>(recordList, maxOriginalCapacity, randomItemFunc, callCounter: ++callCounter);
             }
 
             if (recordList.Count >= _noRepeatableIndex || recordList.Count >= maxOriginalCapacity)

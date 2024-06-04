@@ -70,7 +70,7 @@ namespace _CodeBase.Shop
                     .AddTo(destroyCancellationToken);
             }
 
-            _gameplayService.Data.CoinsBalanceChangedEvent.Subscribe(c => _coins.text = c.ToString()).AddTo(destroyCancellationToken);
+            _gameplayService.Data.GlobalCoinsBalanceChangedEvent.Subscribe(c => _coins.text = c.ToString()).AddTo(destroyCancellationToken);
             
             _gameplayService.Data.DataAddedEvent
                 .Where(id => _shopUIItemInstancesIdsMap.ContainsKey(id))
