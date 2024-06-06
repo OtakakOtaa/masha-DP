@@ -1,0 +1,20 @@
+@startuml
+abstract class GameplaySceneState {
+    # sceneMapObjHolder : GameObject
+    - _firstStartFlag : bool
+    - <<readonly>> _stateLiveTokenSource : CancellationTokenSource
+    # ActiveFlag : bool <<get>>
+    #  <<event>> StateDisposeHandler : Action 
+    # StateLiveToken : CancellationToken <<get>>
+    + SceneMap : GameObject <<get>>
+    + Enter() : void
+    + Exit() : void
+    - OnDestroy() : void
+    # {abstract} OnEnter() : void
+    # <<virtual>> OnFirstEnter() : void
+    # {abstract} OnExit() : void
+    - CancelAll() : void
+}
+MonoBehaviour <|-- GameplaySceneState
+IExitableGameState <|-- GameplaySceneState
+@enduml

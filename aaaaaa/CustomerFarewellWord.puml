@@ -1,0 +1,15 @@
+@startuml
+class CustomerFarewellWord {
+    - _id : string
+    - _mess : string
+    - _isGoodMes : bool
+    + <<override>> ID : string <<get>>
+    + <<override>> Name : string <<get>>
+    + Mess : string <<get>>
+    + IsGoodMes : bool <<get>>
+    + <<override>> Type : UniqItemsType <<get>>
+    + <<override>> Sprite : Sprite <<get>>
+}
+PollEntity <|-- CustomerFarewellWord
+IUniq <|-- CustomerFarewellWord
+@enduml

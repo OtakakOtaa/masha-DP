@@ -1,0 +1,34 @@
+@startuml
+class InputManager <<sealed>> {
+    - _layerMask : LayerMask
+    - _camera : Camera
+    - _ray : Ray
+    - _playerInput : PlayerInput
+    - _currentScene : string
+    - _droppedItemsKeepers : IEnumerable<ObjectKeeper>
+    + {static} Instance : InputManager <<get>>
+    + GameplayCursor : GameplayCursor <<get>>
+    + WorldPosition : Vector3 <<get>>
+    + ScreenMousePos : Vector2 <<get>>
+    + ClickEvent : ReactiveCommand<Vector2> <<get>>
+    + IntractableInputFlag : bool <<get>> <<set>> = false
+    - Awake() : void
+    + OnDrawGizmos() : void
+    + SetCamera(camera:Camera) : void
+    + WorldToViewPort(worldPos:Vector2) : Vector2
+    + IsPosInViewPort(rect:RectTransform, targetViewPortPos:Vector2) : bool
+    - UpdateInput() : void
+    - OnDrag(inputContext:UnityEngine.InputSystem.InputAction.CallbackContext) : void
+    - OnClick(inputContext:UnityEngine.InputSystem.InputAction.CallbackContext) : void
+    - OnDoubleClick(inputContext:UnityEngine.InputSystem.InputAction.CallbackContext) : void
+    - AttachItemToCursor(interactiveObject:InteractiveObject) : void
+}
+enum InputAction {
+    DoubleClick,
+    Click,
+    Hold,
+    SomeItemDropped,
+}
+MonoBehaviour <|-- InputManager
+InputManager +-- InputAction
+@enduml

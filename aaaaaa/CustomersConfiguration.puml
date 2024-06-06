@@ -1,0 +1,13 @@
+@startuml
+class CustomersConfiguration {
+    - _orders : List<Order>
+    - _customerVisuals : List<CustomerVisual>
+    - _customerInfos : List<CustomerInfo>
+    - _farewellWords : List<CustomerFarewellWord>
+    + Orders : IEnumerable<Order> <<get>>
+    + CustomerVisuals : IEnumerable<CustomerVisual> <<get>>
+    + CustomerInfos : IEnumerable<CustomerInfo> <<get>>
+    + FarewellWords : List<CustomerFarewellWord> <<get>>
+}
+ScriptableObject <|-- CustomersConfiguration
+@enduml

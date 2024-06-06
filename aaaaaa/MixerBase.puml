@@ -1,0 +1,29 @@
+@startuml
+abstract class MixerBase {
+    # _gameConfigProvider : GameConfigProvider
+    # _gameplayService : GameplayService
+    # _trashColor : Color
+    # _mixMap : Dictionary<PotionMixData, string>
+    # _currentPotionMix : PotionMixData
+    # _targetMix : string
+    + <<readonly>> StateChangeEvent : ReactiveCommand<ComparableResultType>
+    + CurrentPotionMix : PotionMixData <<get>>
+    + TargetMix : string <<get>>
+    + {abstract} Init(allAvailablePotions:ICollection<PotionConfig>) : void
+    + {abstract} ClearCurrentMix() : void
+    + {static} GetCurrentMixState(mixMap:Dictionary<PotionMixData, string>, target:PotionMixData) : ComparableResultType
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    # {abstract} InitMixMap(allAvailablePotions:ICollection<PotionConfig>) : void
+    # {abstract} HandleDropComponent(interactiveObject:InteractiveObject) : void
+    # {abstract} SetVisualForState(state:ComparableResultType) : void
+    # <<virtual>> CalculateColorForState(state:ComparableResultType) : Color
+    # <<virtual>> CalculateAverageColorVisual() : Color
+}
+enum ComparableResultType {
+    UnfoundedMix= -1,
+    PartialMix= 0,
+    EntireMix= 1,
+}
+ObjectKeeper <|-- MixerBase
+MixerBase +-- ComparableResultType
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+class TrashCan <<sealed>> {
+    # <<override>> OnAwake() : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+}
+interface ICanDropToTrash {
+    HandleDropToTrashCan() : void
+}
+ObjectKeeper <|-- TrashCan
+@enduml

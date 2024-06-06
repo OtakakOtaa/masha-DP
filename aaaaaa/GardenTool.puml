@@ -1,0 +1,20 @@
+@startuml
+class GardenTool <<sealed>> {
+    - _resolveState : GardenBedArea.State
+    - _spriteRenderer : SpriteRenderer
+    - _gifAnimation : GifAnimation
+    - _originPosition : Vector3
+    - _originScale : Vector3
+    - _originRotation : Quaternion
+    - _originDrawLayerID : int
+    - _activeHoldFlag : bool
+    + Resolve : GardenBedArea.State <<get>>
+    # <<override>> OnAwake() : void
+    + <<override>> ProcessStartInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> <<async>> ProcessEndInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> GetHandleTarget() : InteractiveObject
+    + <<override>> CanInteractiveNow : bool <<get>>
+}
+InteractiveObject <|-- GardenTool
+@enduml

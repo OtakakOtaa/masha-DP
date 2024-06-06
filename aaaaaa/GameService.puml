@@ -1,0 +1,27 @@
+@startuml
+class GameService <<sealed>> {
+    - <<const>> SavesId : string = "saves_1"
+    - _sceneResolver : SceneResolver
+    - _curtain : CurtainAnimation
+    - {static} <<readonly>> GameUpdateSource : ReactiveCommand
+    + {static} GameUpdate : IReactiveCommand<Unit> <<get>>
+    - <<readonly>> _gameStateMachine : GlobalStateMachine
+    - <<readonly>> _gameplayCursor : GameplayCursor
+    - <<readonly>> _gameplayConfigProvider : GameConfigProvider
+    - <<readonly>> _gameSettingsConfiguration : GameSettingsConfiguration
+    - <<readonly>> _currentActiveAdditiveScenes : HashSet<GameScene>
+    + CurrentActiveAdditiveScenes : IEnumerable<GameScene> <<get>>
+    + GameStateMachine : GlobalStateMachine <<get>>
+    + PersistentGameData : PersistentGameData <<get>>
+    + Curtain : CurtainAnimation <<get>>
+    + Start() : void
+    + Update() : void
+    + <<async>> Enter() : void
+    + <<async>> TryLoadScene(scene:GameScene, asAdditive:bool) : UniTask
+    + <<async>> TryReleaseAdditiveScene(targetScene:GameScene, activeScene:GameScene) : UniTask
+    + SaveGameData() : void
+    - InitSaves() : void
+}
+MonoBehaviour <|-- GameService
+IGameState <|-- GameService
+@enduml

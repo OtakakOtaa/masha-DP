@@ -1,0 +1,13 @@
+@startuml
+class PotionMixData <<sealed>> {
+    - <<readonly>> _parts : Dictionary<string, int>
+    + Parts : Dictionary<string, int> <<get>>
+    + PotionMixData()
+    + PotionMixData(refer:PotionMixData)
+    + AddPart(part:string, amount:int) : void
+    + Clear() : void
+    + CheckOfPartialResemblance(comparable:PotionMixData) : bool
+    + <<override>> GetHashCode() : int
+    + <<override>> Equals(obj:object) : bool
+}
+@enduml

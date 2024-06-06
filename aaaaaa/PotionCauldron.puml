@@ -1,0 +1,17 @@
+@startuml
+class PotionCauldron <<sealed>> {
+    - _liquidRenderer : SpriteRenderer
+    - _boomEffect : GifAnimation
+    - _bubblesEffect : GifAnimation
+    + <<readonly>> PotionCreatedEvent : ReactiveCommand<string>
+    + <<readonly>> AddPlantEvent : ReactiveCommand<string>
+    # <<override>> OnAwake() : void
+    + <<override>> Init(allAvailablePotions:ICollection<PotionConfig>) : void
+    + <<override>> ClearCurrentMix() : void
+    # <<override>> HandleDropComponent(interactiveObject:InteractiveObject) : void
+    # <<override>> SetVisualForState(state:ComparableResultType) : void
+    # <<override>> InitMixMap(allAvailablePotions:ICollection<PotionConfig>) : void
+    # <<override>> CalculateAverageColorVisual() : Color
+}
+MixerBase <|-- PotionCauldron
+@enduml

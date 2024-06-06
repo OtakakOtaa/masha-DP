@@ -1,0 +1,13 @@
+@startuml
+class GardenUI <<sealed>> {
+    - _scrollPanel : ScrollPanel
+    - _openPanelBtn : PulledUIItem
+    - <<readonly>> _subscriptions : CompositeDisposable
+    + Init() : void
+    + HardResetPanelToDefault() : void
+    + FillData(plantConfigs:PlantConfig[]) : void
+    - OpenPanel() : void
+    - ClosePanel() : void
+}
+MonoBehaviour <|-- GardenUI
+@enduml

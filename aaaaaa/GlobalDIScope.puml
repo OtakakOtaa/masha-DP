@@ -1,0 +1,14 @@
+@startuml
+class GlobalDiScope <<sealed>> {
+    - _gameService : GameService
+    - _inputManager : InputManager
+    - _cursor : GameplayCursor
+    - _gameConfigProvider : GameConfigProvider
+    - _shopConfigurationProvider : ShopConfigurationProvider
+    - _gameSettingsConfiguration : GameSettingsConfiguration
+    # <<override>> Configure(builder:IContainerBuilder) : void
+    - ConfigureGeneralSystems(builder:IContainerBuilder) : void
+    - ConfigureGameStateMachine(builder:IContainerBuilder) : void
+}
+LifetimeScope <|-- GlobalDiScope
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+class CurtainAnimation <<sealed>> {
+    - _appears : AppearsAnimation
+    - _disappearance : DisappearanceAnimation
+    - _duration : float = 5
+    + Tween : Tween <<get>>
+    + <<async>> Play(duration:float?) : void
+    + <<async>> PlayAppears(duration:float?) : UniTask
+    + <<async>> PlayDisappearance(duration:float?) : UniTask
+}
+MonoBehaviour <|-- CurtainAnimation
+IAnimation <|-- CurtainAnimation
+@enduml

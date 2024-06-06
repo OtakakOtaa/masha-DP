@@ -1,0 +1,11 @@
+@startuml
+class PotionDummy <<sealed>> {
+    - _startPos : Vector3
+    # <<override>> OnAwake() : void
+    + <<override>> Init(param:PotionConfig) : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessEndInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessStartInteractivity(inputAction:InputManager.InputAction) : void
+}
+"ItemDummy`1" "<PotionConfig>" <|-- PotionDummy
+@enduml

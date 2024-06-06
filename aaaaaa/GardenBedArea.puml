@@ -1,0 +1,80 @@
+@startuml
+class GardenBedArea <<sealed>> {
+    - _cells : GardenBedCell[]
+    - _ui : GardenBedUI
+    - _normalMap : GameObject
+    - _noWaterMap : GameObject
+    - _noFertilizerMap : GameObject
+    - _bugsAttackedMap : GameObject
+    - _allHarvestArea : BoxCollider
+    - _harvestEffect : ParticleSystem
+    - _gameConfigProvider : GameConfigProvider
+    - _settings : GardenBedAreaSettings
+    - _maps : Dictionary<State, GameObject>
+    - _gardenBedAreaStates : Dictionary<State, IGardenBedAreaState>
+    - _problemsPool : (State type, float chance)[]
+    + GrowTimer : Timer <<get>>
+    + ProblemTimer : Timer <<get>>
+    + CurrentState : State <<get>>
+    + StateBehavior : IGardenBedAreaState <<get>>
+    + Cells : GardenBedCell[] <<get>>
+    + UI : GardenBedUI <<get>>
+    + DestroyCancellationToken : CancellationToken <<get>>
+    + NeedConsedStartRandomOffset : bool <<get>>
+    + GrowingStartRandomOffsetRange : Vector2 <<get>>
+    + PlantConfig : PlantConfig <<get>>
+    + HarvestEffect : ParticleSystem <<get>>
+    # <<override>> OnAwake() : void
+    + Init(settings:GardenBedAreaSettings) : void
+    + UpdateState() : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    + ExecuteProblem() : void
+    + SwitchState(newState:State) : void
+}
+interface IGardenBedAreaState {
+    + CurrentState : GardenBedArea.State <<get>>
+    SwitchState(newState:GardenBedArea.State) : void
+    ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    UpdateState() : void
+}
+enum State {
+    None,
+    NeedWater,
+    NeedFertilizers,
+    NeedBugResolver,
+    ReadyToUsing,
+    ReadyToUsingWithoutRestrictions,
+    Growing,
+    NeedHarvest,
+}
+class GardenBedAreaSettings <<sealed>> {
+    - _problemTimerRange : Vector2
+    - _waterRequestChance : int = 50
+    - _fertilizeRequestChance : int = 15
+    - _bugsAttackChance : int = 35
+    - _growingStartRandomOffsetRange : Vector2
+    - _needConsedStartRandomOffset : bool = true
+    - _startState : State
+    - _bugsSurfaceSettings : GardenBugsSurface.GardenBugsSurfaceSettings
+    - _problemChanceBrowser : Dictionary<State, int>
+    - _problemSpanRangeFactor : float = 1f
+    - _quickHarvestFlag : bool = false
+    + ProblemTimerRange : Vector2 <<get>>
+    + QuickHarvestFlag : bool <<get>>
+    + GrowingStartRandomOffsetRange : Vector2 <<get>>
+    + NeedConsedStartRandomOffset : bool <<get>>
+    + BugsSurfaceSettings : GardenBugsSurface.GardenBugsSurfaceSettings <<get>>
+    + StartState : State <<get>>
+    + ProblemChanceBrowser : IDictionary<State, int> <<get>>
+    + GetProblemChance(type:State) : float?
+    + Boost(param:(Dictionary<State, int> chances, float problemSpanFactor)) : void
+    + Boost(param:bool) : void
+    - CreateBrowser() : Dictionary<State, int>
+}
+ObjectKeeper <|-- GardenBedArea
+IGardenBedAreaState <|-- GardenBedArea
+GardenBedArea +-- State
+GardenBedArea +-- GardenBedAreaSettings
+"ICanBoosted`1" "<(Dictionary<State, int> chances, float problemSpanFactor)>" <|-- GardenBedAreaSettings
+"ICanBoosted`1" "<bool>" <|-- GardenBedAreaSettings
+@enduml

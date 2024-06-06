@@ -1,0 +1,22 @@
+@startuml
+class EssenceMixer <<sealed>> {
+    - _allSprites : SpriteRenderer[]
+    - _essenceBottleShader : EssenceBottleShader
+    - _kernel : GameObject
+    - _originPos : Vector3
+    - _originSpritesLayers : string[]
+    # <<override>> OnAwake() : void
+    + <<override>> Init(allAvailablePotions:ICollection<PotionConfig>) : void
+    + <<override>> ClearCurrentMix() : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessStartInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessEndInteractivity(inputAction:InputManager.InputAction) : void
+    + HandleDropToTrashCan() : void
+    # <<override>> HandleDropComponent(interactiveObject:InteractiveObject) : void
+    # <<override>> SetVisualForState(state:ComparableResultType) : void
+    # <<override>> InitMixMap(allAvailablePotions:ICollection<PotionConfig>) : void
+    - SetColorForSprites(color:Color) : void
+}
+MixerBase <|-- EssenceMixer
+ICanDropToTrash <|-- EssenceMixer
+@enduml

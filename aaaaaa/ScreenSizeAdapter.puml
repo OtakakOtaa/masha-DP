@@ -1,0 +1,12 @@
+@startuml
+class ScreenSizeAdapter <<sealed>> {
+    - _camera : Camera
+    - _ui : Canvas
+    - _nativeSize : float
+    - _canvasRectTransform : RectTransform
+    - _canvasNativeSize : Vector2
+    - Awake() : void
+    + Update() : void
+}
+MonoBehaviour <|-- ScreenSizeAdapter
+@enduml

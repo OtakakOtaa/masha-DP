@@ -1,0 +1,28 @@
+@startuml
+class PotionConfig <<sealed>> {
+    - _id : string
+    - _name : string
+    - _compound : PotionCompoundData[]
+    - _tier : int = 1
+    - _color : Color
+    - _sprite : Sprite
+    - _browser : Dictionary<string, PotionCompoundData>
+    + Sprite : Sprite <<get>>
+    + ID : string <<get>>
+    + Compound : IEnumerable<PotionCompoundData> <<get>>
+    + Name : string <<get>>
+    + Type : UniqItemsType <<get>>
+    + Tier : int <<get>>
+    + Color : Color <<get>>
+}
+class PotionCompoundData <<sealed>> {
+    - _id : string
+    - _amount : int = 1
+    - _type : UniqItemsType
+    + ID : string <<get>>
+    + Amount : int <<get>>
+    + Type : UniqItemsType <<get>>
+}
+ScriptableObject <|-- PotionConfig
+IUniq <|-- PotionConfig
+@enduml

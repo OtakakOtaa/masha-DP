@@ -1,0 +1,6 @@
+@startuml
+interface IExitableGameState {
+    Exit() : void
+}
+IGameState <|-- IExitableGameState
+@enduml

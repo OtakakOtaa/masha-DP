@@ -1,0 +1,42 @@
+@startuml
+class GameplayHudUI <<sealed>> {
+    - _locationBtn1 : Button
+    - _locationBtn1Image : Image
+    - _locationBtn2 : Button
+    - _locationBtn2Image : Image
+    - _menuBtn : Button
+    - _timeFld : TMP_Text
+    - _timeSignImage : Image
+    - _customerIndicatorFld : TMP_Text
+    - _customerIndicatorImage : Image
+    - _coinsFld : TMP_Text
+    - _clientLeaveNotifyAppearAnim : AppearsAnimation
+    - _clientLeaveNotifyDisappearAnim : DisappearanceAnimation
+    - _goodCustomerEmj : Sprite
+    - _goodCustomerBottomThreshold : float
+    - _normalCustomerEmj : Sprite
+    - _normalCustomerBottomThreshold : float
+    - _angryCustomerEmj : Sprite
+    - _hallIcon : Sprite
+    - _gardenIcon : Sprite
+    - _potionIcon : Sprite
+    - _startDayHTime : float = 12
+    - _endDatHTime : float = 18
+    - _timeStep : float
+    - <<readonly>> _compositeDisposable : CompositeDisposable
+    - _gameplayService : GameplayService
+    - OnDestroy() : void
+    + Bind(gameplayService:GameplayService) : void
+    + GoToGarden() : void
+    + GoToLaboratory() : void
+    + GoToHall() : void
+    + GoToMainMenu() : void
+    + UpdateCoins(amount:int) : void
+    + UpdateTime(progress:float) : void
+    + UpdateCustomerIndicator(customerLoyalty:float) : void
+    + <<async>> ShowClientLeaveIndicator() : UniTaskVoid
+    - HandleLocBtn1Press() : void
+    - HandleLocBtn2Press() : void
+}
+MonoBehaviour <|-- GameplayHudUI
+@enduml

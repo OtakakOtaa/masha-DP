@@ -1,0 +1,6 @@
+@startuml
+interface IAnimation {
+    Play(duration:float?) : void
+    Tween : Tween <<get>>
+}
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+class ShopConfigurationProvider <<sealed>> {
+    - _shopItemData : ShopItemData[]
+    - _browser : Dictionary<string, ShopItemData>
+    + ShopItemData : ShopItemData[] <<get>>
+    + GetDataByID(id:string) : ShopItemData
+}
+class ShopItemData <<sealed>> {
+    - _id : string
+    - _cost : int
+    - _name : string
+    - _rect : Vector2
+    + Cost : int <<get>>
+    + ID : string <<get>>
+    + Name : string <<get>>
+    + Rect : Vector2 <<get>>
+}
+ScriptableObject <|-- ShopConfigurationProvider
+@enduml

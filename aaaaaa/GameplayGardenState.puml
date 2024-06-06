@@ -1,0 +1,11 @@
+@startuml
+class GameplayGardenState <<sealed>> {
+    - _gardenBedAreas : GardenBedArea[]
+    - _gameplayService : GameplayService
+    - _gameConfigProvider : GameConfigProvider
+    # <<override>> OnFirstEnter() : void
+    # <<override>> OnEnter() : void
+    # <<override>> OnExit() : void
+}
+GameplaySceneState <|-- GameplayGardenState
+@enduml

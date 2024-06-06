@@ -1,0 +1,6 @@
+@startuml
+abstract class SomeArea {
+    + {abstract} CheckPlaceIntoSurface(point:Vector2) : bool
+}
+MonoBehaviour <|-- SomeArea
+@enduml

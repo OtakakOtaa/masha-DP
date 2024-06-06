@@ -1,0 +1,5 @@
+@startuml
+class E <<static>> {
+    + {static} GetRandom(items:IEnumerable<TItem>) : TItem
+}
+@enduml

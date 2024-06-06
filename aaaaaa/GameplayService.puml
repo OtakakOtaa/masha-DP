@@ -1,0 +1,35 @@
+@startuml
+class GameplayService <<sealed>> {
+    - _uiCamera : Camera
+    + {static} Instance : GameplayService <<get>>
+    - _gameService : GameService
+    - _inputManager : InputManager
+    - _gameConfigProvider : GameConfigProvider
+    - _shopConfigurationProvider : ShopConfigurationProvider
+    - _gameEndRestrictions : Func<bool>
+    + UI : GameplayUIContainer <<get>>
+    + GameTimer : Timer <<get>>
+    + PreviousGameScene : GameScene <<get>>
+    + CurrentGameScene : GameScene <<get>>
+    + Data : GameplayData <<get>>
+    + UICamera : Camera <<get>>
+    + CurrentGameSceneMap : GameObject <<get>>
+    - Awake() : void
+    + <<async>> Enter() : void
+    + <<async>> GoToPotionLac() : UniTask
+    + <<async>> GoToHallLac() : UniTask
+    + <<async>> GoToGardenLac() : UniTask
+    + <<async>> GoToMainMenu() : UniTask
+    + UpdateCustomerInfo(loyalty:float) : void
+    + DisableAllUI() : void
+    + BindGameEndAdditionalRestriction(restriction:Func<bool>) : void
+    - FillGameplayData() : void
+    - InitAndOpenShop() : void
+    - <<async>> SwitchLocation(scene:GameScene) : UniTask
+    - <<async>> HookGameEnd() : UniTaskVoid
+    - HandleBuyItemRequest(id:string) : void
+    - SaveGameplayData() : void
+}
+MonoBehaviour <|-- GameplayService
+IGameState <|-- GameplayService
+@enduml

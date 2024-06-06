@@ -1,0 +1,9 @@
+@startuml
+class GardenPlantUIItem <<sealed>> {
+    - _scrollRect : ScrollRect
+    # <<override>> OnInit(config:PlantConfig, param:ScrollRect) : void
+    + <<override>> ProcessStartInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessEndInteractivity(inputAction:InputManager.InputAction) : void
+}
+"BasketUIElement`2" "<PlantConfig,ScrollRect>" <|-- GardenPlantUIItem
+@enduml

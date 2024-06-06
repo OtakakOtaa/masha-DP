@@ -1,0 +1,11 @@
+@startuml
+abstract class PollEntity {
+    - _weight : float = 1
+    + Weight : float <<get>>
+    + {abstract} ID : string <<get>>
+    + {abstract} Name : string <<get>>
+    + {abstract} Type : UniqItemsType <<get>>
+    + {abstract} Sprite : Sprite <<get>>
+}
+IUniq <|-- PollEntity
+@enduml

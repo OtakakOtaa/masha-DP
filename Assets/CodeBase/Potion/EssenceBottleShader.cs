@@ -6,7 +6,7 @@ namespace _CodeBase.Potion
     {
         [SerializeField] private MeshRenderer _renderer;
         [SerializeField] private Vector2 _fillRange;
-        
+         
 
         private Material _material;
         private int _fillLevelID;

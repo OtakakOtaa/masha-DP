@@ -1,0 +1,7 @@
+@startuml
+class ColliderArea <<sealed>> {
+    - _collider : Collider
+    + <<override>> CheckPlaceIntoSurface(point:Vector2) : bool
+}
+SomeArea <|-- ColliderArea
+@enduml

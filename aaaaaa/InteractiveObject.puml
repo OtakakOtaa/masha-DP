@@ -1,0 +1,19 @@
+@startuml
+abstract class InteractiveObject {
+    # _inputManager : InputManager
+    - _triggers : Collider[]
+    - _supportedActions : InputManager.InputAction[]
+    # IsAwoke : bool <<get>>
+    + SupportedActions : IEnumerable<InputManager.InputAction> <<get>>
+    # <<virtual>> Awake() : void
+    # InitSupportedActionsList(list:InputManager.InputAction[]) : void
+    + {abstract} ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    + <<virtual>> ProcessEndInteractivity(inputAction:InputManager.InputAction) : void
+    + <<virtual>> ProcessStartInteractivity(inputAction:InputManager.InputAction) : void
+    + <<virtual>> GetHandleTarget() : InteractiveObject
+    + <<virtual>> GetTargetID() : string
+    + <<virtual>> CanInteractiveNow : bool <<get>>
+    # {abstract} OnAwake() : void
+}
+MonoBehaviour <|-- InteractiveObject
+@enduml

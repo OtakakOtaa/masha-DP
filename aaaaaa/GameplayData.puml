@@ -1,0 +1,42 @@
+@startuml
+class GameplayData <<sealed>> {
+    + <<const>> InfinityLandingValue : int
+    - _globalCoins : int
+    - _servedCustomersAmount : int
+    - _craftedPotion : string
+    - _earnedCoins : int = 0
+    - <<readonly>> _availablePlants : Dictionary<string, int>
+    - <<readonly>> _availablePlantsPoolForLandings : Dictionary<string, int>
+    - <<readonly>> _availableEssences : HashSet<string>
+    - <<readonly>> _uniqItems : HashSet<string>
+    + <<readonly>> DataAddedEvent : ReactiveCommand<string>
+    + <<readonly>> CreatedPotionEvent : ReactiveCommand<string>
+    + <<readonly>> GlobalCoinsBalanceChangedEvent : ReactiveCommand<int>
+    + <<readonly>> EarnedCoinsBalanceChangedEvent : ReactiveCommand<int>
+    + <<readonly>> ServedCustomersAmountChangedEvent : ReactiveCommand<int>
+    + <<readonly>> PlantWasAddedEvent : ReactiveCommand<(string type, int amount)>
+    + <<readonly>> PlantWasRemovedEvent : ReactiveCommand<(string type, int amount)>
+    + EarnedCoins : int <<get>>
+    + GlobalCoins : int <<get>>
+    + ServedCustomersAmount : int <<get>>
+    + Seeds : IEnumerable<string> <<get>>
+    + HarvestPlants : IEnumerable<string> <<get>>
+    + AccessibleEssences : IEnumerable<string> <<get>>
+    + UniqItems : IEnumerable<string> <<get>>
+    + CraftedPotion : string <<get>>
+    + GetPlantsCountForLanding(key:string) : int
+    + AddPlantsToLandingPool(key:string, amount:int) : void
+    + TryRemovePlantsForLanding(key:string, amount:int) : bool
+    + ChangeGlobalCoinBalance(finalValue:int) : void
+    + TryWithdrawGlobalCoins(amount:int) : bool
+    + AddCustomerCoinToBalance(amount:int) : void
+    + IncreaseServedCustomers() : void
+    + AddPlant(plantType:string) : void
+    + TryRemovePlant(plantType:string) : bool
+    + GetPlantsCount(key:string) : int
+    + CheckPlantContains(plantType:string) : bool
+    + AddEssence(id:string) : void
+    + AddUniqItem(id:string) : void
+    + SetCraftedPotion(potionID:string) : void
+}
+@enduml

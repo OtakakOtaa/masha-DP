@@ -1,0 +1,20 @@
+@startuml
+class CustomerFetcher <<sealed>> {
+    - _customer : Customer
+    - _noRepeatableIndex : int = 3
+    - <<const>> ReRandomMaxCount : int = 50
+    - _gameplayService : GameplayService
+    - _gameConfigProvider : GameConfigProvider
+    - <<readonly>> _ordersRecordsList : Queue<string>
+    - <<readonly>> _customersInfoRecordsList : Queue<string>
+    - <<readonly>> _customerVisualRecordsList : Queue<string>
+    - <<readonly>> _customerGoodFarewellList : Queue<string>
+    - <<readonly>> _customerBadFarewellList : Queue<string>
+    - _availableOrdersMask : Dictionary<string, bool>
+    + Init() : void
+    + <<async>> GetNextCustomer() : UniTask<Customer>
+    - <<async>> GetNextOrder(callCounter:int) : UniTask<Order>
+    - <<async>> GetNextWithSimpleIDDel(recordList:Queue<string>, maxOriginalCapacity:int, randomItemFunc:Func<TType>, callCounter:int) : UniTask<TType>
+}
+MonoBehaviour <|-- CustomerFetcher
+@enduml

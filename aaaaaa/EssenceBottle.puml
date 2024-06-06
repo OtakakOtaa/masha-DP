@@ -1,0 +1,32 @@
+@startuml
+class EssenceBottle <<sealed>> {
+    - _essenceBottleShader : EssenceBottleShader
+    - _amountViewer : Slider
+    - _spriteRenderer : SpriteRenderer
+    - _neckOfVessel : SpriteRenderer
+    - _kernel : GameObject
+    - _essenceID : string
+    - _originalLayerName : string
+    - _originalPos : Vector3
+    - _essenceConfig : EssenceConfig
+    - _startRegenPoint : float
+    - _availableSipsCounter : int
+    - _amountRat : float
+    - _needRegenFlag : bool
+    + EssenceID : string <<get>>
+    + RegenerationDuration : float <<get>>
+    + IsRegenerateNow : bool <<get>>
+    + MaxAvailableSipsCount : int <<get>>
+    + Color : Color <<get>>
+    # <<override>> OnAwake() : void
+    + InitData(essenceConfig:EssenceConfig, startSipsAmount:int) : void
+    - UpdateRegen() : void
+    + TrySpendOneSip() : bool
+    + ResetAndStartRegen() : void
+    + <<override>> ProcessStartInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessEndInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> GetTargetID() : string
+}
+InteractiveObject <|-- EssenceBottle
+@enduml

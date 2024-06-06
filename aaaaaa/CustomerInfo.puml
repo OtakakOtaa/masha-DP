@@ -1,0 +1,12 @@
+@startuml
+class CustomerInfo <<sealed>> {
+    - _id : string
+    - _name : string
+    + <<override>> Name : string <<get>>
+    + <<override>> ID : string <<get>>
+    + <<override>> Type : UniqItemsType <<get>>
+    + <<override>> Sprite : Sprite <<get>>
+}
+PollEntity <|-- CustomerInfo
+IUniq <|-- CustomerInfo
+@enduml

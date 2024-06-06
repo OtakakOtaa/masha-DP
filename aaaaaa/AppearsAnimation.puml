@@ -1,0 +1,12 @@
+@startuml
+class AppearsAnimation <<sealed>> {
+    - _image : Image
+    - _canvasGroup : CanvasGroup
+    - _duration : float
+    - _ease : Ease
+    + Tween : Tween <<get>>
+    + Play(duration:float?) : void
+}
+MonoBehaviour <|-- AppearsAnimation
+IAnimation <|-- AppearsAnimation
+@enduml

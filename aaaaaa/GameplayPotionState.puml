@@ -1,0 +1,18 @@
+@startuml
+class GameplayPotionState <<sealed>> {
+    - _essenceBottles : EssenceBottle[]
+    - _essenceMixer : EssenceMixer
+    - _topRenderingObjects : SpriteRenderer[]
+    - _potionCauldron : PotionCauldron
+    - _gameplayService : GameplayService
+    - _gameConfigProvider : GameConfigProvider
+    # <<override>> OnFirstEnter() : void
+    # <<override>> OnEnter() : void
+    # <<override>> OnExit() : void
+    - InitEssenceBottles() : void
+    - CalculateAllAvailablePotions() : ICollection<PotionConfig>
+    - HandlePotionCreation(isTacked:bool) : void
+    - HandlePlantConsummation(id:string) : void
+}
+GameplaySceneState <|-- GameplayPotionState
+@enduml

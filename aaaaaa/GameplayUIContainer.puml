@@ -1,0 +1,19 @@
+@startuml
+class GameplayUIContainer <<sealed>> {
+    - _mainCanvas : Canvas
+    - _hud : GameplayHudUI
+    - _gardenUI : GardenUI
+    - _potionUI : PotionUI
+    - _shopUI : ShopUI
+    - _dayResultsUI : DayResultsUI
+    - _startDayUI : StartDayUI
+    + DayResultsUI : DayResultsUI <<get>>
+    + GardenUI : GardenUI <<get>>
+    + HudUI : GameplayHudUI <<get>>
+    + PotionUI : PotionUI <<get>>
+    + ShopUI : ShopUI <<get>>
+    + MainCanvas : Canvas <<get>>
+    + StartDayUI : StartDayUI <<get>>
+}
+MonoBehaviour <|-- GameplayUIContainer
+@enduml

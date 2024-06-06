@@ -1,0 +1,27 @@
+@startuml
+class PulledUIItem {
+    - _releaseDistance : float = 50f
+    - _returnDuration : float = 0.3f
+    - _endPositionOffset : Vector2
+    - _anchoredPositionOffset : Vector2
+    - _direction : Vector2
+    - _anim : Ease
+    - _sensitivity : float = 1
+    - _rectTransform : RectTransform
+    - _initialPosition : Vector2
+    - _isExecuted : bool = false
+    - _executeAnim : Tweener
+    - _backAnim : Tweener
+    + OnExecuted : ReactiveCommand <<get>>
+    + IsExecuted : bool <<get>>
+    # <<override>> OnAwake() : void
+    + SetToDefault() : void
+    + SetToDefaultWithAnim() : void
+    + SetCurrentPositionAsInit() : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessEndInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessStartInteractivity(inputAction:InputManager.InputAction) : void
+    + PlayExecuteAnimation(isNeedExecuted:bool) : void
+}
+InteractiveObject <|-- PulledUIItem
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class PlantDummy <<sealed>> {
+    + <<override>> Init(param:PlantConfig) : void
+}
+"ItemDummy`1" "<PlantConfig>" <|-- PlantDummy
+@enduml

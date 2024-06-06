@@ -1,0 +1,22 @@
+@startuml
+class Order <<sealed>> {
+    - _id : string
+    - _requestedItemID : string
+    - _reward : int = 30
+    - _needWaitTime : bool = false
+    - _timeToReady : float
+    - _message : string
+    - _concreteMessage : string
+    + ConcreteMessage : string <<get>>
+    + Message : string <<get>>
+    + Reward : int <<get>>
+    + RequestedItemID : string <<get>>
+    + TimeToReady : float <<get>>
+    + <<override>> ID : string <<get>>
+    + <<override>> Name : string <<get>>
+    + <<override>> Type : UniqItemsType <<get>>
+    + <<override>> Sprite : Sprite <<get>>
+    + NeedWaitTime : bool <<get>>
+}
+PollEntity <|-- Order
+@enduml

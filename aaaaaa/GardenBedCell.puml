@@ -1,0 +1,21 @@
+@startuml
+class GardenBedCell <<sealed>> {
+    - _gameplayService : GameplayService
+    - _spriteRenderer : SpriteRenderer
+    - _tag : Sprite
+    - _gardenBedData : GardenBedData
+    - _plantConfig : PlantConfig
+    - _growingTimeOffset : float
+    + Progress : float <<get>>
+    + HasPlant : bool <<get>>
+    + LockFlag : bool <<get>> <<set>>
+    # <<override>> OnAwake() : void
+    + UpdateProgress() : void
+    + ApplyNoPlantState() : void
+    + ApplyGrownPlantState(plantConfig:PlantConfig, growingTimeOffset:float) : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    - CurrentTimeUtc : TimeSpan <<get>>
+    - HasPlantGrown : bool <<get>>
+}
+InteractiveObject <|-- GardenBedCell
+@enduml

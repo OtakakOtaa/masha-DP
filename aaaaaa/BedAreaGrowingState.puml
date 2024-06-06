@@ -1,0 +1,12 @@
+@startuml
+class BedAreaGrowingState <<sealed>> {
+    - <<readonly>> _gardenBedArea : GardenBedArea
+    - _currentMaxGrowCellOffset : float
+    + CurrentState : GardenBedArea.State <<get>>
+    + BedAreaGrowingState(gardenBedArea:GardenBedArea)
+    + UpdateState() : void
+    + SwitchState(newState:GardenBedArea.State) : void
+    + ProcessInteractivity(inputAction:InputManager.InputAction) : void
+}
+IGardenBedAreaState <|-- BedAreaGrowingState
+@enduml

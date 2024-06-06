@@ -1,0 +1,26 @@
+@startuml
+class GameplayHallState <<sealed>> {
+    - _potionDummy : PotionDummy
+    - _customerFetcher : CustomerFetcher
+    - _dialogueBubble : DialogueBubble
+    - _gameplayService : GameplayService
+    - _gameConfigProvider : GameConfigProvider
+    - _activeCustomer : Customer
+    - <<readonly>> _customerExpectationTimer : Timer
+    + _freeHallFlag : bool
+    - _customerExpectationFlag : bool
+    - _correctCraftedPotionFlag : bool
+    - _customerLoyalty : float
+    - _tookOrderFlag : bool
+    - _potionDeliveryFlag : bool = false
+    # <<override>> <<async>> OnFirstEnter() : void
+    # <<override>> OnEnter() : void
+    # <<override>> OnExit() : void
+    - OnUpdate() : void
+    - UpdateCraftedPotion() : void
+    - <<async>> LaunchCustomer(token:CancellationToken) : UniTask
+    - <<async>> ExecuteLeaveCustomer(token:CancellationToken, isCorrectPotion:bool, needBubble:bool) : UniTask
+    - <<async>> ExecuteCustomerEntering(token:CancellationToken) : UniTask
+}
+GameplaySceneState <|-- GameplayHallState
+@enduml

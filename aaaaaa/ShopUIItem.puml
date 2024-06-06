@@ -1,0 +1,12 @@
+@startuml
+class ShopUIItem {
+    - _headerTMP : TMP_Text
+    - _costTMP : TMP_Text
+    - _image : Image
+    - _buyBtn : Button
+    + <<readonly>> BuyRequestEvent : ReactiveCommand
+    - Awake() : void
+    + Init(sprite:Sprite, titleName:string, cost:int, rect:Vector2) : void
+}
+MonoBehaviour <|-- ShopUIItem
+@enduml

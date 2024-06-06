@@ -1,0 +1,15 @@
+@startuml
+class DayResultsUI <<sealed>> {
+    - _mainIcon : Image
+    - _earnedCoinTMP : TMP_Text
+    - _continueBtn : Button
+    - _mainIconsSprites : Sprite[]
+    - _appearsAnimation : AppearsAnimation
+    + ContinueClickedEvent : IObservable<Unit> <<get>>
+    + ContinueEventFlag : bool <<get>>
+    - Awake() : void
+    + Init(earnedCoinsAmount:int) : void
+    + Show() : void
+}
+MonoBehaviour <|-- DayResultsUI
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class GlobalStateMachine <<sealed>> {
+    - <<readonly>> _diContainer : DiContainer
+    - <<readonly>> _finalStateTypes : HashSet<Type>
+    + CurrentGameState : IGameState <<get>>
+    + GlobalStateMachine(finalStateTypes:Type[], diContainer:DiContainer)
+    + Enter(ignoreExit:bool, beforeEnterAction:Action) : void
+    + Enter(payload:TPayload) : void
+    - GetState() : TState
+    - TryExit() : void
+    - GetPayloadState() : IGameStateWithPayload<TPayload>
+    - CheckStateForAvailability() : void
+    - ResolveState() : IGameState
+    - ResolveStateWithPayload() : IGameStateWithPayload<TPayload>
+    - <<readonly>> _notAvailableStateEx : Exception
+}
+@enduml

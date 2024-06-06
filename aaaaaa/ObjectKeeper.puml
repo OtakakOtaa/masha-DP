@@ -1,0 +1,10 @@
+@startuml
+abstract class ObjectKeeper {
+    - _someInputsArea : SomeArea
+    - _gameplayCursor : GameplayCursor
+    # <<new>> Awake() : void
+    + {abstract} <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    + CanKeep(point:Vector2) : bool
+}
+InteractiveObject <|-- ObjectKeeper
+@enduml

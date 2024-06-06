@@ -1,0 +1,12 @@
+@startuml
+class Timer <<sealed>> {
+    - _startTime : float
+    - _targetDTime : float
+    + IsTimeUp : bool <<get>>
+    + Value : TimeSpan <<get>>
+    + TimeRatio : float <<get>>
+    + RunWithDuration(duration:TimeSpan) : void
+    + RunWithDuration(duration:float) : void
+    + RunWithEndPoint(targetPoint:TimeSpan) : void
+}
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+class ShopUI <<sealed>> {
+    - _coins : TMP_Text
+    - _returnBtn : Button
+    - _continueBtn : Button
+    - _selectedFilterBtnSprite : Sprite
+    - _filterBtns : FilterBtnBinder[]
+    - _shopUIItemPrefab : ShopUIItem
+    - _container : Transform
+    - _shopConfiguration : ShopConfigurationProvider
+    - _gameConfigProvider : GameConfigProvider
+    - _gameplayService : GameplayService
+    - _itemsHooksHandler : CompositeDisposable
+    - <<readonly>> _shopUIItemInstances : List<ShopUIItem>
+    - <<readonly>> _shopUIItemInstancesIdsMap : Dictionary<string, int>
+    - <<readonly>> _typesDefinitionBrowser : Dictionary<UniqItemsType, HashSet<int>>
+    - _currentFilter : UniqItemsType
+    + <<readonly>> BuyBtnPressEvent : ReactiveCommand<string>
+    + ReturnToSignalFlag : bool <<get>>
+    + ContinueSignalFlag : bool <<get>>
+    - Awake() : void
+    + Init(items:string[]) : void
+    + ShowOnlyType(type:UniqItemsType) : void
+    - UpdateScrollContentSize(size:int) : void
+    - InitFilterBtns() : void
+    - HandleItemRemove(id:string) : void
+}
+class FilterBtnBinder <<sealed>> {
+    + button : Button
+    + uniqItemsType : UniqItemsType
+}
+MonoBehaviour <|-- ShopUI
+ShopUI +-- FilterBtnBinder
+@enduml

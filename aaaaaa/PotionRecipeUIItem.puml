@@ -1,0 +1,14 @@
+@startuml
+class PotionRecipeUIItem <<sealed>> {
+    - _recordImage : Image
+    - _rectTransform : RectTransform
+    - _heightOffset : int
+    + Init(entireRow:Sprite) : void
+    - _leftContainer : Transform
+    - _itemPrefab : PotionCraftPartUIItem
+    - <<readonly>> _parts : List<PotionCraftPartUIItem>
+    + Init(data:(Sprite sprite, Color color, string mes)[]) : void
+    - UpdateLeftContainer(referencedSize:int) : void
+}
+MonoBehaviour <|-- PotionRecipeUIItem
+@enduml

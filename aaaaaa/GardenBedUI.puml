@@ -1,0 +1,13 @@
+@startuml
+class GardenBedUI <<sealed>> {
+    - _progressBar : Slider
+    - _careRequiredTag : GameObject
+    + UpdateProgressBar(delta:float) : void
+    + ShowProgressBar() : void
+    + ShowCareRequiredTag() : void
+    + HideCareRequiredTag() : void
+    + HideProgressBar() : void
+    + HideAll() : void
+}
+MonoBehaviour <|-- GardenBedUI
+@enduml

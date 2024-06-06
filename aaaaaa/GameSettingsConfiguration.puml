@@ -1,0 +1,42 @@
+@startuml
+class GameSettingsConfiguration <<sealed>> {
+    - _dayDuration : STimeSpan
+    - _startGameCurtainLifeDuration : float = 5f
+    - _delayBetweenCustomers : InspectorFactoredProperty
+    - _firstCustomerEnterDelay : InspectorRandomProperty
+    - _bubblePassDelay : InspectorRandomProperty
+    - _textAppearsTemp : InspectorFactoredProperty
+    - _areaSettings : GardenBedArea.GardenBedAreaSettings[]
+    - _cauldronTrashColor : Color
+    - _mixerTrashColor : Color
+    + {static} Instance : GameSettingsConfiguration <<get>>
+    + InitInstance() : void
+    + DayDuration : float <<get>>
+    + GetDelayBetweenCustomers(i:float) : float
+    + FirstCustomerEnterDelay : float <<get>>
+    + BubblePassDelay : float <<get>>
+    + GetTextAppearsTemp(i:float) : float
+    + AreaSettings : GardenBedArea.GardenBedAreaSettings[] <<get>>
+    + MixerTrashColor : Color <<get>>
+    + CauldronTrashColor : Color <<get>>
+    + StartGameCurtainLifeDuration : float <<get>>
+}
+class InspectorRandomProperty <<sealed>> {
+    - _range : Vector2
+    + InspectorRandomProperty(range:Vector2)
+    + Value : float <<get>>
+}
+class InspectorFactoredProperty <<sealed>> {
+    - _value : float
+    - _curve : AnimationCurve
+    + InspectorFactoredProperty(value:float)
+    + GetInterpolatedValue(i:float) : float
+    + Value : float <<get>>
+}
+interface IInspectorProperty {
+    Value : float <<get>>
+}
+ScriptableObject <|-- GameSettingsConfiguration
+IInspectorProperty <|-- InspectorRandomProperty
+IInspectorProperty <|-- InspectorFactoredProperty
+@enduml

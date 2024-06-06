@@ -1,0 +1,23 @@
+@startuml
+class Customer <<sealed>> {
+    - _spriteRenderer : SpriteRenderer
+    - _startAnimPos : Transform
+    - _endAnimPos : Transform
+    - _animEase : AnimationCurve
+    - _animationDuration : float
+    - _movementAnimTween : Tween
+    + GetPotionEvent : ReactiveCommand<PotionConfig> <<get>>
+    + CustomerEnterEnded : ReactiveCommand <<get>>
+    + Order : Order <<get>>
+    + CustomerInfo : CustomerInfo <<get>>
+    + GoodFarewellWord : CustomerFarewellWord <<get>>
+    + BadFarewellWord : CustomerFarewellWord <<get>>
+    # <<override>> OnAwake() : void
+    + <<async>> ExecuteEntering(token:CancellationToken) : UniTask
+    + <<async>> ExecuteLeaving(token:CancellationToken) : UniTask
+    + Init(visual:CustomerVisual, order:Order, data:CustomerInfo, goodFarewellWord:CustomerFarewellWord, badFarewellWord:CustomerFarewellWord) : Customer
+    - InvokeMovementAnimation(rewindFlag:bool) : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+}
+ObjectKeeper <|-- Customer
+@enduml

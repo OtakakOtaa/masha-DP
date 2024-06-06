@@ -1,0 +1,10 @@
+@startuml
+class PotionPlantUIItem <<sealed>> {
+    - _amountFld : TMP_Text
+    - _scrollRect : ScrollRect
+    # <<override>> OnInit(config:PlantConfig, param:ScrollRect) : void
+    + <<override>> ProcessStartInteractivity(inputAction:InputManager.InputAction) : void
+    + <<override>> ProcessEndInteractivity(inputAction:InputManager.InputAction) : void
+}
+"BasketUIElement`2" "<PlantConfig,ScrollRect>" <|-- PotionPlantUIItem
+@enduml

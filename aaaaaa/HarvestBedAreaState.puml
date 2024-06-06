@@ -1,0 +1,11 @@
+@startuml
+class HarvestBedAreaState <<sealed>> {
+    - <<readonly>> _gardenBedArea : GardenBedArea
+    + CurrentState : GardenBedArea.State <<get>>
+    + HarvestBedAreaState(gardenBedArea:GardenBedArea)
+    + SwitchState(newState:GardenBedArea.State) : void
+    + ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    + UpdateState() : void
+}
+IGardenBedAreaState <|-- HarvestBedAreaState
+@enduml

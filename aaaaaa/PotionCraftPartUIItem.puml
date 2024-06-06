@@ -1,0 +1,9 @@
+@startuml
+class PotionCraftPartUIItem <<sealed>> {
+    - _image : Image
+    - _text : TMP_Text
+    + InitAsImage(sprite:Sprite, color:Color) : void
+    + InitAsText(text:string) : void
+}
+MonoBehaviour <|-- PotionCraftPartUIItem
+@enduml

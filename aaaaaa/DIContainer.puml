@@ -1,0 +1,7 @@
+@startuml
+class DiContainer <<sealed>> {
+    + DiContainer(globalScope:LifetimeScope)
+    + GlobalScope : LifetimeScope <<get>>
+    + Scope : LifetimeScope <<get>> <<set>>
+}
+@enduml

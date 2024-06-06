@@ -1,0 +1,22 @@
+@startuml
+class EssenceConfig <<sealed>> {
+    - _id : string
+    - _color : Color
+    - _name : string
+    - _sprite : Sprite
+    - _regenDuration : float = 5f
+    - _sipCount : int = 4
+    - _regenEssencesMultiplayer : float = 1
+    + ID : string <<get>>
+    + Name : string <<get>>
+    + Type : UniqItemsType <<get>>
+    + Color : Color <<get>>
+    + Sprite : Sprite <<get>>
+    + RegenDuration : float <<get>>
+    + SipCount : int <<get>>
+    + Boost(param:float) : void
+}
+ScriptableObject <|-- EssenceConfig
+IUniq <|-- EssenceConfig
+"ICanBoosted`1" "<float>" <|-- EssenceConfig
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class MainMenuBinder <<sealed>> {
+    - _mainMenuGameState : MainMenuGameState
+    + SetHandler(mainMenuGameState:MainMenuGameState) : void
+    + ForceStartGame() : void
+}
+MonoBehaviour <|-- MainMenuBinder
+@enduml

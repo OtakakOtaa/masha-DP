@@ -1,0 +1,7 @@
+@startuml
+class AnchoredArea {
+    - _anchors : Transform[]
+    + <<override>> CheckPlaceIntoSurface(point:Vector2) : bool
+}
+SomeArea <|-- AnchoredArea
+@enduml

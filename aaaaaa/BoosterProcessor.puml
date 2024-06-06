@@ -1,0 +1,9 @@
+@startuml
+interface "ICanBoosted`1"<in TType> {
+    Boost(param:TType) : void
+}
+class BoosterProcessor <<sealed>> {
+    + {static} ProcessBoosters(boosters:IEnumerable<string>, gameConfigProvider:GameConfigProvider, data:GameplayData) : void
+    - {static} CalculateGardenBedProblemsBoostedPercent(areaSettings:GardenBedArea.GardenBedAreaSettings, problemType:GardenBedArea.State, boosterConfigs:BoosterConfigs, spanFactor:float) : (Dictionary<GardenBedArea.State, int> chances, float problemSpanFactor)
+}
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class VContainerExtensions <<static>> {
+    + {static} ResolveFromContainer(scope:LifetimeScope) : TResult
+    - {static} Inject(component:TComponent, scope:LifetimeScope) : void
+    - {static} FindInjectionCtorOrThrow(ctors:IEnumerable<ConstructorInfo>) : ConstructorInfo
+    - {static} CreateInstanceOrThrow(ctor:ConstructorInfo, resolver:LifetimeScope) : TResult
+    - {static} TryResolve(resolver:LifetimeScope, resolveType:Type, service:object) : bool
+    - {static} HasInjectAttribute(ctor:ICustomAttributeProvider) : bool
+    - {static} <<readonly>> SeveralConstructorsWithoutInjectEx : Exception
+    - {static} <<readonly>> NonUniformDependenciesEx : Exception
+}
+@enduml

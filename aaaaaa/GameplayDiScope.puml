@@ -1,0 +1,9 @@
+@startuml
+class GameplayDiScope <<sealed>> {
+    - _uiContainer : GameplayUIContainer
+    - _gameplayService : GameplayService
+    # <<override>> Configure(builder:IContainerBuilder) : void
+    # <<override>> OnDestroy() : void
+}
+LifetimeScope <|-- GameplayDiScope
+@enduml

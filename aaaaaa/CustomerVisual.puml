@@ -1,0 +1,14 @@
+@startuml
+class CustomerVisual <<sealed>> {
+    - _id : string
+    - _sprite : Sprite
+    - _mainColor : Color
+    + <<override>> Sprite : Sprite <<get>>
+    + <<override>> ID : string <<get>>
+    + <<override>> Name : string <<get>>
+    + MainColor : Color <<get>>
+    + <<override>> Type : UniqItemsType <<get>>
+}
+PollEntity <|-- CustomerVisual
+IUniq <|-- CustomerVisual
+@enduml

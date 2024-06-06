@@ -1,0 +1,12 @@
+@startuml
+abstract class "ItemDummy`1"<TParam> {
+    # _spriteRenderer : SpriteRenderer
+    # _scale : Vector3
+    + Config : TParam <<get>> <<protected set>>
+    + ID : string <<get>> <<protected set>>
+    + {abstract} Init(param:TParam) : void
+    + <<override>> ProcessInteractivity(inputAction:InputManager.InputAction) : void
+    # <<override>> OnAwake() : void
+}
+InteractiveObject <|-- "ItemDummy`1"
+@enduml
