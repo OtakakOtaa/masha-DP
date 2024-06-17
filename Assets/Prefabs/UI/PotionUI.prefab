@@ -322,6 +322,7 @@ GameObject:
   - component: {fileID: 7047986610138756766}
   - component: {fileID: 4912306375091413902}
   - component: {fileID: 4157756183628395478}
+  - component: {fileID: 9201913716804467301}
   m_Layer: 5
   m_Name: '[btn] acc'
   m_TagString: Untagged
@@ -430,7 +431,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4912306375091413902}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9201913716804467301}
+        m_TargetAssemblyTypeName: CodeBase.Infrastructure.SoundProxy, Assembly-CSharp
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &9201913716804467301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673081138796299971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81564140c8a240ddbea8d0cbf366a113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _btnClickSFX: btn_SFX
 --- !u!1 &775270381268185733
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +546,7 @@ GameObject:
   - component: {fileID: 8006741952236441746}
   - component: {fileID: 2267780409851246871}
   - component: {fileID: 9156127506023385028}
+  - component: {fileID: 8368396528297272741}
   m_Layer: 5
   m_Name: OpenPlantsBtn
   m_TagString: Untagged
@@ -648,6 +675,34 @@ MonoBehaviour:
   _direction: {x: 1, y: 0}
   _anim: 19
   _sensitivity: 1000
+  _onExecutedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8368396528297272741}
+        m_TargetAssemblyTypeName: CodeBase.Infrastructure.BtnSoundProxy, Assembly-CSharp
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8368396528297272741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971870002262949932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81564140c8a240ddbea8d0cbf366a113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _btnClickSFX: bookmark_SFX
 --- !u!1 &1448607004284043382
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,6 +717,7 @@ GameObject:
   - component: {fileID: 3255648881723696803}
   - component: {fileID: 244409776351023333}
   - component: {fileID: 6152506219810869054}
+  - component: {fileID: 4955771430243575679}
   m_Layer: 5
   m_Name: PlantsPanel
   m_TagString: Untagged
@@ -789,6 +845,21 @@ MonoBehaviour:
   _direction: {x: -1, y: 0}
   _anim: 5
   _sensitivity: 2000
+  _onExecutedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4955771430243575679}
+        m_TargetAssemblyTypeName: CodeBase.Infrastructure.SoundProxy, Assembly-CSharp
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6152506219810869054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -833,6 +904,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4955771430243575679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448607004284043382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81564140c8a240ddbea8d0cbf366a113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _btnClickSFX: bookmark_SFX
 --- !u!1 &2304680708866993094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,6 +1835,7 @@ GameObject:
   - component: {fileID: 3779111772668834191}
   - component: {fileID: 5310979265515461052}
   - component: {fileID: 8503969021710671298}
+  - component: {fileID: 1529016510044071385}
   m_Layer: 5
   m_Name: ClearBtn
   m_TagString: Untagged
@@ -1878,6 +1963,34 @@ MonoBehaviour:
   _direction: {x: 1, y: 0}
   _anim: 19
   _sensitivity: 1000
+  _onExecutedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1529016510044071385}
+        m_TargetAssemblyTypeName: CodeBase.Infrastructure.BtnSoundProxy, Assembly-CSharp
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1529016510044071385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4792928728681512452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81564140c8a240ddbea8d0cbf366a113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _btnClickSFX: bookmark_SFX
 --- !u!1 &4874786165422156818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2878,6 +2991,7 @@ GameObject:
   - component: {fileID: 8550760161975072173}
   - component: {fileID: 8268194539028596581}
   - component: {fileID: 5019471247382250244}
+  - component: {fileID: 451332463348322468}
   m_Layer: 5
   m_Name: OpenPotionsBtn
   m_TagString: Untagged
@@ -3006,6 +3120,34 @@ MonoBehaviour:
   _direction: {x: 1, y: 0}
   _anim: 19
   _sensitivity: 1000
+  _onExecutedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 451332463348322468}
+        m_TargetAssemblyTypeName: CodeBase.Infrastructure.BtnSoundProxy, Assembly-CSharp
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &451332463348322468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7901342509444637455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81564140c8a240ddbea8d0cbf366a113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _btnClickSFX: bookmark_SFX
 --- !u!1 &7969082135714638312
 GameObject:
   m_ObjectHideFlags: 0
@@ -3125,6 +3267,7 @@ GameObject:
   - component: {fileID: 747765593674131936}
   - component: {fileID: 4884051419341218465}
   - component: {fileID: 1493945428895293357}
+  - component: {fileID: 164735611031266297}
   m_Layer: 5
   m_Name: '[btn] rework'
   m_TagString: Untagged
@@ -3233,4 +3376,29 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4884051419341218465}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 164735611031266297}
+        m_TargetAssemblyTypeName: CodeBase.Infrastructure.SoundProxy, Assembly-CSharp
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &164735611031266297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8674988911300379888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81564140c8a240ddbea8d0cbf366a113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _btnClickSFX: btn_SFX

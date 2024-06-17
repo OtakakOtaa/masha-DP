@@ -2,9 +2,12 @@
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _CodeBase.Infrastructure.UI
@@ -17,11 +20,13 @@ namespace _CodeBase.Infrastructure.UI
         [SerializeField] private Vector2 _endPositionOffset;
         [SerializeField] private Vector2 _anchoredPositionOffset = Vector2.zero;
         
-        
         [SerializeField] private Vector2 _direction;
         [SerializeField] private Ease _anim;
         [SerializeField] private float _sensitivity = 1;
 
+        [SerializeField] private UnityEvent _onExecutedEvent;
+        
+        
         private RectTransform _rectTransform;
         private Vector2 _initialPosition;
         private bool _isExecuted = false;
@@ -35,6 +40,7 @@ namespace _CodeBase.Infrastructure.UI
         
         protected override void OnAwake()
         {
+            OnExecuted.Subscribe(_ => _onExecutedEvent?.Invoke()).AddTo(destroyCancellationToken);
             if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
             _initialPosition = _rectTransform.anchoredPosition;
             InitSupportedActionsList(InputManager.InputAction.Hold);

@@ -64,16 +64,19 @@ namespace _CodeBase.Infrastructure.UI
         public override void ProcessStartInteractivity(InputManager.InputAction action)
         {
             _dummy.gameObject.SetActive(true);
+            _dummy.ProcessStartInteractivity(action);
         }
 
         public override void ProcessInteractivity(InputManager.InputAction action)
         {
             _dummy.transform.position = InputManager.Instance.WorldPosition;
+            _dummy.ProcessInteractivity(action);
         }
 
         public override void ProcessEndInteractivity(InputManager.InputAction action)
         {
             _dummy.gameObject.SetActive(false);
+            _dummy.ProcessEndInteractivity(action);
         }
 
         

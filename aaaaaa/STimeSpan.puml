@@ -1,9 +1,0 @@
-@startuml
-class STimeSpan {
-    - _min : int
-    - _sec : int
-    - _milSec : int
-    + STimeSpan(timeSpan:TimeSpan)
-    + Value : TimeSpan <<get>>
-}
-@enduml

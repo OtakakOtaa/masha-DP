@@ -5,6 +5,7 @@ using _CodeBase.Infrastructure;
 using _CodeBase.Infrastructure.GameStructs;
 using _CodeBase.MainGameplay;
 using _CodeBase.Potion.Data;
+using CodeBase.Audio;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UniRx;
@@ -20,7 +21,17 @@ namespace _CodeBase.Hall
         [SerializeField] private CustomerFetcher _customerFetcher;
         [SerializeField] private DialogueBubble _dialogueBubble;
         
-
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _customerEnterSFX;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _customerLeaveSFX;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _moneySFX;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _giveAPotionSFX;
+        
+        
+        [Inject] private AudioService _audioService;
         [Inject] private GameplayService _gameplayService;
         [Inject] private GameConfigProvider _gameConfigProvider;
         
@@ -105,6 +116,7 @@ namespace _CodeBase.Hall
             {
                 _potionDummy.gameObject.SetActive(false);
                 _gameplayService.Data.SetCraftedPotion(null);
+                _audioService.PlayEffect(_giveAPotionSFX);
             }
             else
             {
@@ -117,6 +129,7 @@ namespace _CodeBase.Hall
             if (_correctCraftedPotionFlag)
             {
                 _gameplayService.Data.AddCustomerCoinToBalance(_activeCustomer.Order.Reward);
+                _audioService.PlayEffect(_moneySFX);
             }
         }
 
@@ -133,6 +146,7 @@ namespace _CodeBase.Hall
             }
             
             _customerExpectationFlag = false;
+            _audioService.PlayEffect(_customerLeaveSFX);
             await _activeCustomer.ExecuteLeaving(token);
             
             _activeCustomer = null;
@@ -143,6 +157,7 @@ namespace _CodeBase.Hall
 
         private async UniTask ExecuteCustomerEntering(CancellationToken token)
         {
+            _audioService.PlayEffect(_customerEnterSFX);
             await _activeCustomer.ExecuteEntering(token);
             _gameplayService.UpdateCustomerInfo(1f);
             _tookOrderFlag = false;

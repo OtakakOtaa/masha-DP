@@ -40,6 +40,7 @@ namespace _CodeBase.Garden.GardenBed
         
         public void SwitchState(GardenBedArea.State newState)
         {
+            _gardenBedArea.AudioService.PlayEffect(_gardenBedArea.GrowAudio);
             _currentMaxGrowCellOffset = 0f;
                 
             foreach (var cell in _gardenBedArea.Cells)

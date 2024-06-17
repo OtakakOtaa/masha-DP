@@ -7,6 +7,7 @@ using _CodeBase.Infrastructure.GameStructs.FSM.States;
 using _CodeBase.Infrastructure.UI;
 using _CodeBase.Input;
 using _CodeBase.MainMenu;
+using CodeBase.Audio;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
@@ -20,7 +21,6 @@ namespace _CodeBase
     {
         private const string SavesId = "saves_1"; 
         
-        
         [FormerlySerializedAs("_scenesConfiguration")] [SerializeField] private SceneResolver _sceneResolver;
         [SerializeField] private CurtainAnimation _curtain;
         
@@ -33,6 +33,7 @@ namespace _CodeBase
         [Inject] private readonly GameplayCursor _gameplayCursor;
         [Inject] private readonly GameConfigProvider _gameplayConfigProvider;
         [Inject] private readonly GameSettingsConfiguration _gameSettingsConfiguration;
+        [Inject] private readonly AudioService _audioService;
         
         
         private readonly HashSet<GameScene> _currentActiveAdditiveScenes = new();
@@ -49,6 +50,7 @@ namespace _CodeBase
             DontDestroyOnLoad(this);
             DontDestroyOnLoad(_gameplayCursor);
             DontDestroyOnLoad(_curtain.transform.root);
+            DontDestroyOnLoad(_audioService);
             
             Enter();
         }
@@ -60,7 +62,7 @@ namespace _CodeBase
 
         public async void Enter()
         { 
-            _curtain.gameObject.SetActive(false);
+            _curtain.gameObject.SetActive(true);
             _gameSettingsConfiguration.InitInstance();
             InitSaves();            
             await TryLoadScene(GameScene.MainMenu);

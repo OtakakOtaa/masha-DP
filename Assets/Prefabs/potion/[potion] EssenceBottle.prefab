@@ -212,10 +212,15 @@ MonoBehaviour:
   _essenceBottleShader: {fileID: 3396004195880813495}
   _amountViewer: {fileID: 2605542585099019273}
   _spriteRenderer: {fileID: 7081750843647306914}
-  _meshFilter: {fileID: 118872280410410562}
   _neckOfVessel: {fileID: 850893530761400993}
-  _regenPerSecond: 0.1
-  _sipCost: 0.2
+  _kernel: {fileID: 0}
+  _pickUpSfx:
+    _effects:
+    - essence_pick2_SFX
+    - essence_pick1_SFX
+    - essence_pick4_SFX
+    - essence_pick3_SFX
+  _regenSfx: restore_essence_SFX
   _essenceID: '[Essense] WHITE'
 --- !u!212 &7081750843647306914
 SpriteRenderer:
@@ -303,6 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1457593453961481809}
+  _fillRange: {x: 0, y: 0}
 --- !u!1 &4148105556042462421
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,11 +712,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
---- !u!33 &118872280410410562 stripped
-MeshFilter:
-  m_CorrespondingSourceObject: {fileID: 836772415587915077, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}
-  m_PrefabInstance: {fileID: 737044019992222471}
-  m_PrefabAsset: {fileID: 0}
 --- !u!23 &1457593453961481809 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2161983077507224918, guid: cdadf1e96ccb3df4584389ab5bd9d61c, type: 3}

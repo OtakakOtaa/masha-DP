@@ -122,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 1773842198862634817}
   _tag: {fileID: 0}
+  _harvestSFX: harvest_SFX
 --- !u!1 &6038561671973526787
 GameObject:
   m_ObjectHideFlags: 0

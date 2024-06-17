@@ -99,3 +99,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 5615894224946828989}
   _scale: {x: 0.1, y: 0.1, z: 0.1}
+  _activateSFX: drag_SFX

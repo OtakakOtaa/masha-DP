@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using _CodeBase.Customers;
 using _CodeBase.DATA;
 using _CodeBase.Garden;
@@ -10,9 +11,12 @@ using _CodeBase.Infrastructure.GameStructs.FSM.States;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainMenu;
 using _CodeBase.Potion;
+using CodeBase.Audio;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 
 namespace _CodeBase.MainGameplay
@@ -20,6 +24,9 @@ namespace _CodeBase.MainGameplay
     public sealed class GameplayService : MonoBehaviour, IGameState
     {
         [SerializeField] private Camera _uiCamera;
+        [SerializeField] private string _ambienceName;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _purchaseSFX;
         
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +37,8 @@ namespace _CodeBase.MainGameplay
         [Inject] private InputManager _inputManager;
         [Inject] private GameConfigProvider _gameConfigProvider;
         [Inject] private ShopConfigurationProvider _shopConfigurationProvider;
-
+        [Inject] private AudioService _audioService;
+        
         private Func<bool> _gameEndRestrictions;
         
         [Inject] public GameplayUIContainer UI { get; private set; }
@@ -51,50 +59,73 @@ namespace _CodeBase.MainGameplay
         
         public async void Enter()
         {
-            _gameEndRestrictions = default;
-            UICamera = Camera.main;
-            UI.MainCanvas.sortingLayerName = "UI";
-            UI.MainCanvas.worldCamera = _uiCamera;
-
+            InitMainData();
             DisableAllUI();
             FillGameplayData();
-            _inputManager.IntractableInputFlag = true;
-            _inputManager.SetCamera(UICamera);
+            InitInput();
 
-            if (_gameService.PersistentGameData.Day > 1)
+            var isNotFirstEnter = _gameService.PersistentGameData.Day > 1; 
+            if (isNotFirstEnter)
             {
-                UI.HudUI.gameObject.SetActive(false);
-                InitAndOpenShop();
-                await _gameService.Curtain.PlayDisappearance(0.3f);
-                await UniTask.WaitUntil(() => UI.ShopUI.ReturnToSignalFlag || UI.ShopUI.ContinueSignalFlag,
-                    cancellationToken: destroyCancellationToken);
-
-                if (UI.ShopUI.ReturnToSignalFlag)
-                {
-                    await GoToMainMenu();
-                    return;
-                }
-                
-                await _gameService.Curtain.PlayAppears(0.7f);
+                var returnFlag = await ShowAndHandleShop();
+                if (returnFlag) return;
             }
             
             BoosterProcessor.ProcessBoosters(boosters: Data.UniqItems, _gameConfigProvider, Data);
             GameTimer = new Timer();
-            GameTimer.RunWithDuration(GameSettingsConfiguration.Instance.DayDuration);
+            GameTimer.RunWithDuration(GameSettingsConfiguration.Instance.DayDuration); 
             HookGameEnd().Forget();
 
             UI.HudUI.Bind(this);
             UI.HudUI.gameObject.SetActive(true);
+            
             UI.StartDayUI.InitAndShow(_gameService.PersistentGameData.Day, needAnimation: false);
-            await _gameService.Curtain.PlayDisappearance(0.2f);
+            await _gameService.Curtain.PlayDisappearance();
             await UniTask.WaitForSeconds(GameSettingsConfiguration.Instance.StartGameCurtainLifeDuration, cancellationToken: destroyCancellationToken);
             
-            await _gameService.Curtain.PlayAppears(0.7f);
+            _audioService.HideAmbience(0.6f);
+            await _gameService.Curtain.PlayAppears();
             await GoToHallLac();
             UI.StartDayUI.gameObject.SetActive(false);
-            await _gameService.Curtain.PlayDisappearance(0.3f);
+            await _gameService.Curtain.PlayDisappearance().ContinueWith(() =>
+            {
+                _audioService.ResetAmbience();
+                _audioService.ChangeAmbience(_ambienceName);
+            });
         }
-        
+
+        private async UniTask<bool> ShowAndHandleShop()
+        {
+            UI.HudUI.gameObject.SetActive(false);
+            InitAndOpenShop();
+            await _gameService.Curtain.PlayDisappearance();
+            
+            await UniTask.WaitUntil(() => UI.ShopUI.ReturnToSignalFlag || UI.ShopUI.ContinueSignalFlag, cancellationToken: destroyCancellationToken);
+            
+            if (UI.ShopUI.ReturnToSignalFlag)
+            {
+                await GoToMainMenu();
+                return true;
+            }
+
+            await _gameService.Curtain.PlayAppears();
+            return false;
+        }
+
+        private void InitMainData()
+        {
+            _gameEndRestrictions = default;
+            UICamera = Camera.main;
+            UI.MainCanvas.sortingLayerName = "UI";
+            UI.MainCanvas.worldCamera = _uiCamera;
+        }
+
+        private void InitInput()
+        {
+            _inputManager.IntractableInputFlag = true;
+            _inputManager.SetCamera(UICamera);
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public async UniTask GoToPotionLac()
@@ -114,10 +145,10 @@ namespace _CodeBase.MainGameplay
 
         public async UniTask GoToMainMenu()
         {
-            await _gameService.Curtain.PlayAppears(0.9f);
+            await _gameService.Curtain.PlayAppears();
             await _gameService.TryLoadScene(GameScene.MainMenu);
             _gameService.GameStateMachine.Enter<MainMenuGameState>(ignoreExit: true);
-            await _gameService.Curtain.PlayAppears(0.2f);
+            await _gameService.Curtain.PlayAppears();
         }
         
         public void UpdateCustomerInfo(float loyalty)
@@ -218,7 +249,8 @@ namespace _CodeBase.MainGameplay
             var operationFlag = Data.TryWithdrawGlobalCoins(data.Cost);
             if (!operationFlag) return;
 
-
+            _audioService.PlayEffect(_purchaseSFX);
+            
             if (data.ID == _gameConfigProvider.MixerUniqId)
             {
                 Data.AddUniqItem(data.ID);

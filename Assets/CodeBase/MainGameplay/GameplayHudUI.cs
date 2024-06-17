@@ -1,13 +1,14 @@
 using System;
 using _CodeBase.Infrastructure;
 using _CodeBase.Infrastructure.UI;
+using CodeBase.Audio;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using TMPro;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using VContainer;
 
 namespace _CodeBase.MainGameplay
 {
@@ -47,8 +48,11 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private float _startDayHTime = 12;
         [SerializeField] private float _endDatHTime = 18;
         [SerializeField] private float _timeStep;
-        
-        
+
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _btnClickSFX;
+
+        [Inject] private AudioService _audioService;
         private readonly CompositeDisposable _compositeDisposable = new();
         private GameplayService _gameplayService;
 
@@ -96,6 +100,7 @@ namespace _CodeBase.MainGameplay
         [Button]
         public void GoToGarden()
         {
+            _audioService.PlayEffect(_btnClickSFX);
             _locationBtn1Image.sprite = _hallIcon;
             _locationBtn2Image.sprite = _potionIcon;
             _gameplayService.GoToGardenLac().Forget();
@@ -104,6 +109,7 @@ namespace _CodeBase.MainGameplay
         [Button]
         public void GoToLaboratory()
         {
+            _audioService.PlayEffect(_btnClickSFX);
             _locationBtn1Image.sprite = _gardenIcon;
             _locationBtn2Image.sprite = _hallIcon;
             _gameplayService.GoToPotionLac().Forget();
@@ -112,6 +118,7 @@ namespace _CodeBase.MainGameplay
         [Button]
         public void GoToHall()
         {
+            _audioService.PlayEffect(_btnClickSFX);
             _locationBtn1Image.sprite = _potionIcon;
             _locationBtn2Image.sprite = _gardenIcon;
             _gameplayService.GoToHallLac().Forget();
@@ -119,7 +126,10 @@ namespace _CodeBase.MainGameplay
         
         [Button]
         public void GoToMainMenu()
-            => _gameplayService.GoToMainMenu().Forget();
+        {
+            _audioService.PlayEffect(_btnClickSFX);
+            _gameplayService.GoToMainMenu().Forget();
+        }
 
         [Button]
         public void UpdateCoins(int amount)

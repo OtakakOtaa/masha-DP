@@ -7,19 +7,20 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Garden.UI;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
-using _CodeBase.MainGameplay;
-using JetBrains.Annotations;
+using CodeBase.Audio;
+using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 using Random = UnityEngine.Random;
 using Timer = _CodeBase.MainGameplay.Timer;
 
 namespace _CodeBase.Garden.GardenBed
 {
-    public sealed class GardenBedArea : ObjectKeeper, IGardenBedAreaState
+    public sealed partial class GardenBedArea : ObjectKeeper, IGardenBedAreaState
     {
         public enum State
         {
@@ -33,63 +34,7 @@ namespace _CodeBase.Garden.GardenBed
             NeedHarvest
         }
 
-        [Serializable] public sealed class GardenBedAreaSettings
-            : ICanBoosted<(Dictionary<State, int> chances, float problemSpanFactor)>, ICanBoosted<bool> 
-        {
-            [SerializeField] private Vector2 _problemTimerRange = new Vector2(5,10);
-            [SerializeField] private int _waterRequestChance = 50;
-            [SerializeField] private int _fertilizeRequestChance = 15;
-            [SerializeField] private int _bugsAttackChance = 35;
-            [SerializeField] private Vector2 _growingStartRandomOffsetRange = new Vector2(0,1);
-            [SerializeField] private bool _needConsedStartRandomOffset = true;
-            [SerializeField] private State _startState = State.ReadyToUsingWithoutRestrictions;
-            
-            [SerializeField] private GardenBugsSurface.GardenBugsSurfaceSettings _bugsSurfaceSettings;
 
-            [NonSerialized] private Dictionary<State, int> _problemChanceBrowser; 
-            [NonSerialized] private float _problemSpanRangeFactor = 1f; 
-            [NonSerialized] private bool _quickHarvestFlag = false;
-            
-            public Vector2 ProblemTimerRange => _problemTimerRange * _problemSpanRangeFactor;
-            public bool QuickHarvestFlag => _quickHarvestFlag;
-            public Vector2 GrowingStartRandomOffsetRange => _growingStartRandomOffsetRange;
-            public bool NeedConsedStartRandomOffset => _needConsedStartRandomOffset;
-            public GardenBugsSurface.GardenBugsSurfaceSettings BugsSurfaceSettings => _bugsSurfaceSettings;
-            public State StartState => _startState;
-            
-            public IDictionary<State, int> ProblemChanceBrowser => _problemChanceBrowser ??= CreateBrowser();
-
-            [CanBeNull] public float? GetProblemChance(State type)
-            {
-                _problemChanceBrowser ??= CreateBrowser();
-                
-                return _problemChanceBrowser.TryGetValue(type, out var value) ? value / 100f : null; 
-            }
-            
-            
-            public void Boost((Dictionary<State, int> chances, float problemSpanFactor) param)
-            {
-                _problemChanceBrowser = param.chances;
-                _problemSpanRangeFactor = param.problemSpanFactor;
-            }
-
-            public void Boost(bool param)
-            {
-                _quickHarvestFlag = param;
-            }
-
-            private Dictionary<State, int> CreateBrowser()
-            {
-                return new Dictionary<State, int>
-                {
-                    [State.NeedBugResolver] = _bugsAttackChance,
-                    [State.NeedFertilizers] = _fertilizeRequestChance,
-                    [State.NeedWater] = _waterRequestChance
-                };
-            }
-        }
-
-        
         [SerializeField] private GardenBedCell[] _cells;
         [SerializeField] private GardenBedUI _ui;
         [Space]
@@ -100,8 +45,16 @@ namespace _CodeBase.Garden.GardenBed
         [SerializeField] private BoxCollider _allHarvestArea;
         [SerializeField] private ParticleSystem _harvestEffect;
         
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _growAudio;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _harvestNotificationAudio;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _harvestAudio;
+
         
         [Inject] private GameConfigProvider _gameConfigProvider;
+        [Inject] private AudioService _audioService;
 
         private GardenBedAreaSettings _settings; 
         private Dictionary<State, GameObject> _maps;
@@ -119,7 +72,13 @@ namespace _CodeBase.Garden.GardenBed
         public Vector2 GrowingStartRandomOffsetRange => _settings.GrowingStartRandomOffsetRange;
         public PlantConfig PlantConfig { get; private set; }
         public ParticleSystem HarvestEffect => _harvestEffect;
+        public AudioService AudioService => _audioService;
 
+        public string GrowAudio => _growAudio;
+        public string HarvestAudio => _harvestAudio;
+        public string HarvestNotificationAudio => _harvestNotificationAudio;
+
+        
         protected override void OnAwake()
         {
             InitSupportedActionsList(InputManager.InputAction.Click, InputManager.InputAction.SomeItemDropped);

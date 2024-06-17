@@ -1,7 +1,0 @@
-@startuml
-class C <<static>> {
-    + <<const>> IntractableLayer : int = 10
-    + <<const>> DefaultLayer : string = "Default"
-    + {static} TargetScreenRes : Vector2
-}
-@enduml

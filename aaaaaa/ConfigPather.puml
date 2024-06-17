@@ -1,7 +1,0 @@
-@startuml
-class ConfigPathOrigin <<static>> {
-    + <<const>> Root : string = "CONF"
-    + <<const>> MainHub : string
-    + <<const>> Gameplay : string
-}
-@enduml

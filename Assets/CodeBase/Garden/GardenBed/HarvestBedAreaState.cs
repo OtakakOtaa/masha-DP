@@ -19,6 +19,7 @@ namespace _CodeBase.Garden.GardenBed
         
         public void SwitchState(GardenBedArea.State newState)
         {
+            _gardenBedArea.AudioService.PlayEffect(_gardenBedArea.HarvestNotificationAudio);
             _gardenBedArea.HarvestEffect.Play();
             
             foreach (var cell in _gardenBedArea.Cells)
@@ -30,6 +31,8 @@ namespace _CodeBase.Garden.GardenBed
         
         public void ProcessInteractivity(InputManager.InputAction inputAction)
         {
+            _gardenBedArea.AudioService.PlayEffect(_gardenBedArea.HarvestAudio);
+            
             if (inputAction is InputManager.InputAction.Click)
             {
                 foreach (var cell in _gardenBedArea.Cells)

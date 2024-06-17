@@ -3,28 +3,34 @@ using _CodeBase.DATA;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.Potion.Data;
+using CodeBase.Audio;
 using Sirenix.OdinInspector;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.Serialization;
+using VContainer;
 using Slider = UnityEngine.UI.Slider;
 
 namespace _CodeBase.Potion
 {
     public sealed class EssenceBottle : InteractiveObject
     {
-        
         [SerializeField] private EssenceBottleShader _essenceBottleShader;
         [SerializeField] private Slider _amountViewer;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private SpriteRenderer _neckOfVessel;
         [SerializeField] private GameObject _kernel;
-        
-        
+
+        [SerializeField] private EffectPool _pickUpSfx;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _regenSfx;
+
         [ValueDropdown("@MashaEditorUtility.GetAllEssenceID()")]
         [SerializeField] private string _essenceID;
 
 
+        [Inject] private AudioService _audioService;
         private string _originalLayerName;
         private Vector3 _originalPos;
         private EssenceConfig _essenceConfig;
@@ -89,6 +95,7 @@ namespace _CodeBase.Potion
         
         public void ResetAndStartRegen()
         {
+            _audioService.PlayEffect(_regenSfx);
             _needRegenFlag = false;
             _startRegenPoint = Time.time;
             _availableSipsCounter = MaxAvailableSipsCount;
@@ -103,6 +110,7 @@ namespace _CodeBase.Potion
                 return;
             }
             
+            _audioService.PlayEffect(_pickUpSfx.GetRandomEffect());
             if (IsRegenerateNow) return;
             
             _spriteRenderer.sortingLayerName = _inputManager.GameplayCursor.CursorLayerID; 

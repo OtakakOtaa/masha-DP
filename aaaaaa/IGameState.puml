@@ -1,5 +1,0 @@
-@startuml
-interface IGameState {
-    Enter() : void
-}
-@enduml

@@ -384,7 +384,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -389.5, y: 50.5}
+  m_AnchoredPosition: {x: -389.5, y: -1130.3}
   m_SizeDelta: {x: 589, y: 101}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4324356839900481987
@@ -1078,7 +1078,7 @@ MonoBehaviour:
   _locationBtn2Image: {fileID: 4748023520630790100}
   _menuBtn: {fileID: 7805624026446924837}
   _timeFld: {fileID: 23885065461826860}
-  _timeSignImage: {fileID: 900809807445198356}
+  _timeSignImage: {fileID: 4381439361768911950}
   _customerIndicatorFld: {fileID: 4328597074691319364}
   _customerIndicatorImage: {fileID: 6738211718564240178}
   _coinsFld: {fileID: 2325222112848325969}
@@ -1094,6 +1094,8 @@ MonoBehaviour:
   _potionIcon: {fileID: 21300000, guid: daf289ccf968ccb479244cd5247d63c0, type: 3}
   _startDayHTime: 12
   _endDatHTime: 18
+  _timeStep: 15
+  _btnClickSFX: btn_SFX
 --- !u!1 &7551818543035959124
 GameObject:
   m_ObjectHideFlags: 0

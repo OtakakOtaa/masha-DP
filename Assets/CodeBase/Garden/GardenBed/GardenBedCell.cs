@@ -3,6 +3,8 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
 using _CodeBase.MainGameplay;
+using CodeBase.Audio;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
 
@@ -11,11 +13,15 @@ namespace _CodeBase.Garden.GardenBed
     [RequireComponent(typeof(Collider))]
     public sealed class GardenBedCell : InteractiveObject
     {
-        [Inject] private GameplayService _gameplayService;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Sprite _tag;
-
-
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _harvestSFX;
+        
+        
+        [Inject] private GameplayService _gameplayService;
+        [Inject] private AudioService _audioService;
+        
         private GardenBedData _gardenBedData;
         private PlantConfig _plantConfig;
         private float _growingTimeOffset;
@@ -76,6 +82,7 @@ namespace _CodeBase.Garden.GardenBed
         {
             if (_gardenBedData.hasPlant is false || HasPlantGrown is false || LockFlag) return;
 
+            _audioService.PlayEffect(_harvestSFX);
             _gameplayService.Data.AddPlant(_plantConfig.ID);
             ApplyNoPlantState();
         }

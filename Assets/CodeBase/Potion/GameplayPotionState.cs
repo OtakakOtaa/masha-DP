@@ -6,6 +6,8 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Infrastructure.GameStructs;
 using _CodeBase.MainGameplay;
 using _CodeBase.Potion.Data;
+using CodeBase.Audio;
+using Sirenix.OdinInspector;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -20,8 +22,11 @@ namespace _CodeBase.Potion
         [FormerlySerializedAs("_essenceMixerBase")] [SerializeField] private EssenceMixer _essenceMixer;
         [SerializeField] private SpriteRenderer[] _topRenderingObjects;
         [SerializeField] private PotionCauldron _potionCauldron;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _ambienceSound;
+
         
-        
+        [Inject] private AudioService _audioService;
         [Inject] private GameplayService _gameplayService;
         [Inject] private GameConfigProvider _gameConfigProvider;
 
@@ -51,10 +56,17 @@ namespace _CodeBase.Potion
             }
             
             _potionCauldron.Init(availablePotionsForCraft);
+            
+            
+            _audioService.PlayExtraAmbience(_ambienceSound);
+            gameObject.OnDestroyAsObservable().First().Subscribe(_ => _audioService.ClearExtraAmbience(_ambienceSound));
+
         }
 
         protected override void OnEnter()
         {
+            _audioService.LaunchExtraAmbience(_ambienceSound);
+            
             _gameplayService.UI.PotionUI.gameObject.SetActive(true);
             _gameplayService.UI.PotionUI.HardResetPanelToDefault();
             
@@ -64,6 +76,7 @@ namespace _CodeBase.Potion
 
         protected override void OnExit()
         {
+            _audioService.HideExtraAmbience(_ambienceSound);
         }
 
         

@@ -1,10 +1,13 @@
 ﻿using System;
 using _CodeBase.Infrastructure.UI;
+using CodeBase.Audio;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 using Random = UnityEngine.Random;
 
 namespace _CodeBase.MainGameplay
@@ -17,6 +20,10 @@ namespace _CodeBase.MainGameplay
         [SerializeField] private Sprite[] _mainIconsSprites;
         [SerializeField] private AppearsAnimation _appearsAnimation;
         
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _showSFX;
+
+        [Inject] private AudioService _audioService;
         
         public IObservable<Unit> ContinueClickedEvent => _continueBtn.OnClickAsObservable();
         public bool ContinueEventFlag { get; private set; }
@@ -40,6 +47,7 @@ namespace _CodeBase.MainGameplay
         public void Show()
         {
             _appearsAnimation.Play();
+            _audioService.PlayEffect(_showSFX);        
         }
     }
 }

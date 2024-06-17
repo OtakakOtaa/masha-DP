@@ -4,9 +4,12 @@ using _CodeBase.DATA;
 using _CodeBase.Infrastructure;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Potion.Data;
+using CodeBase.Audio;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
+using VContainer;
 
 
 namespace _CodeBase.Potion
@@ -16,8 +19,12 @@ namespace _CodeBase.Potion
         [SerializeField] private SpriteRenderer _liquidRenderer;
         [SerializeField] private GifAnimation _boomEffect;
         [SerializeField] private GifAnimation _bubblesEffect;
-        
 
+        [SerializeField] private EffectPool _dropSfx;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _craftSfx;
+
+        [Inject] private AudioService _audioService;
         public readonly ReactiveCommand<string> PotionCreatedEvent = new();
         public readonly ReactiveCommand<string> AddPlantEvent = new();
 
@@ -84,6 +91,7 @@ namespace _CodeBase.Potion
             if (state == ComparableResultType.EntireMix)
             {
                 PotionCreatedEvent?.Execute(_targetMix);
+                _audioService.PlayEffect(_craftSfx);
             }
             
             Debug.Log($"Cauldron STATE: {state.ToString()}");
@@ -91,6 +99,7 @@ namespace _CodeBase.Potion
 
         protected override void SetVisualForState(ComparableResultType state)
         {
+            _audioService.PlayEffect(_dropSfx.GetRandomEffect());
             var color = CalculateColorForState(state);
             _liquidRenderer.color = color;
             _bubblesEffect.SetColor(color);

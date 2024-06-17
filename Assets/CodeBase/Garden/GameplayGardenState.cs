@@ -4,6 +4,10 @@ using _CodeBase.Garden.Data;
 using _CodeBase.Garden.GardenBed;
 using _CodeBase.Infrastructure.GameStructs;
 using _CodeBase.MainGameplay;
+using CodeBase.Audio;
+using Sirenix.OdinInspector;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using VContainer;
 
@@ -12,9 +16,13 @@ namespace _CodeBase.Garden
     public sealed class GameplayGardenState : GameplaySceneState
     {
         [SerializeField] private GardenBedArea[] _gardenBedAreas;
-
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _ambienceSound;
+        
+        
         [Inject] private GameplayService _gameplayService;
         [Inject] private GameConfigProvider _gameConfigProvider;
+        [Inject] private AudioService _audioService;
         
         
         protected override void OnFirstEnter()
@@ -26,10 +34,15 @@ namespace _CodeBase.Garden
                 var gardenBedArea = _gardenBedAreas[i];
                 gardenBedArea.Init(GameSettingsConfiguration.Instance.AreaSettings[i]);
             }
+            
+            _audioService.PlayExtraAmbience(_ambienceSound);
+            gameObject.OnDestroyAsObservable().First().Subscribe(_ => _audioService.ClearExtraAmbience(_ambienceSound));
         }
 
         protected override void OnEnter()
         {
+            _audioService.LaunchExtraAmbience(_ambienceSound);
+            
             _gameplayService.UI.GardenUI.gameObject.SetActive(true);
             _gameplayService.UI.GardenUI.HardResetPanelToDefault();
                 
@@ -39,6 +52,7 @@ namespace _CodeBase.Garden
 
         protected override void OnExit()
         {
+            _audioService.HideExtraAmbience(_ambienceSound);
         }
     }
 }

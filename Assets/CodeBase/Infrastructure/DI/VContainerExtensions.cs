@@ -29,8 +29,11 @@ namespace _CodeBase.Infrastructure.DI
             injectionCtor = isOneConstructor is false
                 ? FindInjectionCtorOrThrow(constructors)
                 : constructors.First();
-
-            return CreateInstanceOrThrow<TResult>(injectionCtor, scope);
+            
+            
+            var instance = CreateInstanceOrThrow<TResult>(injectionCtor, scope);
+            scope.Container.Inject(instance);
+            return instance;
         }
 
         private static void Inject<TComponent>(TComponent component, LifetimeScope scope)

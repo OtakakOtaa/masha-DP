@@ -1,9 +1,0 @@
-@startuml
-class GardenBedData <<sealed>> {
-    - _plantingTimePoint : double
-    + hasPlant : bool
-    - _plantingTimePointTs : TimeSpan
-    - _isPlantingTimePointTsMapped : bool = false
-    + PlantingTimePoint : TimeSpan <<get>> <<set>>
-}
-@enduml

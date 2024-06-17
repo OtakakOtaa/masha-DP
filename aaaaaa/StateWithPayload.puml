@@ -1,6 +1,0 @@
-@startuml
-interface "IGameStateWithPayload`1"<in TPayload> {
-    Enter(payload:TPayload) : void
-}
-IGameState <|-- "IGameStateWithPayload`1"
-@enduml

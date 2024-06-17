@@ -1,0 +1,438 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a233198c58428e8bd1151b94b03a5c, type: 3}
+  m_Name: AudioServiceSettings
+  m_EditorClassIdentifier: 
+  _mainMixer: {fileID: 24100000, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+  _musicSounds: []
+  _ambientSounds:
+  - _soundName: caldrown_A
+    _soundClip: {fileID: 8300000, guid: cf1263d1fbee5a94bb11ee100466260d, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 1
+    _fadeDuration: 1
+  - _soundName: sound_main_A
+    _soundClip: {fileID: 8300000, guid: 02673a47d91f3c348b7b4729d236e6dd, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: sound_gameplay_A
+    _soundClip: {fileID: 8300000, guid: c29083a9153a5f44ea4163b8f3f59d96, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: birghts_A
+    _soundClip: {fileID: 8300000, guid: 76ee4c340bf38aa46871a81aaf999879, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 1
+    _fadeDuration: 2
+  _effectSounds:
+  - _soundName: btn_SFX
+    _soundClip: {fileID: 8300000, guid: 1e3a948a6eb9c154aadcb3cb107b908a, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: purchase_SFX
+    _soundClip: {fileID: 8300000, guid: 7782c7ce78eed9340a1b067154e4bc7b, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: bookmark_SFX
+    _soundClip: {fileID: 8300000, guid: b38c2babc3c51d74dba1696d40b32581, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: drag_SFX
+    _soundClip: {fileID: 8300000, guid: a8f15d5cd596cef4994f39d5151bbab8, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: bugs_resolver_SFX
+    _soundClip: {fileID: 8300000, guid: 1144739ef2b14d947b518b2cc88ee28c, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: water_SFX
+    _soundClip: {fileID: 8300000, guid: 86cf08a534da62442930e78e7509428e, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: grow_SFX
+    _soundClip: {fileID: 8300000, guid: 3b2fb9e67c52bcc4d964fa3815979738, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: harvest_SFX
+    _soundClip: {fileID: 8300000, guid: cedb9cf5453604d4eb4f333f225f1a7c, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: harvest_notification_SFX
+    _soundClip: {fileID: 8300000, guid: 9891b3c6248dcea419a02d0e7f3cbb61, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: fertilizer_SFX
+    _soundClip: {fileID: 8300000, guid: cd7c6f79bf3a6cc4580ce03ba3343b8a, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: givePotion_SFX
+    _soundClip: {fileID: 8300000, guid: 00cb59b488513cc4ebaabf0c80526a8c, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: E_L_customer_SFX
+    _soundClip: {fileID: 8300000, guid: 02f185204d007004686ef3ab071fa6e7, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: money_SFX
+    _soundClip: {fileID: 8300000, guid: 70231e661c32a3140a9043e149a5b142, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: day_res_SFX
+    _soundClip: {fileID: 8300000, guid: dcf6825187bfae04f92898a5e7c0dc09, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: restore_essence_SFX
+    _soundClip: {fileID: 8300000, guid: a4ede115438c7d648988f7dc560d5348, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: potion_createdSFX
+    _soundClip: {fileID: 8300000, guid: 8bfe874c631087e4a9f67f64215a3be2, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: add_to_coldrown1_SFX
+    _soundClip: {fileID: 8300000, guid: 3f679604ea02ad84eb439b17e8f4d614, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: add_to_coldrown2_SFX
+    _soundClip: {fileID: 8300000, guid: be12fc52108c36140b5a8f08a9102101, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: add_to_coldrown3_SFX
+    _soundClip: {fileID: 8300000, guid: 63545e80a34b3b243bdd5925fd917c4a, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: add_to_coldrown4_SFX
+    _soundClip: {fileID: 8300000, guid: 45b929fb5ad503d40a16b1a5a3ef724d, type: 3}
+    _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: essence_pick1_SFX
+    _soundClip: {fileID: 8300000, guid: b450e360b3cfe4b48a34f096cfe4ff82, type: 3}
+    _mixerGroup: {fileID: 0}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: essence_pick4_SFX
+    _soundClip: {fileID: 8300000, guid: c964cd59b1782894d9a9cab47d99fb2a, type: 3}
+    _mixerGroup: {fileID: 0}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: essence_pick3_SFX
+    _soundClip: {fileID: 8300000, guid: 19bab940d27ddcd4bbaf0980e5a48679, type: 3}
+    _mixerGroup: {fileID: 0}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0
+  - _soundName: essence_pick2_SFX
+    _soundClip: {fileID: 8300000, guid: 20900ecdc67c481408b95c5cd6d4b170, type: 3}
+    _mixerGroup: {fileID: 0}
+    _doRandomVolume: 0
+    _volumeRange: {x: 0.4, y: 0.6}
+    _volume: 1
+    _doRandomPitch: 0
+    _pitchRange: {x: -1, y: 1}
+    _pitch: 1
+    _doRandomPriority: 0
+    _priorityRange: {x: 100, y: 156}
+    _priority: 128
+    _dopplerLevel: 1
+    _isLooped: 0
+    _fadeDuration: 0

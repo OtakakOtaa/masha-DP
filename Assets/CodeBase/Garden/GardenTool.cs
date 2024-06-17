@@ -2,7 +2,10 @@
 using _CodeBase.Infrastructure;
 using _CodeBase.Input.InteractiveObjsTypes;
 using _CodeBase.Input.Manager;
+using CodeBase.Audio;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using VContainer;
 
 namespace _CodeBase.Garden
 {
@@ -11,7 +14,11 @@ namespace _CodeBase.Garden
         [SerializeField] private GardenBedArea.State _resolveState;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private GifAnimation _gifAnimation;
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _actionSound;
+
         
+        [Inject] private AudioService _audioService;
         
         private Vector3 _originPosition;
         private Vector3 _originScale;
@@ -48,6 +55,7 @@ namespace _CodeBase.Garden
 
         public override async void ProcessEndInteractivity(InputManager.InputAction inputAction)
         { 
+            _audioService.PlayEffect(_actionSound);
             await _gifAnimation.Play(); 
             _spriteRenderer.sortingLayerID = _originDrawLayerID;
             transform.position = _originPosition;

@@ -1,12 +1,18 @@
 ﻿using _CodeBase.Infrastructure.UI;
 using _CodeBase.Input.Manager;
 using _CodeBase.Potion.Data;
+using CodeBase.Audio;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _CodeBase.Hall
 {
     public sealed class PotionDummy : ItemDummy<PotionConfig>
     {
+        [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
+        [SerializeField] private string _activateSFX;
+
+        
         private Vector3 _startPos;
         
         
@@ -39,6 +45,7 @@ namespace _CodeBase.Hall
 
         public override void ProcessStartInteractivity(InputManager.InputAction inputAction)
         {
+            AudioService.Instance.PlayEffect(_activateSFX);
         }
     }
 }
