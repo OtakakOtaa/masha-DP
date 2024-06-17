@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: '[Global] GameplayConfig'
   m_EditorClassIdentifier: 
   _dayDuration:
-    _min: 0
-    _sec: 30
+    _min: 4
+    _sec: 0
     _milSec: 0
-  _startGameCurtainLifeDuration: 5
+  _startGameCurtainLifeDuration: 3
   _delayBetweenCustomers:
     _value: 1
     _curve:
@@ -44,7 +44,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   _firstCustomerEnterDelay:
-    _range: {x: 4, y: 5}
+    _range: {x: 2, y: 3}
   _bubblePassDelay:
     _range: {x: 0, y: 1}
   _textAppearsTemp:
@@ -74,10 +74,10 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   _areaSettings:
-  - _problemTimerRange: {x: 5, y: 10}
-    _waterRequestChance: 50
-    _fertilizeRequestChance: 15
-    _bugsAttackChance: 35
+  - _problemTimerRange: {x: 11, y: 16}
+    _waterRequestChance: 34
+    _fertilizeRequestChance: 33
+    _bugsAttackChance: 33
     _growingStartRandomOffsetRange: {x: 0, y: 1}
     _needConsedStartRandomOffset: 0
     _startState: 5
@@ -111,10 +111,10 @@ MonoBehaviour:
       _randomRotationOffsetAfterLeaveOut: 5
       _rotationAlignFactor: 6
       _perspectiveScale: {x: 0.1, y: 0.4}
-  - _problemTimerRange: {x: 5, y: 10}
-    _waterRequestChance: 50
-    _fertilizeRequestChance: 15
-    _bugsAttackChance: 35
+  - _problemTimerRange: {x: 11, y: 16}
+    _waterRequestChance: 34
+    _fertilizeRequestChance: 33
+    _bugsAttackChance: 33
     _growingStartRandomOffsetRange: {x: 0, y: 1}
     _needConsedStartRandomOffset: 0
     _startState: 5
@@ -148,10 +148,10 @@ MonoBehaviour:
       _randomRotationOffsetAfterLeaveOut: 5
       _rotationAlignFactor: 6
       _perspectiveScale: {x: 0.1, y: 0.4}
-  - _problemTimerRange: {x: 5, y: 10}
-    _waterRequestChance: 50
-    _fertilizeRequestChance: 15
-    _bugsAttackChance: 35
+  - _problemTimerRange: {x: 11, y: 16}
+    _waterRequestChance: 34
+    _fertilizeRequestChance: 33
+    _bugsAttackChance: 33
     _growingStartRandomOffsetRange: {x: 0, y: 1}
     _needConsedStartRandomOffset: 0
     _startState: 5
@@ -185,10 +185,10 @@ MonoBehaviour:
       _randomRotationOffsetAfterLeaveOut: 5
       _rotationAlignFactor: 6
       _perspectiveScale: {x: 0.1, y: 0.4}
-  - _problemTimerRange: {x: 5, y: 10}
-    _waterRequestChance: 50
-    _fertilizeRequestChance: 15
-    _bugsAttackChance: 35
+  - _problemTimerRange: {x: 11, y: 16}
+    _waterRequestChance: 34
+    _fertilizeRequestChance: 33
+    _bugsAttackChance: 33
     _growingStartRandomOffsetRange: {x: 0, y: 1}
     _needConsedStartRandomOffset: 0
     _startState: 5
@@ -222,10 +222,10 @@ MonoBehaviour:
       _randomRotationOffsetAfterLeaveOut: 5
       _rotationAlignFactor: 6
       _perspectiveScale: {x: 0.1, y: 0.4}
-  - _problemTimerRange: {x: 5, y: 10}
-    _waterRequestChance: 50
-    _fertilizeRequestChance: 15
-    _bugsAttackChance: 35
+  - _problemTimerRange: {x: 11, y: 16}
+    _waterRequestChance: 34
+    _fertilizeRequestChance: 33
+    _bugsAttackChance: 33
     _growingStartRandomOffsetRange: {x: 0, y: 1}
     _needConsedStartRandomOffset: 0
     _startState: 5
