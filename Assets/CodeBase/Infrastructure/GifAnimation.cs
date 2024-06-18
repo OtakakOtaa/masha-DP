@@ -20,6 +20,7 @@ namespace _CodeBase.Infrastructure
         [SerializeField] private List<Sprite> _mFrames = new();
         [SerializeField] private List<float> _mFrameDelay = new();
 
+        private float[] _mFrameDelayRatio;
         private int _mCurFrame = 0;
         private float _mTime = 0.0f;
         private Sprite _originSprite;
@@ -71,7 +72,8 @@ namespace _CodeBase.Infrastructure
             }
         }
 
-        public async UniTask Play(Color? color = null)
+        
+        public async UniTask Play(Color? color = null, float? duration = null)
         {
             _updateSub?.Dispose();
             _oneLoopPlayed?.TrySetCanceled();
@@ -86,6 +88,8 @@ namespace _CodeBase.Infrastructure
             _originSprite = _isImage ? _image.sprite : _spriteRenderer.sprite;
             ResetDelta();
 
+            if (duration != null) SetDuration(duration.Value);
+            
             _updateSub = GameService.GameUpdate.Subscribe(_ => UpdateGif());
         
             _oneLoopPlayed = new UniTaskCompletionSource();
@@ -98,6 +102,17 @@ namespace _CodeBase.Infrastructure
             _updateSub = null;
         }
 
+        public void Kill()
+        {
+            _updateSub?.Dispose();
+            _oneLoopPlayed?.TrySetCanceled();
+            _oneLoopPlayed = null;
+            _updateSub?.Dispose();
+            _updateSub = null;
+            
+            ResetDelta();
+        }
+        
         public void SetColor(Color color)
         {
             if (_isImage)
@@ -148,6 +163,24 @@ namespace _CodeBase.Infrastructure
             {
                 _spriteRenderer.sprite = sprite;
             }
+        }
+
+        private void SetDuration(float newDuration)
+        {
+            _mFrameDelayRatio ??= new float[_mFrameDelay.Count];
+            
+            var currentDuration = 0f;
+            for (var i = 0; i < _mFrameDelay.Count; i++)
+            {
+                currentDuration += _mFrameDelay[i];
+            }
+            
+            for (var i = 0; i < _mFrameDelay.Count; i++)
+            {
+                _mFrameDelayRatio[i] = _mFrameDelay[i] / currentDuration;
+                _mFrameDelay[i] = _mFrameDelayRatio[i] * newDuration;
+            }
+            
         }
     }
 }

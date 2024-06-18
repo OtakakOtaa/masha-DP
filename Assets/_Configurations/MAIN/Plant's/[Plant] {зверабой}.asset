@@ -18,7 +18,7 @@ MonoBehaviour:
   _sprite: {fileID: 21300000, guid: 5fc71cedc88ef0542842682ca1a8c11c, type: 3}
   _seed: {fileID: 21300000, guid: 5dad7acd671ec2e438a6b99440dccc87, type: 3}
   _platPhases:
-  - _sprite: {fileID: 21300000, guid: 85d2fa6a35afeb14e90cbf97ff3efd5e, type: 3}
+  - _sprite: {fileID: 21300000, guid: 3cf883e860211e0428d31203d7e781c2, type: 3}
     _progress: 0
   - _sprite: {fileID: 21300000, guid: 13a5e41ec3f0c054c9ffba0d162b3add, type: 3}
     _progress: 0.4

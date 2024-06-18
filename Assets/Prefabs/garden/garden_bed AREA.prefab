@@ -5211,7 +5211,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 1041479671
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &8462949415319500171
 MonoBehaviour:
@@ -6135,6 +6135,9 @@ MonoBehaviour:
   _bugsAttackedMap: {fileID: 5437827149728484292}
   _allHarvestArea: {fileID: 7211932378721612172}
   _harvestEffect: {fileID: 0}
+  _growAudio: 
+  _harvestNotificationAudio: 
+  _harvestAudio: 
 --- !u!114 &1743770942341710687
 MonoBehaviour:
   m_ObjectHideFlags: 0

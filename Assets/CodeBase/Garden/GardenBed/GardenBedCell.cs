@@ -75,16 +75,20 @@ namespace _CodeBase.Garden.GardenBed
             _spriteRenderer.gameObject.SetActive(true);
         }
 
+        public void ExecuteHarvest()
+        {
+            _audioService.PlayEffect(_harvestSFX);
+            _gameplayService.Data.AddPlant(_plantConfig.ID);
+            ApplyNoPlantState();
+        }
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         public override void ProcessInteractivity(InputManager.InputAction inputAction)
         {
             if (_gardenBedData.hasPlant is false || HasPlantGrown is false || LockFlag) return;
-
-            _audioService.PlayEffect(_harvestSFX);
-            _gameplayService.Data.AddPlant(_plantConfig.ID);
-            ApplyNoPlantState();
+            ExecuteHarvest();
         }
 
         private TimeSpan CurrentTimeUtc => DateTime.UtcNow.TimeOfDay;

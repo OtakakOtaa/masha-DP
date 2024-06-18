@@ -31,14 +31,11 @@ namespace _CodeBase.Garden.GardenBed
         
         public void ProcessInteractivity(InputManager.InputAction inputAction)
         {
-            _gardenBedArea.AudioService.PlayEffect(_gardenBedArea.HarvestAudio);
+            if (inputAction is not InputManager.InputAction.Click) return;
             
-            if (inputAction is InputManager.InputAction.Click)
+            foreach (var cell in _gardenBedArea.Cells)
             {
-                foreach (var cell in _gardenBedArea.Cells)
-                {
-                    cell.ApplyNoPlantState();
-                }
+                cell.ExecuteHarvest();
             }
             
             if (_gardenBedArea.ProblemTimer.IsTimeUp is false)

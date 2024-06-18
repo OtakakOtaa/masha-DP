@@ -35,7 +35,7 @@ MonoBehaviour:
     _mixerGroup: {fileID: 24300002, guid: c93ce7051e1709943a0bda9fa0b07bf6, type: 2}
     _doRandomVolume: 0
     _volumeRange: {x: 0.4, y: 0.6}
-    _volume: 1
+    _volume: 0.812
     _doRandomPitch: 0
     _pitchRange: {x: -1, y: 1}
     _pitch: 1
