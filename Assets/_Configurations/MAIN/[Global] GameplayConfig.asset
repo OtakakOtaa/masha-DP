@@ -16,7 +16,7 @@ MonoBehaviour:
     _min: 4
     _sec: 0
     _milSec: 0
-  _startGameCurtainLifeDuration: 3
+  _startGameCurtainLifeDuration: 2
   _delayBetweenCustomers:
     _value: 1
     _curve:
