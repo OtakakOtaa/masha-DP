@@ -20,6 +20,8 @@ namespace _CodeBase.Hall
         [SerializeField] private PotionDummy _potionDummy;
         [SerializeField] private CustomerFetcher _customerFetcher;
         [SerializeField] private DialogueBubble _dialogueBubble;
+        [SerializeField] private CoinJar _coinJar;
+        
         
         [ValueDropdown("@AudioServiceSettings.GetAllAudioNames()")]
         [SerializeField] private string _customerEnterSFX;
@@ -129,6 +131,7 @@ namespace _CodeBase.Hall
             if (_correctCraftedPotionFlag)
             {
                 _gameplayService.Data.AddCustomerCoinToBalance(_activeCustomer.Order.Reward);
+                _coinJar.AddNewCoin();
                 _audioService.PlayEffect(_moneySFX);
             }
         }

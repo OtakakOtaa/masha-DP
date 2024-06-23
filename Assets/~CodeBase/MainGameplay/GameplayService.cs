@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using _CodeBase.Customers;
 using _CodeBase.DATA;
 using _CodeBase.Garden;
@@ -16,12 +15,11 @@ using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VContainer;
 
 namespace _CodeBase.MainGameplay
 {
-    public sealed class GameplayService : MonoBehaviour, IGameState
+    public sealed class GameplayService : MonoBehaviour, IExitableGameState
     {
         [SerializeField] private Camera _uiCamera;
         [SerializeField] private string _ambienceName;
@@ -59,6 +57,13 @@ namespace _CodeBase.MainGameplay
         
         public async void Enter()
         {
+            if (_gameService.GameStateMachine.PreviousGameState is not MainMenuGameState)
+            {
+                _audioService.ResetAmbience();
+                _audioService.ChangeAmbience("sound_main_A");
+                _audioService.ContinueAmbience();
+            }
+            
             InitMainData();
             DisableAllUI();
             FillGameplayData();
@@ -92,6 +97,11 @@ namespace _CodeBase.MainGameplay
                 _audioService.ResetAmbience();
                 _audioService.ChangeAmbience(_ambienceName);
             });
+        }
+
+        public void Exit()
+        {
+            _audioService.StopAmbience();
         }
 
         private async UniTask<bool> ShowAndHandleShop()
@@ -238,7 +248,8 @@ namespace _CodeBase.MainGameplay
             await UniTask.WaitUntil(() => UI.DayResultsUI.ContinueEventFlag, cancellationToken: destroyCancellationToken);
 
             SaveGameplayData();
-            await GoToMainMenu();
+            await _gameService.Curtain.PlayAppears();
+            _gameService.GameStateMachine.Enter<StateForReload>();
         }
         
         private void HandleBuyItemRequest(string id)

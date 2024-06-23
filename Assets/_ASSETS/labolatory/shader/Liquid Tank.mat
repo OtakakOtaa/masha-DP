@@ -58,12 +58,12 @@ Material:
     - Vector1_4296D34C: -0.01
     - Vector1_817FF511: 12.47
     - Vector1_AB3A3EBC: 2
-    - Vector1_ACE54085: -11.16
+    - Vector1_ACE54085: 3.2
     - Vector1_B30B07BF: 0.657
     - Vector1_D45DB484: 0.09
     - Vector1_F2BB55D7: 8
-    - Vector1_F51841FD: 78.4
-    - _Amp: 0.04
+    - Vector1_F51841FD: 66.16
+    - _Amp: 0.08
     - _AmpOffset: 0.059
     - _QueueControl: 0
     - _QueueOffset: 0

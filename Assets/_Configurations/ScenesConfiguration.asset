@@ -23,3 +23,5 @@ MonoBehaviour:
     originPath: '[SCENE] POTION'
   - scene: 2
     originPath: '[SCENE] gameplay'
+  - scene: 6
+    originPath: '[SCENE] EMPTY_FOR_LOAD'

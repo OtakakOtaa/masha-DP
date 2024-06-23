@@ -58,7 +58,8 @@ namespace _CodeBase.DiScopes
                 typeof(GameplayService),
                 typeof(GameplayHallState),
                 typeof(GameplayGardenState),
-                typeof(GameplayPotionState)
+                typeof(GameplayPotionState),
+                typeof(StateForReload)
             };
 
             builder.Register<GlobalStateMachine>(Lifetime.Singleton).WithParameter(finalStates);

@@ -31,9 +31,9 @@ namespace CodeBase.Audio
         [SerializeField] private float _dopplerLevel = 1f;
         [SerializeField] private bool _isLooped;
         [SerializeField] private float _fadeDuration;
+        [SerializeField] private float _startPoint = 0f;
         
-
-
+        public float StartPoint => _startPoint;
         public string SoundName => _soundName;
         public AudioClip SoundClip => _soundClip;
         public AudioMixerGroup MixerGroup => _mixerGroup;

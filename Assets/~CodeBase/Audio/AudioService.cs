@@ -243,6 +243,7 @@ namespace CodeBase.Audio
                 {
                     SetUpSourceSettings(sources[i], sound, position, distance);
                     sources[i].Play();
+                    sources[i].time = sound.StartPoint;
                     
                     return;
                 }

@@ -12,7 +12,7 @@ namespace _CodeBase.Infrastructure.GameStructs.FSM
         private readonly HashSet<Type> _finalStateTypes = new();
         
         public IGameState CurrentGameState { get; private set; }
-
+        public IGameState PreviousGameState { get; private set; }
         
         public GlobalStateMachine(Type[] finalStateTypes, DiContainer diContainer)
         {
@@ -31,7 +31,8 @@ namespace _CodeBase.Infrastructure.GameStructs.FSM
             {
                 TryExit();
             }
-            
+         
+            PreviousGameState = CurrentGameState;
             CurrentGameState = GetState<TState>();
             beforeEnterAction?.Invoke();
             CurrentGameState.Enter();
@@ -43,6 +44,7 @@ namespace _CodeBase.Infrastructure.GameStructs.FSM
         {
             CheckStateForAvailability<TStateWithPayload>();
             TryExit();
+            PreviousGameState = CurrentGameState;
             CurrentGameState = GetPayloadState<TPayload, TStateWithPayload>(); 
             ((TStateWithPayload)CurrentGameState).Enter(payload);
         }

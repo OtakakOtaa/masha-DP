@@ -8,6 +8,7 @@ namespace _CodeBase.Infrastructure
         Gameplay,
         Hall,
         Garden,
-        Laboratory
+        Laboratory,
+        EmptyScene
     }
 }
