@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 8410931827835904996}
   - component: {fileID: 6156967076514876611}
   - component: {fileID: 1100443613380125481}
+  - component: {fileID: 2919802672978773850}
   m_Layer: 0
   m_Name: visual
   m_TagString: Untagged
@@ -214,6 +215,23 @@ MonoBehaviour:
     m_RotationOrder: 4
   _axis: {x: 0, y: 1, z: 0}
   _speedFactor: 1
+--- !u!114 &2919802672978773850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2551371532892897920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a32211ba4cd948a29443007d7e05a4b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Filename: 
+  _loopFlag: 0
+  _isImage: 0
+  _mFrames: []
+  _mFrameDelay: []
 --- !u!1 &6856229850193293372
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,6 +317,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _animationDuration: 1
+  _gifAnimationPlayer: {fileID: 2919802672978773850}
 --- !u!65 &2405009864119853829
 BoxCollider:
   m_ObjectHideFlags: 0

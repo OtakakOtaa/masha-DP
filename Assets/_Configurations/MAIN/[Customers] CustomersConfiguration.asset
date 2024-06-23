@@ -374,38 +374,164 @@ MonoBehaviour:
       #0"
     _sprite: {fileID: 21300000, guid: b8d7713d30105d24f923d818c3fa2f63, type: 3}
     _mainColor: {r: 1, g: 1, b: 1, a: 1}
+    _sadTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: e0539af6de14a564da05d7c7c6347aed, type: 3}
+      - {fileID: 21300000, guid: 4fbcb8225816b8e4e9dcb0737b66901f, type: 3}
+      _framesDelays:
+      - 0
+      - 0.1
+    _happyTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: e0539af6de14a564da05d7c7c6347aed, type: 3}
+      - {fileID: 21300000, guid: e69901f0bad84034cbe2683474fc36ab, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
   - _weight: 1
     _id: "[VISUAL] - \u043E\u0433\u0440 #1"
     _sprite: {fileID: 21300000, guid: e3de27bccc9ec7e4bae146d4cd35c197, type: 3}
     _mainColor: {r: 1, g: 1, b: 1, a: 1}
+    _sadTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: dc0bbd194e7d2104b8a7c47900471345, type: 3}
+      - {fileID: 21300000, guid: 778a94d37fe744a468b5fb54efdba046, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
+    _happyTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: dc0bbd194e7d2104b8a7c47900471345, type: 3}
+      - {fileID: 21300000, guid: 778a94d37fe744a468b5fb54efdba046, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
   - _weight: 1
     _id: "[VISUAL] - \u043C\u0443\u043C\u0438\u044F #2"
     _sprite: {fileID: 21300000, guid: 008d626e8d024874baf53d525ea36566, type: 3}
     _mainColor: {r: 1, g: 1, b: 1, a: 1}
+    _sadTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 1d4c624fbfcd698428d3ec7fa970169b, type: 3}
+      - {fileID: 21300000, guid: 5a4c656cea41aa948819fa252aa61af5, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
+    _happyTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 1d4c624fbfcd698428d3ec7fa970169b, type: 3}
+      - {fileID: 21300000, guid: 5a4c656cea41aa948819fa252aa61af5, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
   - _weight: 1
     _id: "[VISUAL] - \u0437\u043E\u043C\u0431\u0438 #3"
     _sprite: {fileID: 21300000, guid: 8e8bb4a733c08d64683537f96e952ec7, type: 3}
     _mainColor: {r: 1, g: 1, b: 1, a: 1}
+    _sadTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 75aed32905f05cc4e86bd313b071b660, type: 3}
+      - {fileID: 21300000, guid: 041772d24e219664cbf7881630221210, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
+    _happyTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 75aed32905f05cc4e86bd313b071b660, type: 3}
+      - {fileID: 21300000, guid: 77f6439eaeb219541a5554bf89d34cf3, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
   - _weight: 1
     _id: "[VISUAL] - \u0434\u0440\u0430\u043A\u043E\u043D #4"
     _sprite: {fileID: 21300000, guid: 7d459611e51a8eb4db228bd95fbb1a39, type: 3}
     _mainColor: {r: 1, g: 1, b: 1, a: 1}
+    _sadTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 6cb1257e9f3d18543949d8edd7dc6d33, type: 3}
+      - {fileID: 21300000, guid: 154b5da3d8f253541886057d49af0ff1, type: 3}
+      _framesDelays:
+      - 0.2
+      - 0.2
+    _happyTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 6cb1257e9f3d18543949d8edd7dc6d33, type: 3}
+      - {fileID: 21300000, guid: 154b5da3d8f253541886057d49af0ff1, type: 3}
+      _framesDelays:
+      - 0.2
+      - 0.2
   - _weight: 1
     _id: "[VISUAL] - \u0433\u0440\u0443\u0442 #5"
     _sprite: {fileID: 21300000, guid: 6085988c2f1a3bf42bf64bbfa915b5a0, type: 3}
     _mainColor: {r: 1, g: 1, b: 1, a: 1}
+    _sadTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 5471d0d479013a44a9f2e8e611179aa5, type: 3}
+      - {fileID: 21300000, guid: 65084a713d9f7ed4b8383415d6d90ede, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
+    _happyTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 5471d0d479013a44a9f2e8e611179aa5, type: 3}
+      - {fileID: 21300000, guid: 7553526a60aa60941958e53a44d18b68, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
   - _weight: 1
     _id: "[VISUAL] - \u0440\u0443\u0441\u0430\u043B\u043A\u0430 #6"
     _sprite: {fileID: 21300000, guid: d159e5343daa97d4d826ff98d3796f17, type: 3}
     _mainColor: {r: 1, g: 1, b: 1, a: 1}
+    _sadTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 20ca740a195729243a4321ff50f44912, type: 3}
+      - {fileID: 21300000, guid: 547a7bb093ce00c46b8f560e1d41c2e7, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
+    _happyTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 20ca740a195729243a4321ff50f44912, type: 3}
+      - {fileID: 21300000, guid: 76f5d9189f8412c4b8b9d63ad92d54d8, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
   - _weight: 1
     _id: "[VISUAL] - \u044D\u043B\u044C\u0444 #7"
     _sprite: {fileID: 21300000, guid: 7c985d625c31482478e41cb97eefd465, type: 3}
     _mainColor: {r: 1, g: 1, b: 1, a: 1}
+    _sadTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: aa5d50b01b1534a42bbf6bc72939263a, type: 3}
+      - {fileID: 21300000, guid: 29dc1490346cf23468a0742d39bf05bf, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
+    _happyTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: aa5d50b01b1534a42bbf6bc72939263a, type: 3}
+      - {fileID: 21300000, guid: 515d12db30ec35c40ab0b15b03bbdf33, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
   - _weight: 1
     _id: "[VISUAL] - \u044D\u043D\u0447\u0430 #8"
     _sprite: {fileID: 21300000, guid: 3c4c7a20f58b48a44bb9d16fb5ee4302, type: 3}
     _mainColor: {r: 1, g: 1, b: 1, a: 1}
+    _sadTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: ad4e78c8deaa1c04ab4a28d5060b254c, type: 3}
+      - {fileID: 21300000, guid: cd2f3244e481df0499d4da50dca454ed, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
+    _happyTalkAnim:
+      _frames:
+      - {fileID: 21300000, guid: 05be11306f2cd6146aae716dda92074f, type: 3}
+      - {fileID: 21300000, guid: ad4e78c8deaa1c04ab4a28d5060b254c, type: 3}
+      _framesDelays:
+      - 0.1
+      - 0.1
   _customerInfos:
   - _weight: 1
     _id: '[INFO] - EGOR #0'
