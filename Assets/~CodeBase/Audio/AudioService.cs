@@ -110,6 +110,7 @@ namespace CodeBase.Audio
             
             SetUpSourceSettings(_extraAmbiences[key], sound);
             _extraAmbiences[key].Play();
+            _extraAmbiences[key].volume = sound.Volume;
         }
         
         public void HideExtraAmbience(string key)
@@ -134,7 +135,7 @@ namespace CodeBase.Audio
             }
             
             _extraAmbiencesFadeUpBrowser[key] = DOTween.Sequence()
-                .Append(_extraAmbiences[key].DOFade(1f, _serviceSettings.GetAmbienceSoundByName(key).FadeDuration))
+                .Append(_extraAmbiences[key].DOFade(_serviceSettings.GetAmbienceSoundByName(key).Volume, _serviceSettings.GetAmbienceSoundByName(key).FadeDuration))
                 .OnComplete(() => _extraAmbiences[key].pitch = 1f);
         }
         
